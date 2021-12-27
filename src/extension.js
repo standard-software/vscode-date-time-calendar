@@ -10,7 +10,29 @@ const {
   // _stringToIntegerDefault,
   _subLastDelimFirst,
   _dateToString,
+  _dayOfWeek,
 } = require(`./parts/parts.js`);
+
+const dayOfWeekJapaneseShort = (date, timezoneOffset) => {
+  return _dayOfWeek.names.JapaneseShort()[
+    _dateToString.rule.dayOfWeek(date, timezoneOffset)
+  ];
+};
+
+const dayOfWeekJapaneseLong = (date, timezoneOffset) => {
+  return _dayOfWeek.names.JapaneseLong()[
+    _dateToString.rule.dayOfWeek(date, timezoneOffset)
+  ];
+};
+
+const dateToStringSupportJapanese = (date, format) => {
+  const rule = _dateToString.rule.Default();
+  rule[`DDD`] = { func: dayOfWeekJapaneseShort };
+  rule[`DDDD`] = { func: dayOfWeekJapaneseLong };
+  return _dateToString(
+    date, format, undefined, rule,
+  );
+};
 
 const loopSelectionsLines = (editor, func) => {
   for (const { start, end } of editor.selections) {
@@ -318,17 +340,15 @@ function activate(context) {
     }
 
     editor.edit(editBuilder => {
-      for (const {start, end} of editor.selections) {
-        const range = new vscode.Range(
-          start.line, start.character, end.line, end.character
-        );
-        editBuilder.replace(range, _dateToString(date, format));
+      for (const selection of editor.selections) {
+        editBuilder.replace(selection, ``);
+        editBuilder.insert(selection.active, dateToStringSupportJapanese(date, format));
       }
     });
   };
 
   registerCommand(`DateTime.InsertDateTodayDefaultFormat`, () => {
-    insertDate(new Date(), `YYYY/MM/DD(ddd)`);
+    insertDate(new Date(), `YYYY/MM/DD(DDD)`);
   });
 
 }

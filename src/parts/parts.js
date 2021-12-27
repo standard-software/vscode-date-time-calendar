@@ -27,6 +27,7 @@ const { _stringToIntegerDefault } = require(`./convert/_stringToIntegerDefault.j
 const { _subFirstDelimFirst } = require(`./string/_subFirstDelimFirst.js`);
 const { _subLastDelimFirst } = require(`./string/_subLastDelimFirst.js`);
 const { _dateToString } = require(`./date/_dateToString.js`);
+const { _dayOfWeek } = require(`./date/_dayOfWeek.js`);
 
 module.exports = {
   isUndefined, isNull, isBoolean, isNumber, isInteger,
@@ -44,4 +45,5 @@ module.exports = {
   _stringToIntegerDefault,
   _subFirstDelimFirst, _subLastDelimFirst,
   _dateToString,
+  _dayOfWeek,
 };
