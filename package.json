@@ -40,7 +40,17 @@
         "title": "DateTime | Select Function"
       }
     ],
-    "configuration": {}
+    "configuration": {
+      "type": "object",
+      "title": "DateTime",
+      "properties": {
+        "DateTime.DateFormat": {
+          "type": "string",
+          "default": "[{\"format\": \"YYYY/MM/DD(DDD)\"}, {\"format\": \"YYYY/MM/DD(ddd)\"}, {\"format\": \"ddd, DD MMM YYYY\"}]",
+          "description": "Date Format"
+        }
+      }
+    }
   },
   "scripts": {
     "lint": "eslint --fix ./src",

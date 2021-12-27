@@ -265,65 +265,36 @@ function activate(context) {
       ], `DateTime | Insert Format`);
 
       select2TodayNow = () => {
-        let select3DateToday;
         commandQuickPick([
-          [`Date Today`,    ``, () => { select3DateToday(); }],
+          [`Date Today`,    ``, () => { selectFormat(`DateToday`); }],
           [`DateTime Now`,  ``, () => {  }],
           [`Time Now`,      ``, () => {  }],
         ], `DateTime | Insert Format | Today Now`);
 
-        select3DateToday = () => {
-          commandQuickPick([
-            [`Date Today`,    ``, () => { mainInsertFormat(`DateTodaySelectFormat`); }],
-            [`DateTime Now`,  ``, () => {  }],
-            [`Time Now`,      ``, () => {  }],
-          ], `DateTime | Insert Format | Today Now | Date Today`);
-        };
       };
 
     };
 
   });
 
-  const mainInsertFormat = (commandName) => {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) {
-      vscode.window.showInformationMessage(`No editor is active`);
-      return;
-    }
-
-    switch (commandName) {
-
-    case `DateTodayDafaultFormat`: {
-      // const delimiter = `: `;
-      // editor.edit(editBuilder => {
-      //   const numberDigit = getMaxFileLineNumberDigit(editor);
-      //   loopSelectionsLines(editor, i => {
-      //     const lineNumberText = (i + 1).toString().padStart(numberDigit, `0`);
-      //     editBuilder.insert(new vscode.Position(i, 0), `${lineNumberText}${delimiter}`);
-      //   });
-      // });
-    } break;
-
-    case `DateTodaySelectFormat`: {
-      // const delimiter = `: `;
-      // editor.edit(editBuilder => {
-      //   const numberDigit = getMaxFileLineNumberDigit(editor);
-      //   loopSelectionsLines(editor, i => {
-      //     const lineNumberText = (i + 1).toString().padStart(numberDigit, `0`);
-      //     editBuilder.insert(new vscode.Position(i, 0), `${lineNumberText}${delimiter}`);
-      //   });
-      // });
-    } break;
-
-    }
-
-  };
-
   const selectFormat = (commandName) => {
     switch (commandName) {
 
-    case `DateTodayDafaultFormat`: {
+    case `DateToday`: {
+      const formatData = JSON.parse(
+        vscode.workspace.getConfiguration(`DateTime`).get(`DateFormat`)
+      );
+      const formatArray = Object.values(formatData).map(item => item.format);
+      const targetDate = new Date();
+      const selectCommands = formatArray.map(
+        format => [
+          dateToStringSupportJapanese(targetDate, format),
+          ``,
+          () => insertDate(targetDate, format)
+        ]
+      );
+
+      commandQuickPick(selectCommands, `DateTime | Insert Format | Today Now | Date Today`);
     } break;
 
     default: {
@@ -348,7 +319,12 @@ function activate(context) {
   };
 
   registerCommand(`DateTime.InsertDateTodayDefaultFormat`, () => {
-    insertDate(new Date(), `YYYY/MM/DD(DDD)`);
+    const formatData = JSON.parse(
+      vscode.workspace.getConfiguration(`DateTime`).get(`DateFormat`)
+    );
+    const formatArray = Object.values(formatData).map(item => item.format);
+    const targetDate = new Date();
+    insertDate(targetDate, formatArray[0]);
   });
 
 }
