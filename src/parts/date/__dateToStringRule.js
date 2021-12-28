@@ -276,6 +276,7 @@ const timezoneHH_MM = (date, timezoneOffset) => {
 
 const __dateToStringRule = {
   dayOfWeek,
+  hours,
   year4,
   year2,
   month2,

@@ -25,10 +25,15 @@ const dayOfWeekJapaneseLong = (date, timezoneOffset) => {
   ];
 };
 
+const am_pmJapanese = (date, timezoneOffset) => {
+  return _dateToString.rule.hours(date, timezoneOffset) < 12 ? `午前` : `午後`;
+};
+
 const dateToStringSupportJapanese = (date, format) => {
   const rule = _dateToString.rule.Default();
   rule[`DDD`] = { func: dayOfWeekJapaneseShort };
   rule[`DDDD`] = { func: dayOfWeekJapaneseLong };
+  rule[`AAA`] = { func: am_pmJapanese };
   return _dateToString(
     date, format, undefined, rule,
   );
@@ -267,8 +272,8 @@ function activate(context) {
       select2TodayNow = () => {
         commandQuickPick([
           [`Date Today`,    ``, () => { selectFormat(`DateToday`); }],
-          [`DateTime Now`,  ``, () => {  }],
-          [`Time Now`,      ``, () => {  }],
+          [`DateTime Now`,  ``, () => { selectFormat(`DateTimeNow`); }],
+          [`Time Now`,      ``, () => { selectFormat(`TimeNow`); }],
         ], `DateTime | Insert Format | Today Now`);
 
       };
@@ -283,6 +288,23 @@ function activate(context) {
     case `DateToday`: {
       const formatData = JSON.parse(
         vscode.workspace.getConfiguration(`DateTime`).get(`DateFormat`)
+      );
+      const formatArray = Object.values(formatData).map(item => item.format);
+      const targetDate = new Date();
+      const selectCommands = formatArray.map(
+        format => [
+          dateToStringSupportJapanese(targetDate, format),
+          ``,
+          () => insertDate(targetDate, format)
+        ]
+      );
+
+      commandQuickPick(selectCommands, `DateTime | Insert Format | Today Now | Date Today`);
+    } break;
+
+    case `DateTimeNow`: {
+      const formatData = JSON.parse(
+        vscode.workspace.getConfiguration(`DateTime`).get(`DateTimeFormat`)
       );
       const formatArray = Object.values(formatData).map(item => item.format);
       const targetDate = new Date();
