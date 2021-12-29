@@ -27,6 +27,8 @@
   "main": "./src/extension.js",
   "activationEvents": [
     "onCommand:DateTime.InsertDateTodayDefaultFormat",
+    "onCommand:DateTime.InsertDateTimeNowDefaultFormat",
+    "onCommand:DateTime.InsertTimeNowDefaultFormat",
     "onCommand:DateTime.SelectFunction"
   ],
   "contributes": {
@@ -34,6 +36,14 @@
       {
         "command": "DateTime.InsertDateTodayDefaultFormat",
         "title": "DateTime | Insert | Date Today | Default Format"
+      },
+      {
+        "command": "DateTime.InsertDateTimeNowDefaultFormat",
+        "title": "DateTime | Insert | DateTime Today Now | Default Format"
+      },
+      {
+        "command": "DateTime.InsertTimeNowDefaultFormat",
+        "title": "DateTime | Insert | Time Now | Default Format"
       },
       {
         "command": "DateTime.SelectFunction",
@@ -52,6 +62,11 @@
         "DateTime.DateTimeFormat": {
           "type": "string",
           "default": "[{\"format\": \"YYYY/MM/DD(DDD) HH:mm\"}, {\"format\": \"YYYY年MM月DD日 DDDD AAAhh時mm分\"}, {\"format\": \"YYYY/MM/DD(ddd) HH:mm\"}, {\"format\": \"ddd, DD MMM YYYY HH:mm\"}]",
+          "description": "DateTime Format"
+        },
+        "DateTime.TimeFormat": {
+          "type": "string",
+          "default": "[{\"format\": \"HH:mm\"}, {\"format\": \"hh:mm AA\"}, {\"format\": \"AAAhh時mm分\"}]",
           "description": "DateTime Format"
         }
       }

@@ -271,9 +271,9 @@ function activate(context) {
 
       select2TodayNow = () => {
         commandQuickPick([
-          [`Date Today`,    ``, () => { selectFormat(`DateToday`); }],
-          [`DateTime Now`,  ``, () => { selectFormat(`DateTimeNow`); }],
-          [`Time Now`,      ``, () => { selectFormat(`TimeNow`); }],
+          [`Date Today`,          ``, () => { selectFormat(`DateToday`); }],
+          [`DateTime Today Now`,  ``, () => { selectFormat(`DateTimeNow`); }],
+          [`Time Now`,            ``, () => { selectFormat(`TimeNow`); }],
         ], `DateTime | Insert Format | Today Now`);
 
       };
@@ -298,7 +298,6 @@ function activate(context) {
           () => insertDate(targetDate, format)
         ]
       );
-
       commandQuickPick(selectCommands, `DateTime | Insert Format | Today Now | Date Today`);
     } break;
 
@@ -315,8 +314,23 @@ function activate(context) {
           () => insertDate(targetDate, format)
         ]
       );
+      commandQuickPick(selectCommands, `DateTime | Insert Format | Today Now | DateTime Today Now`);
+    } break;
 
-      commandQuickPick(selectCommands, `DateTime | Insert Format | Today Now | Date Today`);
+    case `TimeNow`: {
+      const formatData = JSON.parse(
+        vscode.workspace.getConfiguration(`DateTime`).get(`TimeFormat`)
+      );
+      const formatArray = Object.values(formatData).map(item => item.format);
+      const targetDate = new Date();
+      const selectCommands = formatArray.map(
+        format => [
+          dateToStringSupportJapanese(targetDate, format),
+          ``,
+          () => insertDate(targetDate, format)
+        ]
+      );
+      commandQuickPick(selectCommands, `DateTime | Insert Format | Today Now | Time Now`);
     } break;
 
     default: {
@@ -340,13 +354,28 @@ function activate(context) {
     });
   };
 
-  registerCommand(`DateTime.InsertDateTodayDefaultFormat`, () => {
+  const getFormatArray = (formatName) => {
+    if (!([`DateFormat`, `DateTimeFormat`, `TimeFormat`].includes(formatName))) {
+      throw new Error(`defaultFormat`);
+    }
     const formatData = JSON.parse(
-      vscode.workspace.getConfiguration(`DateTime`).get(`DateFormat`)
+      vscode.workspace.getConfiguration(`DateTime`).get(formatName)
     );
-    const formatArray = Object.values(formatData).map(item => item.format);
-    const targetDate = new Date();
-    insertDate(targetDate, formatArray[0]);
+    return Object.values(formatData).map(item => item.format);
+  };
+
+  const getDefaultFormat = (formatName) => {
+    return getFormatArray(formatName)[0];
+  };
+
+  registerCommand(`DateTime.InsertDateTodayDefaultFormat`, () => {
+    insertDate(new Date(), getDefaultFormat(`DateFormat`));
+  });
+  registerCommand(`DateTime.InsertDateTimeNowDefaultFormat`, () => {
+    insertDate(new Date(), getDefaultFormat(`DateTimeFormat`));
+  });
+  registerCommand(`DateTime.InsertTimeNowDefaultFormat`, () => {
+    insertDate(new Date(), getDefaultFormat(`TimeFormat`));
   });
 
 }
