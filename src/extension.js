@@ -97,30 +97,102 @@ function activate(context) {
       ], `DateTime | Insert Format`);
 
       select2TodayNow = () => {
+        const placeHolder = `DateTime | Insert Format | Today Now`;
+        const createCommand = (title, formatName, date) => [
+          title,
+          ``,
+          () => { selectFormat(formatName, date, `${placeHolder} | ${title}`); }
+        ];
         commandQuickPick([
-          [`Date Today`,          ``, () => { selectFormat(`DateToday`); }],
-          [`DateTime Today Now`,  ``, () => { selectFormat(`DateTimeNow`); }],
-          [`Time Now`,            ``, () => { selectFormat(`TimeNow`); }],
-        ], `DateTime | Insert Format | Today Now`);
+          createCommand(`Date Today`,         `Date`,     _Day(`today`)),
+          createCommand(`DateTime Today Now`, `DateTime`, new Date()),
+          createCommand(`Time Now`,           `Time`,     new Date()),
+        ], placeHolder);
       };
 
       select2SelectDate = () => {
         let select3WeekSunSat;
+        const placeHolder = `DateTime | Insert Format | Select Date`;
+        const createCommand = (title, formatName, date) => [
+          title,
+          ``,
+          () => { selectFormat(formatName, date, `${placeHolder} | ${title}`); }
+        ];
         commandQuickPick([
-          [`Date Yesterday`,  ``, () => { selectFormat(`DateYesterday`); }],
-          [`Date Tomorrow`,   ``, () => { selectFormat(`DateTomorrow`); }],
+          createCommand(`Date Yesterday`, `Date`, _Day(`yesterday`)),
+          createCommand(`Date Tomorrow`,  `Date`, _Day(`tomorrow`)),
           [`Week Sun..Sat`,  ``, () => { select3WeekSunSat(); }],
-          [`Week Mon..Sun`,  ``, () => {  }],
-        ], `DateTime | Insert Format | Select Date`);
+          // [`Week Mon..Sun`,  ``, () => {  }],
+        ], placeHolder);
+
+        select3WeekSunSat = () => {
+          let select4WeekSunSat;
+          commandQuickPick([
+            [`Last Week`, ``, () => { select4WeekSunSat(`Last`, -7); }],
+            [`This Week`, ``, () => { select4WeekSunSat(`This`, 0); }],
+            [`Next Week`, ``, () => { select4WeekSunSat(`Next`, 7); }],
+          ], `DateTime | Insert Format | Select Date | Week Sun..Sat`);
+
+          const getBeforeDate = (sourceDate, func) => {
+            let date = sourceDate;
+            while (true) {
+              if (func(date)) {
+                return date;
+              }
+              date = _Day(-1, date);
+            }
+          };
+
+          const getBeforeDayOfWeek = (sourceDate, dayOfWeek) => {
+            return getBeforeDate(sourceDate, (date) => {
+              return date.getDay() === dayOfWeek;
+            });
+          };
+
+          const getDateWeekSunToSat = (sourceDate) => {
+            const result = [];
+            const lastSunDay = getBeforeDayOfWeek(
+              sourceDate, _dayOfWeek.names.EnglishShort().indexOf(`Sun`)
+            );
+            result.push(lastSunDay);
+            result.push(_Day(1, lastSunDay));
+            result.push(_Day(2, lastSunDay));
+            result.push(_Day(3, lastSunDay));
+            result.push(_Day(4, lastSunDay));
+            result.push(_Day(5, lastSunDay));
+            result.push(_Day(6, lastSunDay));
+            return result;
+          };
+
+          select4WeekSunSat = (weekType, dateAdd) => {
+            const placeHolder = `DateTime | Insert Format | Select Date | Week Sun..Sat | ${weekType} Week`;
+            const createCommand = (title, formatName, date) => [
+              title,
+              ``,
+              () => { selectFormat(formatName, date, `${placeHolder} | ${title}`); }
+            ];
+            const days = getDateWeekSunToSat(_Day(dateAdd));
+            commandQuickPick([
+              createCommand(dateToStringJp(days[0], `ddd MM/DD`), `Date`, days[0]),
+              createCommand(dateToStringJp(days[1], `ddd MM/DD`), `Date`, days[1]),
+              createCommand(dateToStringJp(days[2], `ddd MM/DD`), `Date`, days[2]),
+              createCommand(dateToStringJp(days[3], `ddd MM/DD`), `Date`, days[3]),
+              createCommand(dateToStringJp(days[4], `ddd MM/DD`), `Date`, days[4]),
+              createCommand(dateToStringJp(days[5], `ddd MM/DD`), `Date`, days[5]),
+              createCommand(dateToStringJp(days[6], `ddd MM/DD`), `Date`, days[6]),
+            ], placeHolder);
+          };
 
 
+        };
       };
 
     };
 
   });
 
-  const selectFormat = (commandName) => {
+  const selectFormat = (formatName, targetDate, placeHolder) => {
+    formatName = `${formatName}Format`;
 
     const formatSelectCommands = (formatName, targetDate) => {
       const formatArray = getFormatArray(formatName);
@@ -134,52 +206,10 @@ function activate(context) {
       return selectCommands;
     };
 
-    switch (commandName) {
-
-    case `DateToday`: {
-      const targetDate = new Date();
-      commandQuickPick(
-        formatSelectCommands(`DateFormat`, targetDate),
-        `DateTime | Insert Format | Today Now | Date Today`
-      );
-    } break;
-
-    case `DateTimeNow`: {
-      const targetDate = new Date();
-      commandQuickPick(
-        formatSelectCommands(`DateTimeFormat`, targetDate),
-        `DateTime | Insert Format | Today Now | DateTime Today Now`
-      );
-    } break;
-
-    case `TimeNow`: {
-      const targetDate = new Date();
-      commandQuickPick(
-        formatSelectCommands(`TimeFormat`, targetDate),
-        `DateTime | Insert Format | Today Now | Time Now`
-      );
-    } break;
-
-    case `DateYesterday`: {
-      const targetDate = _Day(`yesterday`);
-      commandQuickPick(
-        formatSelectCommands(`DateFormat`, targetDate),
-        `DateTime | Insert Format | Today Now | Date Today`
-      );
-    } break;
-
-    case `DateTomorrow`: {
-      const targetDate = _Day(`tomorrow`);
-      commandQuickPick(
-        formatSelectCommands(`DateFormat`, targetDate),
-        `DateTime | Insert Format | Today Now | Date Today`
-      );
-    } break;
-
-    default: {
-      throw new Error(`selectFormat`);
-    }
-    }
+    commandQuickPick(
+      formatSelectCommands(formatName, targetDate),
+      placeHolder
+    );
   };
 
   const insertDate = (date, format) => {

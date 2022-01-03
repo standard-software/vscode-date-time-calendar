@@ -56,12 +56,12 @@
       "properties": {
         "DateTime.DateFormat": {
           "type": "string",
-          "default": "[{\"format\": \"YYYY/MM/DD(DDD)\"}, {\"format\": \"YYYY年MM月DD日 DDDD\"}, {\"format\": \"YYYY/MM/DD(ddd)\"}, {\"format\": \"ddd, DD MMM YYYY\"}]",
+          "default": "[{\"format\": \"YYYY/MM/DD(ddd)\"}, {\"format\": \"ddd, DD MMM YYYY\"}, {\"format\": \"dddd, DD MMMMM YYYY\"}, {\"format\": \"YYYY/MM/DD(DDD)\"}, {\"format\": \"YYYY年MM月DD日 DDDD\"}]",
           "description": "Date Format"
         },
         "DateTime.DateTimeFormat": {
           "type": "string",
-          "default": "[{\"format\": \"YYYY/MM/DD(DDD) HH:mm\"}, {\"format\": \"YYYY年MM月DD日 DDDD AAAhh時mm分\"}, {\"format\": \"YYYY/MM/DD(ddd) HH:mm\"}, {\"format\": \"ddd, DD MMM YYYY HH:mm\"}]",
+          "default": "[{\"format\": \"YYYY/MM/DD(ddd) HH:mm\"}, {\"format\": \"ddd, DD MMM YYYY HH:mm\"}, {\"format\": \"dddd, DD MMMMM YYYY\"}, {\"format\": \"YYYY/MM/DD(DDD) HH:mm\"}, {\"format\": \"YYYY年MM月DD日 DDDD AAAhh時mm分\"}]",
           "description": "DateTime Format"
         },
         "DateTime.TimeFormat": {
