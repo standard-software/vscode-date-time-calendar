@@ -145,8 +145,7 @@ function activate(context) {
       };
 
       select2SelectDate = () => {
-        let select3WeekSunSat;
-        let select3WeekMonSun;
+        let select3Week;
         const placeHolder = `DateTime | Insert Format | Select Date`;
         const createCommand = (title, formatName, date) => [
           title,
@@ -156,54 +155,26 @@ function activate(context) {
         commandQuickPick([
           createCommand(`Date Yesterday`, `Date`, _Day(`yesterday`)),
           createCommand(`Date Tomorrow`,  `Date`, _Day(`tomorrow`)),
-          [`Week Sun..Sat`,  ``, () => { select3WeekSunSat(); }],
-          [`Week Mon..Sun`,  ``, () => { select3WeekMonSun(); }],
+          [`Week Sun..Sat`,  ``, () => { select3Week(`Sun..Sat`, `Sun`); }],
+          [`Week Mon..Sun`,  ``, () => { select3Week(`Mon..Sun`, `Mon`); }],
         ], placeHolder);
 
-        select3WeekSunSat = () => {
+        select3Week = (weekRangeDayTitle, startWeekDay) => {
           let select4WeekSunSat;
           commandQuickPick([
             [`Last Week`, ``, () => { select4WeekSunSat(`Last`, -7); }],
             [`This Week`, ``, () => { select4WeekSunSat(`This`, 0); }],
             [`Next Week`, ``, () => { select4WeekSunSat(`Next`, 7); }],
-          ], `DateTime | Insert Format | Select Date | Week Sun..Sat`);
+          ], `DateTime | Insert Format | Select Date | Week ${weekRangeDayTitle}`);
 
           select4WeekSunSat = (weekType, dateAdd) => {
-            const placeHolder = `DateTime | Insert Format | Select Date | Week Sun..Sat | ${weekType} Week`;
+            const placeHolder = `DateTime | Insert Format | Select Date | Week ${weekRangeDayTitle} | ${weekType} Week`;
             const createCommand = (title, formatName, date) => [
               title,
               ``,
               () => { selectFormat(formatName, date, `${placeHolder} | ${title}`); }
             ];
-            const days = getDateWeekDays(_Day(dateAdd), `Sun`);
-            commandQuickPick([
-              createCommand(dateToStringJp(days[0], `ddd MM/DD`), `Date`, days[0]),
-              createCommand(dateToStringJp(days[1], `ddd MM/DD`), `Date`, days[1]),
-              createCommand(dateToStringJp(days[2], `ddd MM/DD`), `Date`, days[2]),
-              createCommand(dateToStringJp(days[3], `ddd MM/DD`), `Date`, days[3]),
-              createCommand(dateToStringJp(days[4], `ddd MM/DD`), `Date`, days[4]),
-              createCommand(dateToStringJp(days[5], `ddd MM/DD`), `Date`, days[5]),
-              createCommand(dateToStringJp(days[6], `ddd MM/DD`), `Date`, days[6]),
-            ], placeHolder);
-          };
-        };
-
-        select3WeekMonSun = () => {
-          let select4WeekMonSun;
-          commandQuickPick([
-            [`Last Week`, ``, () => { select4WeekMonSun(`Last`, -7); }],
-            [`This Week`, ``, () => { select4WeekMonSun(`This`, 0); }],
-            [`Next Week`, ``, () => { select4WeekMonSun(`Next`, 7); }],
-          ], `DateTime | Insert Format | Select Date | Week Mon..Sun`);
-
-          select4WeekMonSun = (weekType, dateAdd) => {
-            const placeHolder = `DateTime | Insert Format | Select Date | Week Mon..Sun | ${weekType} Week`;
-            const createCommand = (title, formatName, date) => [
-              title,
-              ``,
-              () => { selectFormat(formatName, date, `${placeHolder} | ${title}`); }
-            ];
-            const days = getDateWeekDays(_Day(dateAdd), `Mon`);
+            const days = getDateWeekDays(_Day(dateAdd), startWeekDay);
             commandQuickPick([
               createCommand(dateToStringJp(days[0], `ddd MM/DD`), `Date`, days[0]),
               createCommand(dateToStringJp(days[1], `ddd MM/DD`), `Date`, days[1]),
