@@ -3,6 +3,7 @@ const { isNull } = require(`./type/isNull.js`);
 const { isBoolean } = require(`./type/isBoolean.js`);
 const { isNumber } = require(`./type/isNumber.js`);
 const { isInteger } = require(`./type/isInteger.js`);
+const { isString } = require(`./type/isString.js`);
 const { __max } = require(`./array/__max.js`);
 const { _indexOfFirst } = require(`./string/_indexOfFirst.js`);
 const { _indexOfLast } = require(`./string/_indexOfLast.js`);
@@ -28,9 +29,10 @@ const { _subFirstDelimFirst } = require(`./string/_subFirstDelimFirst.js`);
 const { _subLastDelimFirst } = require(`./string/_subLastDelimFirst.js`);
 const { _dateToString } = require(`./date/_dateToString.js`);
 const { _dayOfWeek } = require(`./date/_dayOfWeek.js`);
+const { _Day } = require(`./date/_Day.js`);
 
 module.exports = {
-  isUndefined, isNull, isBoolean, isNumber, isInteger,
+  isUndefined, isNull, isBoolean, isNumber, isInteger, isString,
   __max,
   _indexOfFirst, _indexOfLast,
   _isFirst, _isLast,
@@ -46,4 +48,5 @@ module.exports = {
   _subFirstDelimFirst, _subLastDelimFirst,
   _dateToString,
   _dayOfWeek,
+  _Day,
 };

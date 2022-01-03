@@ -1,229 +1,41 @@
 const vscode = require(`vscode`);
 const {
-  // isUndefined,
-  isNull,
+  isNull, isString,
   _trimFirst,
   _trim,
   _includeCount,
   _indexOfFirst, _indexOfLast,
   _subIndex, _subLength,
-  // _stringToIntegerDefault,
   _subLastDelimFirst,
   _dateToString,
   _dayOfWeek,
+  _Day,
 } = require(`./parts/parts.js`);
 
-const dayOfWeekJapaneseShort = (date, timezoneOffset) => {
+const dayOfWeekJpShort = (date, timezoneOffset) => {
   return _dayOfWeek.names.JapaneseShort()[
     _dateToString.rule.dayOfWeek(date, timezoneOffset)
   ];
 };
 
-const dayOfWeekJapaneseLong = (date, timezoneOffset) => {
+const dayOfWeekJpLong = (date, timezoneOffset) => {
   return _dayOfWeek.names.JapaneseLong()[
     _dateToString.rule.dayOfWeek(date, timezoneOffset)
   ];
 };
 
-const am_pmJapanese = (date, timezoneOffset) => {
+const am_pmJp = (date, timezoneOffset) => {
   return _dateToString.rule.hours(date, timezoneOffset) < 12 ? `午前` : `午後`;
 };
 
-const dateToStringSupportJapanese = (date, format) => {
+const dateToStringJp = (date, format) => {
   const rule = _dateToString.rule.Default();
-  rule[`DDD`] = { func: dayOfWeekJapaneseShort };
-  rule[`DDDD`] = { func: dayOfWeekJapaneseLong };
-  rule[`AAA`] = { func: am_pmJapanese };
+  rule[`DDD`] = { func: dayOfWeekJpShort };
+  rule[`DDDD`] = { func: dayOfWeekJpLong };
+  rule[`AAA`] = { func: am_pmJp };
   return _dateToString(
     date, format, undefined, rule,
   );
-};
-
-const loopSelectionsLines = (editor, func) => {
-  for (const { start, end } of editor.selections) {
-    for (let i = start.line; i <= end.line; i += 1) {
-      if (
-        start.line !== end.line &&
-        i === end.line &&
-        end.character === 0
-      ) {
-        break;
-      }
-      func(i);
-    }
-  }
-};
-
-const getIndent = (line) => {
-  return line.length - _trimFirst(line, [` `, `\t`]).length;
-};
-
-const getMinIndent = (editor) => {
-  let minIndent = Infinity;
-  loopSelectionsLines(editor, i => {
-    const {text} = editor.document.lineAt(i);
-    if (_trim(text) === ``) { return; }
-    const indent = getIndent(text);
-    if (indent < minIndent) {
-      minIndent = indent;
-    }
-  });
-  if (minIndent === Infinity) { minIndent = 0; }
-  return minIndent;
-};
-
-const getMinIndentExcludeLineNumber = (editor) => {
-  let minIndent = Infinity;
-  loopSelectionsLines(editor, i => {
-    const {text} = editor.document.lineAt(i);
-    if (_trim(text) === ``) { return; }
-    if (isNull(_trim(text).match(/^\d+:+.*$/))) { return; }
-    const colonAfterText = _subLastDelimFirst(text, `: `);
-    if (_trim(colonAfterText) === ``) { return; }
-    const indent = getIndent(colonAfterText);
-    if (indent < minIndent) {
-      minIndent = indent;
-    }
-  });
-  if (minIndent === Infinity) { minIndent = 0; }
-  return minIndent;
-};
-
-const getMaxFileLineNumberDigit = (editor) => {
-  let result = 0;
-  loopSelectionsLines(editor, i => {
-    result = Math.max(result, i.toString().length);
-  });
-  return result;
-};
-
-const getInputLineNumberDigit = (editor, lineNumber) => {
-  let result = 0;
-  loopSelectionsLines(editor, () => {
-    result = Math.max(result, lineNumber.toString().length);
-    lineNumber += 1;
-  });
-  return result;
-};
-
-const getLineTextInfo = (editor, lineIndex) => {
-  const lineAt = editor.document.lineAt(lineIndex);
-  const { text } = lineAt;
-  const textIncludeLineBreak = editor.document.getText(
-    lineAt.rangeIncludingLineBreak
-  );
-  const lineBreak = _subLength(textIncludeLineBreak, text.length);
-  return {
-    text, textIncludeLineBreak, lineBreak
-  };
-};
-
-const getDefaultLineBreak = (editor) => {
-  let text = ``;
-  for (let selection of editor.selections) {
-    const range = new vscode.Range(
-      selection.start.line,
-      0,
-      selection.end.line,
-      getLineTextInfo(
-        editor, selection.end.line
-      ).textIncludeLineBreak.length
-    );
-    text += editor.document.getText(range);
-  }
-
-  const crlf = _includeCount(text, `\r\n`);
-  const cr = _includeCount(text, `\r`);
-  const lf = _includeCount(text, `\n`);
-  let most = ``;
-  if (crlf < cr) {
-    most = `cr`;
-    if (cr < lf) {
-      most = `lf`;
-    }
-  } else {
-    most = `crlf`;
-    if (crlf < lf) {
-      most = `lf`;
-    }
-  }
-
-  if (most === `crlf`) {
-    return `\r\n`;
-  } else if (most === `cr`) {
-    return `\r`;
-  } else if (most === `lf`) {
-    return `\n`;
-  } else {
-    throw new Error(`getDefaultLineBreak`);
-  }
-};
-
-const getPathFileName = (editor) => {
-  let delimiterIndex = _indexOfLast(editor.document.fileName, `\\`);
-  if (delimiterIndex === -1) {
-    delimiterIndex = _indexOfLast(editor.document.fileName, `/`);
-  }
-
-  let path = ``;
-  let filename = ``;
-  if ([-1, 0].includes(delimiterIndex)) {
-    filename = editor.document.fileName;
-  } else {
-    path = _subIndex(editor.document.fileName, 0, delimiterIndex);
-    filename = _subLength(editor.document.fileName, delimiterIndex + 1);
-  }
-  return {
-    path, filename
-  };
-};
-
-const lineNumberTextNoFormat = (editor) => {
-  const delimiter = `: `;
-  let result = ``;
-  const numberDigit = getMaxFileLineNumberDigit(editor);
-  loopSelectionsLines(editor, i => {
-    const { textIncludeLineBreak } = getLineTextInfo(editor, i);
-    const lineNumber = (i + 1).toString().padStart(numberDigit, `0`);
-    result += `${lineNumber}${delimiter}${textIncludeLineBreak}`;
-  });
-  return result;
-};
-
-const lineNumberTextDeleteIndent = (editor) => {
-  const delimiter = `: `;
-  let result = ``;
-  const numberDigit = getMaxFileLineNumberDigit(editor);
-  const minIndent = getMinIndent(editor);
-  loopSelectionsLines(editor, i => {
-    const { text, lineBreak } = getLineTextInfo(editor, i);
-    const lineNumber = (i + 1).toString().padStart(numberDigit, `0`);
-    result += `${lineNumber}${delimiter}${_subLength(text, minIndent)}${lineBreak}`;
-  });
-  return result;
-};
-
-const lineNumberTextDeleteLineNumber = (editor) => {
-  const delimiter = `: `;
-  const trimDelimiter = _trim(delimiter);
-  let result = ``;
-  loopSelectionsLines(editor, i => {
-    const { text, lineBreak } = getLineTextInfo(editor, i);
-    if (isNull(_trim(text).match(`^\\d+${trimDelimiter}+.*$`))) {
-      result += text + lineBreak;
-      return;
-    }
-    let colonIndex = _indexOfFirst(text, delimiter);
-    if (colonIndex !== -1) {
-      result += _subLastDelimFirst(text, delimiter) + lineBreak;
-    } else {
-      colonIndex = _indexOfFirst(text, trimDelimiter);
-      if (colonIndex !== -1) {
-        result += _subLastDelimFirst(text, trimDelimiter) + lineBreak;
-      }
-    }
-  });
-  return result;
 };
 
 const commandQuickPick = (commandsArray, placeHolder) => {
@@ -238,6 +50,20 @@ const commandQuickPick = (commandsArray, placeHolder) => {
     if (!item) { return; }
     commands.find(({label}) => label === item.label).func();
   });
+};
+
+const getFormatArray = (formatName) => {
+  if (!([`DateFormat`, `DateTimeFormat`, `TimeFormat`].includes(formatName))) {
+    throw new Error(`defaultFormat`);
+  }
+  const formatData = JSON.parse(
+    vscode.workspace.getConfiguration(`DateTime`).get(formatName)
+  );
+  return Object.values(formatData).map(item => item.format);
+};
+
+const getDefaultFormat = (formatName) => {
+  return getFormatArray(formatName)[0];
 };
 
 function activate(context) {
@@ -262,9 +88,10 @@ function activate(context) {
 
     select1InsertFormat = () => {
       let select2TodayNow;
+      let select2SelectDate;
       commandQuickPick([
         [`Today Now`,     ``, () => { select2TodayNow(); }],
-        [`Select Date`,   ``, () => {  }],
+        [`Select Date`,   ``, () => { select2SelectDate(); }],
         [`Input Date`,    ``, () => {  }],
         [`Input Time`,    ``, () => {  }],
       ], `DateTime | Insert Format`);
@@ -275,6 +102,17 @@ function activate(context) {
           [`DateTime Today Now`,  ``, () => { selectFormat(`DateTimeNow`); }],
           [`Time Now`,            ``, () => { selectFormat(`TimeNow`); }],
         ], `DateTime | Insert Format | Today Now`);
+      };
+
+      select2SelectDate = () => {
+        let select3WeekSunSat;
+        commandQuickPick([
+          [`Date Yesterday`,  ``, () => { selectFormat(`DateYesterday`); }],
+          [`Date Tomorrow`,   ``, () => { selectFormat(`DateTomorrow`); }],
+          [`Week Sun..Sat`,  ``, () => { select3WeekSunSat(); }],
+          [`Week Mon..Sun`,  ``, () => {  }],
+        ], `DateTime | Insert Format | Select Date`);
+
 
       };
 
@@ -283,54 +121,59 @@ function activate(context) {
   });
 
   const selectFormat = (commandName) => {
+
+    const formatSelectCommands = (formatName, targetDate) => {
+      const formatArray = getFormatArray(formatName);
+      const selectCommands = formatArray.map(
+        format => [
+          dateToStringJp(targetDate, format),
+          ``,
+          () => insertDate(targetDate, format)
+        ]
+      );
+      return selectCommands;
+    };
+
     switch (commandName) {
 
     case `DateToday`: {
-      const formatData = JSON.parse(
-        vscode.workspace.getConfiguration(`DateTime`).get(`DateFormat`)
-      );
-      const formatArray = Object.values(formatData).map(item => item.format);
       const targetDate = new Date();
-      const selectCommands = formatArray.map(
-        format => [
-          dateToStringSupportJapanese(targetDate, format),
-          ``,
-          () => insertDate(targetDate, format)
-        ]
+      commandQuickPick(
+        formatSelectCommands(`DateFormat`, targetDate),
+        `DateTime | Insert Format | Today Now | Date Today`
       );
-      commandQuickPick(selectCommands, `DateTime | Insert Format | Today Now | Date Today`);
     } break;
 
     case `DateTimeNow`: {
-      const formatData = JSON.parse(
-        vscode.workspace.getConfiguration(`DateTime`).get(`DateTimeFormat`)
-      );
-      const formatArray = Object.values(formatData).map(item => item.format);
       const targetDate = new Date();
-      const selectCommands = formatArray.map(
-        format => [
-          dateToStringSupportJapanese(targetDate, format),
-          ``,
-          () => insertDate(targetDate, format)
-        ]
+      commandQuickPick(
+        formatSelectCommands(`DateTimeFormat`, targetDate),
+        `DateTime | Insert Format | Today Now | DateTime Today Now`
       );
-      commandQuickPick(selectCommands, `DateTime | Insert Format | Today Now | DateTime Today Now`);
     } break;
 
     case `TimeNow`: {
-      const formatData = JSON.parse(
-        vscode.workspace.getConfiguration(`DateTime`).get(`TimeFormat`)
-      );
-      const formatArray = Object.values(formatData).map(item => item.format);
       const targetDate = new Date();
-      const selectCommands = formatArray.map(
-        format => [
-          dateToStringSupportJapanese(targetDate, format),
-          ``,
-          () => insertDate(targetDate, format)
-        ]
+      commandQuickPick(
+        formatSelectCommands(`TimeFormat`, targetDate),
+        `DateTime | Insert Format | Today Now | Time Now`
       );
-      commandQuickPick(selectCommands, `DateTime | Insert Format | Today Now | Time Now`);
+    } break;
+
+    case `DateYesterday`: {
+      const targetDate = _Day(`yesterday`);
+      commandQuickPick(
+        formatSelectCommands(`DateFormat`, targetDate),
+        `DateTime | Insert Format | Today Now | Date Today`
+      );
+    } break;
+
+    case `DateTomorrow`: {
+      const targetDate = _Day(`tomorrow`);
+      commandQuickPick(
+        formatSelectCommands(`DateFormat`, targetDate),
+        `DateTime | Insert Format | Today Now | Date Today`
+      );
     } break;
 
     default: {
@@ -349,23 +192,9 @@ function activate(context) {
     editor.edit(editBuilder => {
       for (const selection of editor.selections) {
         editBuilder.replace(selection, ``);
-        editBuilder.insert(selection.active, dateToStringSupportJapanese(date, format));
+        editBuilder.insert(selection.active, dateToStringJp(date, format));
       }
     });
-  };
-
-  const getFormatArray = (formatName) => {
-    if (!([`DateFormat`, `DateTimeFormat`, `TimeFormat`].includes(formatName))) {
-      throw new Error(`defaultFormat`);
-    }
-    const formatData = JSON.parse(
-      vscode.workspace.getConfiguration(`DateTime`).get(formatName)
-    );
-    return Object.values(formatData).map(item => item.format);
-  };
-
-  const getDefaultFormat = (formatName) => {
-    return getFormatArray(formatName)[0];
   };
 
   registerCommand(`DateTime.InsertDateTodayDefaultFormat`, () => {

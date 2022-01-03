@@ -9,6 +9,7 @@ This extension outputs the date and time as formatted text
 - Select Multi Formats
 - Select Today Now
   Date DateTime Time
+- Select Date Yesterday Tomorrow
 
 ### 0.1.0
 2021/12/22(Wed)
