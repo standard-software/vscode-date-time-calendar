@@ -2,7 +2,7 @@
   "name": "vscode-datetime",
   "displayName": "DateTime",
   "description": "This extension outputs the date and time as formatted text",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "SatoshiYamamoto",
   "author": {
     "name": "Satoshi Yamamoto",
@@ -74,7 +74,7 @@
   },
   "scripts": {
     "lint": "eslint --fix ./src",
-    "pack": "vsce package && code --install-extension vscode-datetime-0.2.0.vsix",
+    "pack": "vsce package && code --install-extension vscode-datetime-0.3.0.vsix",
     "": ""
   },
   "devDependencies": {

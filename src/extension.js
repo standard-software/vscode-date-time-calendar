@@ -88,7 +88,7 @@ const commandQuickPick = (commandsArray, placeHolder) => {
 
 const getFormatArray = (formatName) => {
   if (!([`DateFormat`, `DateTimeFormat`, `TimeFormat`].includes(formatName))) {
-    throw new Error(`defaultFormat`);
+    throw new Error(`getFormatArray formatName`);
   }
   const formatData = JSON.parse(
     vscode.workspace.getConfiguration(`DateTime`).get(formatName)
@@ -132,10 +132,10 @@ function activate(context) {
 
       select2TodayNow = () => {
         const placeHolder = `DateTime | Insert Format | Today Now`;
-        const createCommand = (title, formatName, date) => [
+        const createCommand = (title, formatType, date) => [
           title,
           ``,
-          () => { selectFormat(formatName, date, `${placeHolder} | ${title}`); }
+          () => { selectFormat(`${formatType}Format`, date, `${placeHolder} | ${title}`); }
         ];
         commandQuickPick([
           createCommand(`Date Today`,         `Date`,     _Day(`today`)),
@@ -147,10 +147,10 @@ function activate(context) {
       select2SelectDate = () => {
         let select3Week;
         const placeHolder = `DateTime | Insert Format | Select Date`;
-        const createCommand = (title, formatName, date) => [
+        const createCommand = (title, formatType, date) => [
           title,
           ``,
-          () => { selectFormat(formatName, date, `${placeHolder} | ${title}`); }
+          () => { selectFormat(`${formatType}Format`, date, `${placeHolder} | ${title}`); }
         ];
         commandQuickPick([
           createCommand(`Date Yesterday`, `Date`, _Day(`yesterday`)),
@@ -169,10 +169,10 @@ function activate(context) {
 
           select4WeekSunSat = (weekType, dateAdd) => {
             const placeHolder = `DateTime | Insert Format | Select Date | Week ${weekRangeDayTitle} | ${weekType} Week`;
-            const createCommand = (title, formatName, date) => [
+            const createCommand = (title, formatType, date) => [
               title,
               ``,
-              () => { selectFormat(formatName, date, `${placeHolder} | ${title}`); }
+              () => { selectFormat(`${formatType}Format`, date, `${placeHolder} | ${title}`); }
             ];
             const days = getDateWeekDays(_Day(dateAdd), startWeekDay);
             commandQuickPick([
@@ -192,7 +192,9 @@ function activate(context) {
   });
 
   const selectFormat = (formatName, targetDate, placeHolder) => {
-    formatName = `${formatName}Format`;
+    if (!([`DateFormat`, `DateTimeFormat`, `TimeFormat`].includes(formatName))) {
+      throw new Error(`selectFormat formatName`);
+    }
 
     const formatSelectCommands = (formatName, targetDate) => {
       const formatArray = getFormatArray(formatName);
