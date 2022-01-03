@@ -5,7 +5,7 @@ This extension outputs the date and time as formatted text
 
 ### 0.3.0
 2022/01/03(Mon)
-- Select Date Week Sun..Sat
+- Select Date Week Sun..Sat / Mon..Sun
 
 ### 0.2.0
 2021/12/28(Tue)

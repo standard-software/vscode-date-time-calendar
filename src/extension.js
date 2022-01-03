@@ -38,6 +38,40 @@ const dateToStringJp = (date, format) => {
   );
 };
 
+const getBeforeDate = (sourceDate, func) => {
+  let date = sourceDate;
+  while (true) {
+    if (func(date)) {
+      return date;
+    }
+    date = _Day(-1, date);
+  }
+};
+
+const getBeforeDayOfWeek = (sourceDate, dayOfWeek) => {
+  return getBeforeDate(sourceDate, (date) => {
+    return date.getDay() === dayOfWeek;
+  });
+};
+
+const getDateWeekDays = (sourceDate, startWeekDay) => {
+  if (![`Sun`, `Mon`].includes(startWeekDay)) {
+    throw new Error(`getDateWeekDays startWeekDay`);
+  }
+  const result = [];
+  const weekStartDate = getBeforeDayOfWeek(
+    sourceDate, _dayOfWeek.names.EnglishShort().indexOf(startWeekDay)
+  );
+  result.push(weekStartDate);
+  result.push(_Day(1, weekStartDate));
+  result.push(_Day(2, weekStartDate));
+  result.push(_Day(3, weekStartDate));
+  result.push(_Day(4, weekStartDate));
+  result.push(_Day(5, weekStartDate));
+  result.push(_Day(6, weekStartDate));
+  return result;
+};
+
 const commandQuickPick = (commandsArray, placeHolder) => {
   const commands = commandsArray.map(c => ({label:c[0], description:c[1], func:c[2]}));
   vscode.window.showQuickPick(
@@ -112,6 +146,7 @@ function activate(context) {
 
       select2SelectDate = () => {
         let select3WeekSunSat;
+        let select3WeekMonSun;
         const placeHolder = `DateTime | Insert Format | Select Date`;
         const createCommand = (title, formatName, date) => [
           title,
@@ -122,7 +157,7 @@ function activate(context) {
           createCommand(`Date Yesterday`, `Date`, _Day(`yesterday`)),
           createCommand(`Date Tomorrow`,  `Date`, _Day(`tomorrow`)),
           [`Week Sun..Sat`,  ``, () => { select3WeekSunSat(); }],
-          // [`Week Mon..Sun`,  ``, () => {  }],
+          [`Week Mon..Sun`,  ``, () => { select3WeekMonSun(); }],
         ], placeHolder);
 
         select3WeekSunSat = () => {
@@ -133,37 +168,6 @@ function activate(context) {
             [`Next Week`, ``, () => { select4WeekSunSat(`Next`, 7); }],
           ], `DateTime | Insert Format | Select Date | Week Sun..Sat`);
 
-          const getBeforeDate = (sourceDate, func) => {
-            let date = sourceDate;
-            while (true) {
-              if (func(date)) {
-                return date;
-              }
-              date = _Day(-1, date);
-            }
-          };
-
-          const getBeforeDayOfWeek = (sourceDate, dayOfWeek) => {
-            return getBeforeDate(sourceDate, (date) => {
-              return date.getDay() === dayOfWeek;
-            });
-          };
-
-          const getDateWeekSunToSat = (sourceDate) => {
-            const result = [];
-            const lastSunDay = getBeforeDayOfWeek(
-              sourceDate, _dayOfWeek.names.EnglishShort().indexOf(`Sun`)
-            );
-            result.push(lastSunDay);
-            result.push(_Day(1, lastSunDay));
-            result.push(_Day(2, lastSunDay));
-            result.push(_Day(3, lastSunDay));
-            result.push(_Day(4, lastSunDay));
-            result.push(_Day(5, lastSunDay));
-            result.push(_Day(6, lastSunDay));
-            return result;
-          };
-
           select4WeekSunSat = (weekType, dateAdd) => {
             const placeHolder = `DateTime | Insert Format | Select Date | Week Sun..Sat | ${weekType} Week`;
             const createCommand = (title, formatName, date) => [
@@ -171,7 +175,7 @@ function activate(context) {
               ``,
               () => { selectFormat(formatName, date, `${placeHolder} | ${title}`); }
             ];
-            const days = getDateWeekSunToSat(_Day(dateAdd));
+            const days = getDateWeekDays(_Day(dateAdd), `Sun`);
             commandQuickPick([
               createCommand(dateToStringJp(days[0], `ddd MM/DD`), `Date`, days[0]),
               createCommand(dateToStringJp(days[1], `ddd MM/DD`), `Date`, days[1]),
@@ -182,13 +186,38 @@ function activate(context) {
               createCommand(dateToStringJp(days[6], `ddd MM/DD`), `Date`, days[6]),
             ], placeHolder);
           };
-
-
         };
+
+        select3WeekMonSun = () => {
+          let select4WeekMonSun;
+          commandQuickPick([
+            [`Last Week`, ``, () => { select4WeekMonSun(`Last`, -7); }],
+            [`This Week`, ``, () => { select4WeekMonSun(`This`, 0); }],
+            [`Next Week`, ``, () => { select4WeekMonSun(`Next`, 7); }],
+          ], `DateTime | Insert Format | Select Date | Week Mon..Sun`);
+
+          select4WeekMonSun = (weekType, dateAdd) => {
+            const placeHolder = `DateTime | Insert Format | Select Date | Week Mon..Sun | ${weekType} Week`;
+            const createCommand = (title, formatName, date) => [
+              title,
+              ``,
+              () => { selectFormat(formatName, date, `${placeHolder} | ${title}`); }
+            ];
+            const days = getDateWeekDays(_Day(dateAdd), `Mon`);
+            commandQuickPick([
+              createCommand(dateToStringJp(days[0], `ddd MM/DD`), `Date`, days[0]),
+              createCommand(dateToStringJp(days[1], `ddd MM/DD`), `Date`, days[1]),
+              createCommand(dateToStringJp(days[2], `ddd MM/DD`), `Date`, days[2]),
+              createCommand(dateToStringJp(days[3], `ddd MM/DD`), `Date`, days[3]),
+              createCommand(dateToStringJp(days[4], `ddd MM/DD`), `Date`, days[4]),
+              createCommand(dateToStringJp(days[5], `ddd MM/DD`), `Date`, days[5]),
+              createCommand(dateToStringJp(days[6], `ddd MM/DD`), `Date`, days[6]),
+            ], placeHolder);
+          };
+        };
+
       };
-
     };
-
   });
 
   const selectFormat = (formatName, targetDate, placeHolder) => {
