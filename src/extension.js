@@ -90,10 +90,8 @@ const getFormatArray = (formatName) => {
   if (!([`DateFormat`, `DateTimeFormat`, `TimeFormat`].includes(formatName))) {
     throw new Error(`getFormatArray formatName`);
   }
-  const formatData = JSON.parse(
-    vscode.workspace.getConfiguration(`DateTime`).get(formatName)
-  );
-  return Object.values(formatData).map(item => item.format);
+  const formatData = vscode.workspace.getConfiguration(`DateTime`).get(formatName);
+  return formatData.map(item => item.format);
 };
 
 const getDefaultFormat = (formatName) => {

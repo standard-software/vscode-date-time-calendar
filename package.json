@@ -55,18 +55,34 @@
       "title": "DateTime",
       "properties": {
         "DateTime.DateFormat": {
-          "type": "string",
-          "default": "[{\"format\": \"YYYY/MM/DD(ddd)\"}, {\"format\": \"ddd, DD MMM YYYY\"}, {\"format\": \"dddd, DD MMMMM YYYY\"}, {\"format\": \"YYYY/MM/DD(DDD)\"}, {\"format\": \"YYYY年MM月DD日 DDDD\"}]",
+          "type": "array",
+          "default": [
+            { "format": "YYYY/MM/DD(ddd)" },
+            { "format": "ddd, DD MMM YYYY" },
+            { "format": "dddd, DD MMMMM YYYY" },
+            { "format": "YYYY/MM/DD(DDD)" },
+            { "format": "YYYY年MM月DD日 DDDD" }
+          ],
           "description": "Date Format"
         },
         "DateTime.DateTimeFormat": {
-          "type": "string",
-          "default": "[{\"format\": \"YYYY/MM/DD(ddd) HH:mm\"}, {\"format\": \"ddd, DD MMM YYYY HH:mm\"}, {\"format\": \"dddd, DD MMMMM YYYY\"}, {\"format\": \"YYYY/MM/DD(DDD) HH:mm\"}, {\"format\": \"YYYY年MM月DD日 DDDD AAAhh時mm分\"}]",
+          "type": "array",
+          "default": [
+            { "format": "YYYY/MM/DD(ddd) HH:mm" },
+            { "format": "ddd, DD MMM YYYY HH:mm" },
+            { "format": "dddd, DD MMMMM YYYY" },
+            { "format": "YYYY/MM/DD(DDD) HH:mm" },
+            { "format": "YYYY年MM月DD日 DDDD AAAhh時mm分" }
+          ],
           "description": "DateTime Format"
         },
         "DateTime.TimeFormat": {
-          "type": "string",
-          "default": "[{\"format\": \"HH:mm\"}, {\"format\": \"hh:mm AA\"}, {\"format\": \"AAAhh時mm分\"}]",
+          "type": "array",
+          "default": [
+            { "format": "HH:mm" },
+            { "format": "hh:mm AA" },
+            { "format": "AAAhh時mm分" }
+          ],
           "description": "DateTime Format"
         }
       }
