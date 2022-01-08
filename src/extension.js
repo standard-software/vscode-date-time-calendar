@@ -86,7 +86,7 @@ const commandQuickPick = (commandsArray, placeHolder) => {
   });
 };
 
-const getFormatArray = (formatName) => {
+const getDateFormatArray = (formatName) => {
   if (!([`DateFormat`, `DateTimeFormat`, `TimeFormat`].includes(formatName))) {
     throw new Error(`getFormatArray formatName`);
   }
@@ -95,7 +95,11 @@ const getFormatArray = (formatName) => {
 };
 
 const getDefaultFormat = (formatName) => {
-  return getFormatArray(formatName)[0];
+  return getDateFormatArray(formatName)[0];
+};
+
+const getWeeklyCalenderSettings = () =>{
+  return vscode.workspace.getConfiguration(`DateTime`).get(`WeeklyCalender`);
 };
 
 function activate(context) {
@@ -111,11 +115,11 @@ function activate(context) {
   registerCommand(`DateTime.SelectFunction`, () => {
 
     let select1InsertFormat;
+    let select1WeeklyCalender;
     commandQuickPick([
       [`Insert Format`,         ``, () => { select1InsertFormat(); }],
-      [`Weekly Calender`,       ``, () => {  }],
+      [`Weekly Calender`,       ``, () => { select1WeeklyCalender(); }],
       [`Month Calender`,        ``, () => {  }],
-      [`Horizontal Calendar`,   ``, () => {  }],
     ], `DateTime | Select Function`);
 
     select1InsertFormat = () => {
@@ -124,8 +128,6 @@ function activate(context) {
       commandQuickPick([
         [`Today Now`,     ``, () => { select2TodayNow(); }],
         [`Select Date`,   ``, () => { select2SelectDate(); }],
-        [`Input Date`,    ``, () => {  }],
-        [`Input Time`,    ``, () => {  }],
       ], `DateTime | Insert Format`);
 
       select2TodayNow = () => {
@@ -133,7 +135,7 @@ function activate(context) {
         const createCommand = (title, formatType, date) => [
           title,
           ``,
-          () => { selectFormat(`${formatType}Format`, date, `${placeHolder} | ${title}`); }
+          () => { selectFormatDate(`${formatType}Format`, date, `${placeHolder} | ${title}`); }
         ];
         commandQuickPick([
           createCommand(`Date Today`,         `Date`,     _Day(`today`)),
@@ -148,7 +150,7 @@ function activate(context) {
         const createCommand = (title, formatType, date) => [
           title,
           ``,
-          () => { selectFormat(`${formatType}Format`, date, `${placeHolder} | ${title}`); }
+          () => { selectFormatDate(`${formatType}Format`, date, `${placeHolder} | ${title}`); }
         ];
         commandQuickPick([
           createCommand(`Date Yesterday`, `Date`, _Day(`yesterday`)),
@@ -158,19 +160,19 @@ function activate(context) {
         ], placeHolder);
 
         select3Week = (weekRangeDayTitle, startWeekDay) => {
-          let select4WeekSunSat;
+          let select4DayOfWeek;
           commandQuickPick([
-            [`Last Week`, ``, () => { select4WeekSunSat(`Last`, -7); }],
-            [`This Week`, ``, () => { select4WeekSunSat(`This`, 0); }],
-            [`Next Week`, ``, () => { select4WeekSunSat(`Next`, 7); }],
+            [`Last Week`, ``, () => { select4DayOfWeek(`Last`, -7); }],
+            [`This Week`, ``, () => { select4DayOfWeek(`This`, 0); }],
+            [`Next Week`, ``, () => { select4DayOfWeek(`Next`, 7); }],
           ], `DateTime | Insert Format | Select Date | Week ${weekRangeDayTitle}`);
 
-          select4WeekSunSat = (weekType, dateAdd) => {
+          select4DayOfWeek = (weekType, dateAdd) => {
             const placeHolder = `DateTime | Insert Format | Select Date | Week ${weekRangeDayTitle} | ${weekType} Week`;
             const createCommand = (title, formatType, date) => [
               title,
               ``,
-              () => { selectFormat(`${formatType}Format`, date, `${placeHolder} | ${title}`); }
+              () => { selectFormatDate(`${formatType}Format`, date, `${placeHolder} | ${title}`); }
             ];
             const days = getDateWeekDays(_Day(dateAdd), startWeekDay);
             commandQuickPick([
@@ -187,32 +189,57 @@ function activate(context) {
 
       };
     };
+
+    select1WeeklyCalender = () => {
+      let select2Week;
+      const placeHolder = `DateTime | Weekly Calender`;
+      commandQuickPick([
+        [`Week Sun..Sat`,  ``, () => { select2Week(`Sun..Sat`, `Sun`); }],
+        [`Week Mon..Sun`,  ``, () => { select2Week(`Mon..Sun`, `Mon`); }],
+      ], placeHolder);
+
+      select2Week = (weekRangeDayTitle, startWeekDay) => {
+        const placeHolder = `DateTime | Weekly Calender | Week ${weekRangeDayTitle}`;
+        commandQuickPick([
+          [`This Week [Today]`, ``,
+            () => {
+              selectWeeklyCalender(
+                _Day(`today`), true, startWeekDay,
+                `${placeHolder} | This Week [Today]`
+              );
+            }
+          ],
+          [`Select One Week`,   ``,
+            () => {  }
+          ],
+          [`Select Multi Week`, ``,
+            () => {  }
+          ],
+        ], placeHolder);
+      };
+
+    };
+
   });
 
-  const selectFormat = (formatName, targetDate, placeHolder) => {
+  const selectFormatDate = (formatName, targetDate, placeHolder) => {
     if (!([`DateFormat`, `DateTimeFormat`, `TimeFormat`].includes(formatName))) {
       throw new Error(`selectFormat formatName`);
     }
 
-    const formatSelectCommands = (formatName, targetDate) => {
-      const formatArray = getFormatArray(formatName);
-      const selectCommands = formatArray.map(
+    commandQuickPick(
+      getDateFormatArray(formatName).map(
         format => [
           dateToStringJp(targetDate, format),
           ``,
-          () => insertDate(targetDate, format)
+          () => insertFormatDate(targetDate, format)
         ]
-      );
-      return selectCommands;
-    };
-
-    commandQuickPick(
-      formatSelectCommands(formatName, targetDate),
+      ),
       placeHolder
     );
   };
 
-  const insertDate = (date, format) => {
+  const insertFormatDate = (date, format) => {
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
       vscode.window.showInformationMessage(`No editor is active`);
@@ -227,14 +254,51 @@ function activate(context) {
     });
   };
 
+  const selectWeeklyCalender = (targetDate, optionToday, startWeekDay, placeHolder) => {
+    commandQuickPick(
+      getWeeklyCalenderSettings().map(
+        setting => [
+          setting.title,
+          ``,
+          () => {
+            const editor = vscode.window.activeTextEditor;
+            if (!editor) {
+              vscode.window.showInformationMessage(`No editor is active`);
+              return;
+            }
+
+            const days = getDateWeekDays(targetDate, startWeekDay);
+            let weeklyCalText = dateToStringJp(targetDate, setting.header);
+            weeklyCalText += `\n`;
+            for (const day of days) {
+              if (optionToday && dateToStringJp(day, `YYYYMMDD`) === dateToStringJp(_Day(`today`), `YYYYMMDD`)) {
+                weeklyCalText += dateToStringJp(day, setting.today);
+              } else {
+                weeklyCalText += dateToStringJp(day, setting.line);
+              }
+              weeklyCalText += `\n`;
+            }
+
+            editor.edit(editBuilder => {
+              const selection = editor.selections[0];
+              editBuilder.replace(selection, ``);
+              editBuilder.insert(selection.active, weeklyCalText);
+            });
+          }
+        ]
+      ),
+      placeHolder
+    );
+  };
+
   registerCommand(`DateTime.InsertDateTodayDefaultFormat`, () => {
-    insertDate(new Date(), getDefaultFormat(`DateFormat`));
+    insertFormatDate(new Date(), getDefaultFormat(`DateFormat`));
   });
   registerCommand(`DateTime.InsertDateTimeNowDefaultFormat`, () => {
-    insertDate(new Date(), getDefaultFormat(`DateTimeFormat`));
+    insertFormatDate(new Date(), getDefaultFormat(`DateTimeFormat`));
   });
   registerCommand(`DateTime.InsertTimeNowDefaultFormat`, () => {
-    insertDate(new Date(), getDefaultFormat(`TimeFormat`));
+    insertFormatDate(new Date(), getDefaultFormat(`TimeFormat`));
   });
 
 }

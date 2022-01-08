@@ -84,6 +84,24 @@
             { "format": "AAAhh時mm分" }
           ],
           "description": "DateTime Format"
+        },
+        "DateTime.WeeklyCalender": {
+          "type": "array",
+          "default": [
+            {
+              "title": "DD(ddd)", "header": "YYYY/MM",
+              "line": "  DD(ddd)", "today": " [DD(ddd)]"
+            },
+            {
+              "title": "DD  ddd", "header": "YYYY/MM",
+              "line": "  DD  ddd", "today": " [DD] ddd"
+            },
+            {
+              "title": "DD(DDD)", "header": "YYYY/MM",
+              "line": "  DD(DDD)", "today": " [DD(DDD)]"
+            }
+          ],
+          "description": "DateTime Format"
         }
       }
     }
