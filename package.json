@@ -85,7 +85,7 @@
           ],
           "description": "DateTime Format"
         },
-        "DateTime.WeeklyCalender": {
+        "DateTime.WeeklyCalendar": {
           "type": "array",
           "default": [
             {

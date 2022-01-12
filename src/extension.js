@@ -1,15 +1,11 @@
 const vscode = require(`vscode`);
 const {
-  isNull, isString,
-  _trimFirst,
-  _trim,
-  _includeCount,
-  _indexOfFirst, _indexOfLast,
-  _subIndex, _subLength,
-  _subLastDelimFirst,
   _dateToString,
   _dayOfWeek,
   _Day,
+  _Month,
+  _getDatetime,
+  _unique,
 } = require(`./parts/parts.js`);
 
 const dayOfWeekJpShort = (date, timezoneOffset) => {
@@ -39,7 +35,7 @@ const dateToStringJp = (date, format) => {
 };
 
 const getBeforeDate = (sourceDate, func) => {
-  let date = sourceDate;
+  let date = _Day(-1, sourceDate);
   while (true) {
     if (func(date)) {
       return date;
@@ -49,26 +45,78 @@ const getBeforeDate = (sourceDate, func) => {
 };
 
 const getBeforeDayOfWeek = (sourceDate, dayOfWeek) => {
-  return getBeforeDate(sourceDate, (date) => {
+  return getBeforeDate(_Day(1, sourceDate), (date) => {
     return date.getDay() === dayOfWeek;
   });
 };
 
-const getDateWeekDays = (sourceDate, startWeekDay) => {
-  if (![`Sun`, `Mon`].includes(startWeekDay)) {
-    throw new Error(`getDateWeekDays startWeekDay`);
+const getDateArrayInWeek = (sourceDate, startDayOfWeek) => {
+  if (![`sun`, `mon`].includes(startDayOfWeek.toLowerCase())) {
+    throw new Error(`getDateArrayInMonth startDayOfWeek`);
   }
   const result = [];
-  const weekStartDate = getBeforeDayOfWeek(
-    sourceDate, _dayOfWeek.names.EnglishShort().indexOf(startWeekDay)
+  const startDate = getBeforeDayOfWeek(
+    sourceDate, _dayOfWeek.names.EnglishShort().indexOf(startDayOfWeek)
   );
-  result.push(weekStartDate);
-  result.push(_Day(1, weekStartDate));
-  result.push(_Day(2, weekStartDate));
-  result.push(_Day(3, weekStartDate));
-  result.push(_Day(4, weekStartDate));
-  result.push(_Day(5, weekStartDate));
-  result.push(_Day(6, weekStartDate));
+  result.push(startDate);
+  result.push(_Day(1, startDate));
+  result.push(_Day(2, startDate));
+  result.push(_Day(3, startDate));
+  result.push(_Day(4, startDate));
+  result.push(_Day(5, startDate));
+  result.push(_Day(6, startDate));
+  return result;
+};
+
+const getDateArrayInMonth = (sourceDate) => {
+  const result = [];
+  const startDate = _Month(`this`, sourceDate);
+  const endDate = _Day(-1, _Month(`next`, sourceDate));
+  const {date: dayCount} = _getDatetime(endDate);
+  for (let i = 0; i < dayCount; i += 1) {
+    result.push(_Day(i, startDate));
+  }
+  return result;
+};
+
+const equalDatetime = (sourceDate, targetDate, compareItems) => {
+  if (!compareItems.every(
+    i => [
+      `year`, `month`, `date`, `hours`, `minutes`, `seconds`, `milliseconds`
+    ].includes(i)
+  )) {
+    throw new Error(`equalDate compareItems:${compareItems}`);
+  }
+  const source = _getDatetime(sourceDate);
+  const target = _getDatetime(targetDate);
+  return compareItems.every(i => source[i] === target[i]);
+};
+
+const equalDateToday = (sourceDate) => {
+  return equalDatetime(sourceDate, new Date(), [`year`, `month`, `date`]);
+};
+
+const textCalendarWeekly = (targetDates,{
+  todayPickup,
+  headerFormat,
+  todayFormat,
+  lineFormat,
+}) => {
+  let result = ``;
+  let headerBuffer = ``;
+  for (const date of targetDates) {
+    const header = dateToStringJp(date, headerFormat);
+    if (headerBuffer !== header) {
+      result += `${header}\n`;
+    }
+    headerBuffer = header;
+    if (todayPickup && equalDateToday(date)) {
+      result += dateToStringJp(date, todayFormat);
+    } else {
+      result += dateToStringJp(date, lineFormat);
+    }
+    result += `\n`;
+  }
   return result;
 };
 
@@ -98,8 +146,8 @@ const getDefaultFormat = (formatName) => {
   return getDateFormatArray(formatName)[0];
 };
 
-const getWeeklyCalenderSettings = () =>{
-  return vscode.workspace.getConfiguration(`DateTime`).get(`WeeklyCalender`);
+const getWeeklyCalendarSettings = () =>{
+  return vscode.workspace.getConfiguration(`DateTime`).get(`WeeklyCalendar`);
 };
 
 function activate(context) {
@@ -115,11 +163,11 @@ function activate(context) {
   registerCommand(`DateTime.SelectFunction`, () => {
 
     let select1InsertFormat;
-    let select1WeeklyCalender;
+    let select1WeeklyCalendar;
     commandQuickPick([
       [`Insert Format`,         ``, () => { select1InsertFormat(); }],
-      [`Weekly Calender`,       ``, () => { select1WeeklyCalender(); }],
-      [`Month Calender`,        ``, () => {  }],
+      [`Weekly Calendar`,       ``, () => { select1WeeklyCalendar(); }],
+      [`Month Calendar`,        ``, () => {  }],
     ], `DateTime | Select Function`);
 
     select1InsertFormat = () => {
@@ -159,22 +207,22 @@ function activate(context) {
           [`Week Mon..Sun`,  ``, () => { select3Week(`Mon..Sun`, `Mon`); }],
         ], placeHolder);
 
-        select3Week = (weekRangeDayTitle, startWeekDay) => {
+        select3Week = (weekRangeDayTitle, startDayOfWeek) => {
           let select4DayOfWeek;
           commandQuickPick([
-            [`Last Week`, ``, () => { select4DayOfWeek(`Last`, -7); }],
-            [`This Week`, ``, () => { select4DayOfWeek(`This`, 0); }],
-            [`Next Week`, ``, () => { select4DayOfWeek(`Next`, 7); }],
+            [`Last Week`, ``, () => { select4DayOfWeek(`Last`, -7, startDayOfWeek); }],
+            [`This Week`, ``, () => { select4DayOfWeek(`This`,  0, startDayOfWeek); }],
+            [`Next Week`, ``, () => { select4DayOfWeek(`Next`,  7, startDayOfWeek); }],
           ], `DateTime | Insert Format | Select Date | Week ${weekRangeDayTitle}`);
 
-          select4DayOfWeek = (weekType, dateAdd) => {
+          select4DayOfWeek = (weekType, dateAdd, startDayOfWeek) => {
             const placeHolder = `DateTime | Insert Format | Select Date | Week ${weekRangeDayTitle} | ${weekType} Week`;
             const createCommand = (title, formatType, date) => [
               title,
               ``,
               () => { selectFormatDate(`${formatType}Format`, date, `${placeHolder} | ${title}`); }
             ];
-            const days = getDateWeekDays(_Day(dateAdd), startWeekDay);
+            const days = getDateArrayInWeek(_Day(dateAdd), startDayOfWeek);
             commandQuickPick([
               createCommand(dateToStringJp(days[0], `ddd MM/DD`), `Date`, days[0]),
               createCommand(dateToStringJp(days[1], `ddd MM/DD`), `Date`, days[1]),
@@ -190,32 +238,145 @@ function activate(context) {
       };
     };
 
-    select1WeeklyCalender = () => {
-      let select2Week;
-      const placeHolder = `DateTime | Weekly Calender`;
+    select1WeeklyCalendar = () => {
+      let select2WeekType;
+      const placeHolder = `DateTime | Weekly Calendar`;
       commandQuickPick([
-        [`Week Sun..Sat`,  ``, () => { select2Week(`Sun..Sat`, `Sun`); }],
-        [`Week Mon..Sun`,  ``, () => { select2Week(`Mon..Sun`, `Mon`); }],
+        [`Week Sun..Sat`,  ``, () => { select2WeekType(`Sun..Sat`, `Sun`); }],
+        [`Week Mon..Sun`,  ``, () => { select2WeekType(`Mon..Sun`, `Mon`); }],
       ], placeHolder);
 
-      select2Week = (weekRangeDayTitle, startWeekDay) => {
-        const placeHolder = `DateTime | Weekly Calender | Week ${weekRangeDayTitle}`;
+      select2WeekType = (weekRangeDayTitle, startDayOfWeek) => {
+        let select3WeekPeriod;
+        const placeHolder = `DateTime | Weekly Calendar | Week ${weekRangeDayTitle}`;
         commandQuickPick([
           [`This Week [Today]`, ``,
             () => {
-              selectWeeklyCalender(
-                _Day(`today`), true, startWeekDay,
+              selectWeeklyCalendar(
+                getDateArrayInWeek(_Day(`today`), startDayOfWeek),
+                true, startDayOfWeek,
                 `${placeHolder} | This Week [Today]`
               );
             }
           ],
-          [`Select One Week`,   ``,
-            () => {  }
-          ],
-          [`Select Multi Week`, ``,
-            () => {  }
+          [`Select Week`,   ``,
+            () => { select3WeekPeriod(weekRangeDayTitle, startDayOfWeek); }
           ],
         ], placeHolder);
+
+        select3WeekPeriod = (weekRangeDayTitle, startDayOfWeek) => {
+          const placeHolder = `DateTime | Weekly Calendar | Week ${weekRangeDayTitle} | Select Week`;
+          commandQuickPick([
+            [`Last Week`,           ``, () => {
+              selectWeeklyCalendar(
+                getDateArrayInWeek(_Day(-7), startDayOfWeek),
+                false, `${placeHolder} | Last Week`
+              );
+            }],
+            [`This Week`,           ``, () => {
+              selectWeeklyCalendar(
+                getDateArrayInWeek(_Day(`today`), startDayOfWeek),
+                false, `${placeHolder} | This Week`
+              );
+            }],
+            [`Next Week`,           ``, () => {
+              selectWeeklyCalendar(
+                getDateArrayInWeek(_Day(7), startDayOfWeek),
+                false, `${placeHolder} | Next Week`
+              );
+            }],
+            [`Last To This Weeks`,  ``, () => {
+              selectWeeklyCalendar(
+                [
+                  ...getDateArrayInWeek(_Day(-7), startDayOfWeek),
+                  ...getDateArrayInWeek(_Day( 0), startDayOfWeek),
+                ],
+                false, `${placeHolder} | Next Week`
+              );
+            }],
+            [`This To Next Weeks`,  ``, () => {
+              selectWeeklyCalendar(
+                [
+                  ...getDateArrayInWeek(_Day( 0), startDayOfWeek),
+                  ...getDateArrayInWeek(_Day( 7), startDayOfWeek),
+                ],
+                false, `${placeHolder} | Next Week`
+              );
+            }],
+            [`Last To Next 3Weeks`, ``, () => {
+              selectWeeklyCalendar(
+                [
+                  ...getDateArrayInWeek(_Day(-7), startDayOfWeek),
+                  ...getDateArrayInWeek(_Day( 0), startDayOfWeek),
+                  ...getDateArrayInWeek(_Day( 7), startDayOfWeek),
+                ],
+                false, `${placeHolder} | Next Week`
+              );
+            }],
+            [`Last Month`,          ``, () => {
+              const dateMonthStart = _Month(`last`, _Day(`today`));
+              const dateMonthEnd = _Day(-1, _Month(`next`, dateMonthStart));
+              selectWeeklyCalendar(
+                _unique(
+                  [
+                    ...getDateArrayInWeek(dateMonthStart, startDayOfWeek),
+                    ...getDateArrayInMonth(dateMonthStart),
+                    ...getDateArrayInWeek(dateMonthEnd, startDayOfWeek),
+                  ],
+                  v => v.getTime()
+                ),
+                false, `${placeHolder} | Next Week`
+              );
+            }],
+            [`This Month`,          ``, () => {
+              const dateMonthStart = _Month(`this`, _Day(`today`));
+              const dateMonthEnd = _Day(-1, _Month(`next`, dateMonthStart));
+              selectWeeklyCalendar(
+                _unique(
+                  [
+                    ...getDateArrayInWeek(dateMonthStart, startDayOfWeek),
+                    ...getDateArrayInMonth(dateMonthStart),
+                    ...getDateArrayInWeek(dateMonthEnd, startDayOfWeek),
+                  ],
+                  v => v.getTime()
+                ),
+                false, `${placeHolder} | Next Week`
+              );
+            }],
+            [`Next Month`,          ``, () => {
+              const dateMonthStart = _Month(`next`, _Day(`today`));
+              const dateMonthEnd = _Day(-1, _Month(`next`, dateMonthStart));
+              selectWeeklyCalendar(
+                _unique(
+                  [
+                    ...getDateArrayInWeek(dateMonthStart, startDayOfWeek),
+                    ...getDateArrayInMonth(dateMonthStart),
+                    ...getDateArrayInWeek(dateMonthEnd, startDayOfWeek),
+                  ],
+                  v => v.getTime()
+                ),
+                false, `${placeHolder} | Next Week`
+              );
+            }],
+            [`Last To Next 3Month`, ``, () => {
+              const dateMonthStart = _Month(`last`, _Day(`today`));
+              const dateMonthEnd = _Day(-1, _Month(2, _Day(`today`)));
+              selectWeeklyCalendar(
+                _unique(
+                  [
+                    ...getDateArrayInWeek(dateMonthStart, startDayOfWeek),
+                    ...getDateArrayInMonth(dateMonthStart),
+                    ...getDateArrayInMonth(_Day(`today`)),
+                    ...getDateArrayInMonth(dateMonthEnd),
+                    ...getDateArrayInWeek(dateMonthEnd, startDayOfWeek),
+                  ],
+                  v => v.getTime()
+                ),
+                false, `${placeHolder} | Next Week`
+              );
+            }],
+          ], placeHolder);
+        };
       };
 
     };
@@ -254,9 +415,9 @@ function activate(context) {
     });
   };
 
-  const selectWeeklyCalender = (targetDate, optionToday, startWeekDay, placeHolder) => {
+  const selectWeeklyCalendar = (targetDates, optionToday, placeHolder) => {
     commandQuickPick(
-      getWeeklyCalenderSettings().map(
+      getWeeklyCalendarSettings().map(
         setting => [
           setting.title,
           ``,
@@ -267,22 +428,20 @@ function activate(context) {
               return;
             }
 
-            const days = getDateWeekDays(targetDate, startWeekDay);
-            let weeklyCalText = dateToStringJp(targetDate, setting.header);
-            weeklyCalText += `\n`;
-            for (const day of days) {
-              if (optionToday && dateToStringJp(day, `YYYYMMDD`) === dateToStringJp(_Day(`today`), `YYYYMMDD`)) {
-                weeklyCalText += dateToStringJp(day, setting.today);
-              } else {
-                weeklyCalText += dateToStringJp(day, setting.line);
+            const weeklyCalendarText = textCalendarWeekly(
+              targetDates,
+              {
+                todayPickup: optionToday,
+                headerFormat: setting.header,
+                todayFormat: setting.today,
+                lineFormat: setting.line,
               }
-              weeklyCalText += `\n`;
-            }
+            );
 
             editor.edit(editBuilder => {
               const selection = editor.selections[0];
               editBuilder.replace(selection, ``);
-              editBuilder.insert(selection.active, weeklyCalText);
+              editBuilder.insert(selection.active, weeklyCalendarText);
             });
           }
         ]

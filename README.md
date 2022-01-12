@@ -4,9 +4,10 @@ This extension outputs the date and time as formatted text
 ## Version
 
 ### 0.3.0
-2022/01/08(Sat)
+2022/01/12(Wed)
 - Select Date Week Sun..Sat / Mon..Sun
-- Add Weekly Calender
+- Add Weekly Calendar
+  - Select Week Period
 
 ### 0.2.0
 2021/12/28(Tue)
