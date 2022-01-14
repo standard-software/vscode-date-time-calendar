@@ -2,8 +2,9 @@ const vscode = require(`vscode`);
 const {
   _dateToString,
   _dayOfWeek,
-  _Day,
+  _Year,
   _Month,
+  _Day,
   _getDatetime,
   _unique,
 } = require(`./parts/parts.js`);
@@ -74,6 +75,20 @@ const getDateArrayInMonth = (sourceDate) => {
   const endDate = _Day(-1, _Month(`next`, sourceDate));
   const {date: dayCount} = _getDatetime(endDate);
   for (let i = 0; i < dayCount; i += 1) {
+    result.push(_Day(i, startDate));
+  }
+  return result;
+};
+
+const getDateArrayInYear = (sourceDate) => {
+  const result = [];
+  const startDate = _Year(`this`, sourceDate);
+  const endDate = _Day(-1, _Year(`next`, sourceDate));
+  const dayCount = (endDate - startDate) / (1000 * 60 * 60 * 24);
+  if (!Number.isInteger(dayCount)) {
+    throw new Error(`getDateArrayInYear dayCount:${dayCount}`);
+  }
+  for (let i = 0; i <= dayCount; i += 1) {
     result.push(_Day(i, startDate));
   }
   return result;
@@ -291,7 +306,7 @@ function activate(context) {
                   ...getDateArrayInWeek(_Day(-7), startDayOfWeek),
                   ...getDateArrayInWeek(_Day( 0), startDayOfWeek),
                 ],
-                false, `${placeHolder} | Next Week`
+                false, `${placeHolder} | Last To This Weeks`
               );
             }],
             [`This To Next Weeks`,  ``, () => {
@@ -300,7 +315,7 @@ function activate(context) {
                   ...getDateArrayInWeek(_Day( 0), startDayOfWeek),
                   ...getDateArrayInWeek(_Day( 7), startDayOfWeek),
                 ],
-                false, `${placeHolder} | Next Week`
+                false, `${placeHolder} | This To Next Weeks`
               );
             }],
             [`Last To Next 3Weeks`, ``, () => {
@@ -310,7 +325,7 @@ function activate(context) {
                   ...getDateArrayInWeek(_Day( 0), startDayOfWeek),
                   ...getDateArrayInWeek(_Day( 7), startDayOfWeek),
                 ],
-                false, `${placeHolder} | Next Week`
+                false, `${placeHolder} | Last To Next 3Weeks`
               );
             }],
             [`Last Month`,          ``, () => {
@@ -325,7 +340,7 @@ function activate(context) {
                   ],
                   v => v.getTime()
                 ),
-                false, `${placeHolder} | Next Week`
+                false, `${placeHolder} | Last Month`
               );
             }],
             [`This Month`,          ``, () => {
@@ -340,7 +355,7 @@ function activate(context) {
                   ],
                   v => v.getTime()
                 ),
-                false, `${placeHolder} | Next Week`
+                false, `${placeHolder} | This Month`
               );
             }],
             [`Next Month`,          ``, () => {
@@ -355,10 +370,10 @@ function activate(context) {
                   ],
                   v => v.getTime()
                 ),
-                false, `${placeHolder} | Next Week`
+                false, `${placeHolder} | Next Month`
               );
             }],
-            [`Last To Next 3Month`, ``, () => {
+            [`Last To Next 3Months`, ``, () => {
               const dateMonthStart = _Month(`last`, _Day(`today`));
               const dateMonthEnd = _Day(-1, _Month(2, _Day(`today`)));
               selectWeeklyCalendar(
@@ -372,7 +387,39 @@ function activate(context) {
                   ],
                   v => v.getTime()
                 ),
-                false, `${placeHolder} | Next Week`
+                false, `${placeHolder} | Last To Next 3Months`
+              );
+            }],
+            [`This Year`, ``, () => {
+              const dateMonthStart = _Year(`this`, _Day(`today`));
+              const dateMonthEnd = _Day(-1, _Year(1, _Day(`today`)));
+              selectWeeklyCalendar(
+                _unique(
+                  [
+                    ...getDateArrayInWeek(dateMonthStart, startDayOfWeek),
+                    ...getDateArrayInYear(_Day(`today`)),
+                    ...getDateArrayInWeek(dateMonthEnd, startDayOfWeek),
+                  ],
+                  v => v.getTime()
+                ),
+                false, `${placeHolder} | This Year`
+              );
+            }],
+            [`Last To Next 3Years`, ``, () => {
+              const dateMonthStart = _Year(`last`, _Day(`today`));
+              const dateMonthEnd = _Day(-1, _Year(2, _Day(`today`)));
+              selectWeeklyCalendar(
+                _unique(
+                  [
+                    ...getDateArrayInWeek(dateMonthStart, startDayOfWeek),
+                    ...getDateArrayInYear(dateMonthStart),
+                    ...getDateArrayInYear(_Day(`today`)),
+                    ...getDateArrayInYear(dateMonthEnd),
+                    ...getDateArrayInWeek(dateMonthEnd, startDayOfWeek),
+                  ],
+                  v => v.getTime()
+                ),
+                false, `${placeHolder} | Last To Next 3Years`
               );
             }],
           ], placeHolder);

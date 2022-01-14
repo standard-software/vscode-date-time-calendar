@@ -32,8 +32,9 @@ const { _unique } = require(`./array/_unique.js`);
 
 const { _dateToString } = require(`./date/_dateToString.js`);
 const { _dayOfWeek } = require(`./date/_dayOfWeek.js`);
-const { _Day } = require(`./date/_Day.js`);
+const { _Year } = require(`./date/_Year.js`);
 const { _Month } = require(`./date/_Month.js`);
+const { _Day } = require(`./date/_Day.js`);
 const { _getDatetime } = require(`./date/_getDatetime.js`);
 
 const { _stringToIntegerDefault } = require(`./convert/_stringToIntegerDefault.js`);
@@ -59,6 +60,7 @@ module.exports = {
   _dateToString,
   _dayOfWeek,
   _getDatetime,
-  _Day,
+  _Year,
   _Month,
+  _Day,
 };
