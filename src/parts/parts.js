@@ -24,6 +24,7 @@ const { _insert } = require(`./string/_insert.js`);
 const { _includeCount } = require(`./string/_includeCount.js`);
 const { _subFirstDelimFirst } = require(`./string/_subFirstDelimFirst.js`);
 const { _subLastDelimFirst } = require(`./string/_subLastDelimFirst.js`);
+const { _paddingFirst } = require(`./string/_paddingFirst.js`);
 
 const { __max } = require(`./array/__max.js`);
 const { _findFirstIndex } = require(`./array/_findFirstIndex.js`);
@@ -52,6 +53,7 @@ module.exports = {
   _includeCount,
   _stringToIntegerDefault,
   _subFirstDelimFirst, _subLastDelimFirst,
+  _paddingFirst,
 
   __max,
   _findFirstIndex, _findFirst,

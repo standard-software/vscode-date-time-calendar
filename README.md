@@ -3,6 +3,10 @@ This extension outputs the date and time as formatted text
 
 ## Version
 
+### 0.4.0
+2022/01/14(Fri)
+- Add Monthly Calendar
+
 ### 0.3.0
 2022/01/12(Wed)
 - Select Date Week Sun..Sat / Mon..Sun

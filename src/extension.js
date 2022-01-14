@@ -7,7 +7,15 @@ const {
   _Day,
   _getDatetime,
   _unique,
+  _subFirst, _subLast,
+  _paddingFirst,
 } = require(`./parts/parts.js`);
+
+const dayOfWeekEn2 = (date, timezoneOffset) => {
+  return _subFirst(_dayOfWeek.names.EnglishShort()[
+    _dateToString.rule.dayOfWeek(date, timezoneOffset)
+  ], 2);
+};
 
 const dayOfWeekJpShort = (date, timezoneOffset) => {
   return _dayOfWeek.names.JapaneseShort()[
@@ -25,8 +33,25 @@ const am_pmJp = (date, timezoneOffset) => {
   return _dateToString.rule.hours(date, timezoneOffset) < 12 ? `午前` : `午後`;
 };
 
+const date2Space = (date, timezoneOffset) => {
+  return _paddingFirst(_dateToString.rule.date1(date, timezoneOffset), 2, ` `);
+};
+
 const dateToStringJp = (date, format) => {
   const rule = _dateToString.rule.Default();
+  rule[`dd`] = { func: dayOfWeekEn2 };
+  rule[`DDD`] = { func: dayOfWeekJpShort };
+  rule[`DDDD`] = { func: dayOfWeekJpLong };
+  rule[`AAA`] = { func: am_pmJp };
+  return _dateToString(
+    date, format, undefined, rule,
+  );
+};
+
+const dateToStringJpFixWidth = (date, format) => {
+  const rule = _dateToString.rule.Default();
+  rule[`dd`] = { func: dayOfWeekEn2 };
+  rule[`D`] = { func: date2Space };
   rule[`DDD`] = { func: dayOfWeekJpShort };
   rule[`DDDD`] = { func: dayOfWeekJpLong };
   rule[`AAA`] = { func: am_pmJp };
@@ -107,8 +132,12 @@ const equalDatetime = (sourceDate, targetDate, compareItems) => {
   return compareItems.every(i => source[i] === target[i]);
 };
 
-const equalDateToday = (sourceDate) => {
+const equalToday = (sourceDate) => {
   return equalDatetime(sourceDate, new Date(), [`year`, `month`, `date`]);
+};
+
+const equalThisMonth = (sourceDate) => {
+  return equalDatetime(sourceDate, new Date(), [`year`, `month`]);
 };
 
 const textCalendarWeekly = (targetDates,{
@@ -125,12 +154,108 @@ const textCalendarWeekly = (targetDates,{
       result += `${header}\n`;
     }
     headerBuffer = header;
-    if (todayPickup && equalDateToday(date)) {
+    if (todayPickup && equalToday(date)) {
       result += dateToStringJp(date, todayFormat);
     } else {
       result += dateToStringJp(date, lineFormat);
     }
     result += `\n`;
+  }
+  return result;
+};
+
+const textCalendarMonthly = (targetDate,{
+  startDayOfWeek,
+  todayPickup,
+  headerFormat,
+  dayOfWeekFormat,
+  dateFormat,
+  indent,
+  space,
+  todayLeft,
+  todayRight,
+  otherMonthDate,
+}) => {
+  if (![`sun`, `mon`].includes(startDayOfWeek.toLowerCase())) {
+    throw new Error(`getDateArrayInMonth startDayOfWeek`);
+  }
+  const dayOfWeekEnShort = _dayOfWeek.names.EnglishShort();
+  let weekStartDayOfWeek = ``;
+  let weekEndDayOfWeek = ``;
+  if (startDayOfWeek.toLowerCase() === `sun`) {
+    weekStartDayOfWeek = `Sun`;
+    weekEndDayOfWeek = `Sat`;
+  } else if (startDayOfWeek.toLowerCase() === `mon`) {
+    weekStartDayOfWeek = `Mon`;
+    weekEndDayOfWeek = `Sun`;
+  }
+
+  const dateMonthStart = _Month(`this`, targetDate);
+  const dateMonthEnd = _Day(-1, _Month(1, targetDate));
+
+  let result = `${dateToStringJp(dateMonthStart, headerFormat)}\n`;
+  const weekDates = getDateArrayInWeek(dateMonthStart, startDayOfWeek);
+  const calendarDates = _unique(
+    [
+      ...weekDates,
+      ...getDateArrayInMonth(targetDate),
+      ...getDateArrayInWeek(dateMonthEnd, startDayOfWeek),
+    ],
+    v => v.getTime()
+  );
+
+  result += indent;
+  for (const date of weekDates) {
+    const dayOfWeek = dateToStringJp(date, dayOfWeekFormat);
+    if (weekDates.indexOf(date) === weekDates.length - 1) {
+      result += dayOfWeek;
+    } else {
+      result += dayOfWeek + _subLast(space, space.length - (dayOfWeek.length - 2));
+    }
+  }
+  result += `\n`;
+
+  let todayFlag = false;
+  for (const date of calendarDates) {
+    if (todayPickup && equalToday(date)) {
+      if (dayOfWeekEnShort[date.getDay()] === weekStartDayOfWeek) {
+        result +=
+          _subFirst(indent, indent.length - todayLeft.length) +
+          todayLeft +
+          dateToStringJpFixWidth(date, dateFormat) +
+          todayRight;
+      } else {
+        result +=
+          _subFirst(space, space.length - todayLeft.length) +
+          todayLeft +
+          dateToStringJpFixWidth(date, dateFormat) +
+          todayRight;
+      }
+      todayFlag = true;
+    } else if (!otherMonthDate && !equalThisMonth(date)) {
+      if (dayOfWeekEnShort[date.getDay()] === weekStartDayOfWeek) {
+        result += indent + `  `;
+      } else {
+        result +=
+          (!todayFlag ? space
+            : _subLast(space, space.length - todayRight.length)) +
+            `  `;
+      }
+      todayFlag = false;
+    } else {
+      if (dayOfWeekEnShort[date.getDay()] === weekStartDayOfWeek) {
+        result += indent + dateToStringJp(date, dateFormat);
+      } else {
+        result +=
+          (!todayFlag ? space
+            : _subLast(space, space.length - todayRight.length)) +
+            dateToStringJpFixWidth(date, dateFormat);
+      }
+      todayFlag = false;
+    }
+    if (dayOfWeekEnShort[date.getDay()] === weekEndDayOfWeek) {
+      result += `\n`;
+    }
   }
   return result;
 };
@@ -165,6 +290,10 @@ const getWeeklyCalendarSettings = () =>{
   return vscode.workspace.getConfiguration(`DateTime`).get(`WeeklyCalendar`);
 };
 
+const getMonthlyCalendarSettings = () =>{
+  return vscode.workspace.getConfiguration(`DateTime`).get(`MonthlyCalendar`);
+};
+
 function activate(context) {
 
   const registerCommand = (commandName, func) => {
@@ -179,10 +308,11 @@ function activate(context) {
 
     let select1InsertFormat;
     let select1WeeklyCalendar;
+    let select1MonthlyCalendar;
     commandQuickPick([
       [`Insert Format`,         ``, () => { select1InsertFormat(); }],
       [`Weekly Calendar`,       ``, () => { select1WeeklyCalendar(); }],
-      [`Month Calendar`,        ``, () => {  }],
+      [`Month Calendar`,        ``, () => { select1MonthlyCalendar(); }],
     ], `DateTime | Select Function`);
 
     select1InsertFormat = () => {
@@ -428,6 +558,36 @@ function activate(context) {
 
     };
 
+    select1MonthlyCalendar = () => {
+      let select2WeekType;
+      const placeHolder = `DateTime | Monthly Calendar`;
+      commandQuickPick([
+        [`Week Sun..Sat`,  ``, () => { select2WeekType(`Sun..Sat`, `Sun`); }],
+        [`Week Mon..Sun`,  ``, () => { select2WeekType(`Mon..Sun`, `Mon`); }],
+      ], placeHolder);
+
+      select2WeekType = (weekRangeDayTitle, startDayOfWeek) => {
+        let select3MonthPeriod;
+        const placeHolder = `DateTime | Monthly Calendar | Week ${weekRangeDayTitle}`;
+        commandQuickPick([
+          [`This Month [Today]`, ``,
+            () => {
+              selectMonthlyCalendar(
+                _Day(`today`),
+                true, startDayOfWeek,
+                `${placeHolder} | This Month [Today]`
+              );
+            }
+          ],
+          [`Select Month`,   ``,
+            () => { select3MonthPeriod(weekRangeDayTitle, startDayOfWeek); }
+          ],
+        ], placeHolder);
+
+      };
+
+    };
+
   });
 
   const selectFormatDate = (formatName, targetDate, placeHolder) => {
@@ -489,6 +649,47 @@ function activate(context) {
               const selection = editor.selections[0];
               editBuilder.replace(selection, ``);
               editBuilder.insert(selection.active, weeklyCalendarText);
+            });
+          }
+        ]
+      ),
+      placeHolder
+    );
+  };
+
+  const selectMonthlyCalendar = (targetDate, optionToday, startDayOfWeek, placeHolder) => {
+    commandQuickPick(
+      getMonthlyCalendarSettings().map(
+        setting => [
+          setting.title,
+          ``,
+          () => {
+            const editor = vscode.window.activeTextEditor;
+            if (!editor) {
+              vscode.window.showInformationMessage(`No editor is active`);
+              return;
+            }
+
+            const monthlyCalendarText = textCalendarMonthly(
+              targetDate,
+              {
+                startDayOfWeek,
+                todayPickup: optionToday,
+                headerFormat: setting.header,
+                dayOfWeekFormat: setting.dayOfWeek,
+                dateFormat: setting.date,
+                indent: setting.indent,
+                space: setting.space,
+                todayLeft: setting.todayLeft,
+                todayRight: setting.todayRight,
+                otherMonthDate: setting.otherMonthDate,
+              }
+            );
+
+            editor.edit(editBuilder => {
+              const selection = editor.selections[0];
+              editBuilder.replace(selection, ``);
+              editBuilder.insert(selection.active, monthlyCalendarText);
             });
           }
         ]

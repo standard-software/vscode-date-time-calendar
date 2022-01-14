@@ -2,7 +2,7 @@
   "name": "vscode-datetime",
   "displayName": "DateTime",
   "description": "This extension outputs the date and time as formatted text",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "publisher": "SatoshiYamamoto",
   "author": {
     "name": "Satoshi Yamamoto",
@@ -102,13 +102,54 @@
             }
           ],
           "description": "DateTime Format"
+        },
+        "DateTime.MonthlyCalendar": {
+          "type": "array",
+          "default": [
+            {
+              "title": "YYYY/MM ddd D", "header": "YYYY/MM",
+              "dayOfWeek": "ddd", "date": "D",
+              "indent": "  ", "space": "  ",
+              "todayLeft": "[", "todayRight": "]",
+              "otherMonthDate": false
+            },
+            {
+              "title": "YYYY/MM ddd DD otherMonthDate", "header": "YYYY/MM",
+              "dayOfWeek": "ddd", "date": "DD",
+              "indent": "  ", "space": "  ",
+              "todayLeft": "[", "todayRight": "]",
+              "otherMonthDate": true
+            },
+            {
+              "title": "YYYY/MM dd DD", "header": "YYYY/MM",
+              "dayOfWeek": "dd", "date": "DD",
+              "indent": "  ", "space": " ",
+              "todayLeft": "[", "todayRight": "]",
+              "otherMonthDate": false
+            },
+            {
+              "title": "YYYY/MM dd DD otherMonthDate", "header": "YYYY/MM",
+              "dayOfWeek": "ddd", "date": "DD",
+              "indent": "  ", "space": " ",
+              "todayLeft": "[", "todayRight": "]",
+              "otherMonthDate": true
+            },
+            {
+              "title": "YYYY年MM月 火 01 otherMonthDate", "header": "YYYY年MM月",
+              "dayOfWeek": "DDD", "date": "DD",
+              "indent": "", "space": "  ",
+              "todayLeft": "", "todayRight": "<-",
+              "otherMonthDate": true
+            }
+          ],
+          "description": "DateTime Format"
         }
       }
     }
   },
   "scripts": {
     "lint": "eslint --fix ./src",
-    "pack": "vsce package && code --install-extension vscode-datetime-0.3.0.vsix",
+    "pack": "vsce package && code --install-extension vscode-datetime-0.4.0.vsix",
     "": ""
   },
   "devDependencies": {
