@@ -136,8 +136,8 @@ const equalToday = (sourceDate) => {
   return equalDatetime(sourceDate, new Date(), [`year`, `month`, `date`]);
 };
 
-const equalThisMonth = (sourceDate) => {
-  return equalDatetime(sourceDate, new Date(), [`year`, `month`]);
+const equalMonth = (sourceDate, baseDate) => {
+  return equalDatetime(sourceDate, baseDate, [`year`, `month`]);
 };
 
 const textCalendarWeekly = (targetDates,{
@@ -232,7 +232,7 @@ const textCalendarMonthly = (targetDate,{
           todayRight;
       }
       todayFlag = true;
-    } else if (!otherMonthDate && !equalThisMonth(date)) {
+    } else if (!otherMonthDate && !equalMonth(date, targetDate)) {
       if (dayOfWeekEnShort[date.getDay()] === weekStartDayOfWeek) {
         result += indent + `  `;
       } else {
@@ -573,7 +573,7 @@ function activate(context) {
           [`This Month [Today]`, ``,
             () => {
               selectMonthlyCalendar(
-                _Day(`today`),
+                [_Day(`today`)],
                 true, startDayOfWeek,
                 `${placeHolder} | This Month [Today]`
               );
@@ -583,6 +583,119 @@ function activate(context) {
             () => { select3MonthPeriod(weekRangeDayTitle, startDayOfWeek); }
           ],
         ], placeHolder);
+
+        select3MonthPeriod = (weekRangeDayTitle, startDayOfWeek) => {
+          const placeHolder = `Date Time Calendar | Monthly Calendar | Week ${weekRangeDayTitle} | Select Month`;
+          commandQuickPick([
+            [`Last Month`, ``,
+              () => {
+                selectMonthlyCalendar(
+                  [_Month(-1, _Day(`today`))],
+                  false, startDayOfWeek,
+                  `${placeHolder} | Last Month`
+                );
+              }
+            ],
+            [`This Month`, ``,
+              () => {
+                selectMonthlyCalendar(
+                  [_Day(`today`)],
+                  false, startDayOfWeek,
+                  `${placeHolder} | This Month`
+                );
+              }
+            ],
+            [`Next Month`, ``,
+              () => {
+                selectMonthlyCalendar(
+                  [_Month(1, _Day(`today`))],
+                  false, startDayOfWeek,
+                  `${placeHolder} | Next Month`
+                );
+              }
+            ],
+            [`Last To Next 3Month`, ``,
+              () => {
+                selectMonthlyCalendar(
+                  [_Month(-1, _Day(`today`)), _Day(`today`), _Month(1, _Day(`today`))],
+                  false, startDayOfWeek,
+                  `${placeHolder} | Last To Next 3Month`
+                );
+              }
+            ],
+            [`This Year`, ``,
+              () => {
+                const startDate = _Year(`this`, _Day(`today`));
+                selectMonthlyCalendar(
+                  [
+                    startDate,
+                    _Month( 1, startDate),
+                    _Month( 2, startDate),
+                    _Month( 3, startDate),
+                    _Month( 4, startDate),
+                    _Month( 5, startDate),
+                    _Month( 6, startDate),
+                    _Month( 7, startDate),
+                    _Month( 8, startDate),
+                    _Month( 9, startDate),
+                    _Month(10, startDate),
+                    _Month(11, startDate),
+                  ],
+                  false, startDayOfWeek,
+                  `${placeHolder} | This Year`
+                );
+              }
+            ],
+            [`Last To Next 3Years`, ``,
+              () => {
+                const startDate = _Year(-1, _Day(`today`));
+                selectMonthlyCalendar(
+                  [
+                    startDate,
+                    _Month( 1, startDate),
+                    _Month( 2, startDate),
+                    _Month( 3, startDate),
+                    _Month( 4, startDate),
+                    _Month( 5, startDate),
+                    _Month( 6, startDate),
+                    _Month( 7, startDate),
+                    _Month( 8, startDate),
+                    _Month( 9, startDate),
+                    _Month(10, startDate),
+                    _Month(11, startDate),
+                    _Month(12, startDate),
+                    _Month(13, startDate),
+                    _Month(14, startDate),
+                    _Month(15, startDate),
+                    _Month(16, startDate),
+                    _Month(17, startDate),
+                    _Month(18, startDate),
+                    _Month(19, startDate),
+                    _Month(20, startDate),
+                    _Month(21, startDate),
+                    _Month(22, startDate),
+                    _Month(23, startDate),
+                    _Month(24, startDate),
+                    _Month(25, startDate),
+                    _Month(26, startDate),
+                    _Month(27, startDate),
+                    _Month(28, startDate),
+                    _Month(29, startDate),
+                    _Month(30, startDate),
+                    _Month(31, startDate),
+                    _Month(32, startDate),
+                    _Month(33, startDate),
+                    _Month(34, startDate),
+                    _Month(35, startDate),
+                  ],
+                  false, startDayOfWeek,
+                  `${placeHolder} | Last To Next 3Years`
+                );
+              }
+            ],
+
+          ], placeHolder);
+        };
 
       };
 
@@ -657,7 +770,7 @@ function activate(context) {
     );
   };
 
-  const selectMonthlyCalendar = (targetDate, optionToday, startDayOfWeek, placeHolder) => {
+  const selectMonthlyCalendar = (targetDates, optionToday, startDayOfWeek, placeHolder) => {
     commandQuickPick(
       getMonthlyCalendarSettings().map(
         setting => [
@@ -670,21 +783,24 @@ function activate(context) {
               return;
             }
 
-            const monthlyCalendarText = textCalendarMonthly(
-              targetDate,
-              {
-                startDayOfWeek,
-                todayPickup: optionToday,
-                headerFormat: setting.header,
-                dayOfWeekFormat: setting.dayOfWeek,
-                dateFormat: setting.date,
-                indent: setting.indent,
-                space: setting.space,
-                todayLeft: setting.todayLeft,
-                todayRight: setting.todayRight,
-                otherMonthDate: setting.otherMonthDate,
-              }
-            );
+            let monthlyCalendarText = ``;
+            for (const targetDate of targetDates) {
+              monthlyCalendarText += textCalendarMonthly(
+                targetDate,
+                {
+                  startDayOfWeek,
+                  todayPickup: optionToday,
+                  headerFormat: setting.header,
+                  dayOfWeekFormat: setting.dayOfWeek,
+                  dateFormat: setting.date,
+                  indent: setting.indent,
+                  space: setting.space,
+                  todayLeft: setting.todayLeft,
+                  todayRight: setting.todayRight,
+                  otherMonthDate: setting.otherMonthDate,
+                }
+              );
+            }
 
             editor.edit(editBuilder => {
               const selection = editor.selections[0];
