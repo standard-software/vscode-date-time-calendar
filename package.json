@@ -1,7 +1,7 @@
 {
-  "name": "vscode-datetime",
-  "displayName": "DateTime",
-  "description": "This extension outputs the date and time as formatted text",
+  "name": "vscode-date-time-calendar",
+  "displayName": "Date Time Calendar",
+  "description": "This extension outputs the date and time and calendar as formatted text",
   "version": "0.4.0",
   "publisher": "SatoshiYamamoto",
   "author": {
@@ -12,7 +12,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/standard-software/vscode-datetime"
+    "url": "https://github.com/standard-software/vscode-date-time-calendar"
   },
   "engines": {
     "vscode": "^1.62.3"
@@ -20,41 +20,41 @@
   "categories": [
     "Other"
   ],
-  "keywords": ["datetime"],
+  "keywords": ["datetime", "date", "time", "calendar"],
   "bugs": {
-    "url": "https://github.com/standard-software/vscode-datetime/issues"
+    "url": "https://github.com/standard-software/vscode-date-time-calendar/issues"
   },
   "main": "./src/extension.js",
   "activationEvents": [
-    "onCommand:DateTime.InsertDateTodayDefaultFormat",
-    "onCommand:DateTime.InsertDateTimeNowDefaultFormat",
-    "onCommand:DateTime.InsertTimeNowDefaultFormat",
-    "onCommand:DateTime.SelectFunction"
+    "onCommand:DateTimeCalendar.InsertDateTodayDefaultFormat",
+    "onCommand:DateTimeCalendar.InsertDateTimeNowDefaultFormat",
+    "onCommand:DateTimeCalendar.InsertTimeNowDefaultFormat",
+    "onCommand:DateTimeCalendar.SelectFunction"
   ],
   "contributes": {
     "commands": [
       {
-        "command": "DateTime.InsertDateTodayDefaultFormat",
-        "title": "DateTime | Insert | Date Today | Default Format"
+        "command": "DateTimeCalendar.InsertDateTodayDefaultFormat",
+        "title": "Date Time Calendar | Insert | Date Today | Default Format"
       },
       {
-        "command": "DateTime.InsertDateTimeNowDefaultFormat",
-        "title": "DateTime | Insert | DateTime Today Now | Default Format"
+        "command": "DateTimeCalendar.InsertDateTimeNowDefaultFormat",
+        "title": "Date Time Calendar | Insert | DateTime Today Now | Default Format"
       },
       {
-        "command": "DateTime.InsertTimeNowDefaultFormat",
-        "title": "DateTime | Insert | Time Now | Default Format"
+        "command": "DateTimeCalendar.InsertTimeNowDefaultFormat",
+        "title": "Date Time Calendar | Insert | Time Now | Default Format"
       },
       {
-        "command": "DateTime.SelectFunction",
-        "title": "DateTime | Select Function"
+        "command": "DateTimeCalendar.SelectFunction",
+        "title": "Date Time Calendar | Select Function"
       }
     ],
     "configuration": {
       "type": "object",
-      "title": "DateTime",
+      "title": "DateTimeCalendar",
       "properties": {
-        "DateTime.DateFormat": {
+        "DateTimeCalendar.DateFormat": {
           "type": "array",
           "default": [
             { "format": "YYYY/MM/DD(ddd)" },
@@ -65,7 +65,7 @@
           ],
           "description": "Date Format"
         },
-        "DateTime.DateTimeFormat": {
+        "DateTimeCalendar.DateTimeFormat": {
           "type": "array",
           "default": [
             { "format": "YYYY/MM/DD(ddd) HH:mm" },
@@ -76,7 +76,7 @@
           ],
           "description": "DateTime Format"
         },
-        "DateTime.TimeFormat": {
+        "DateTimeCalendar.TimeFormat": {
           "type": "array",
           "default": [
             { "format": "HH:mm" },
@@ -85,7 +85,7 @@
           ],
           "description": "DateTime Format"
         },
-        "DateTime.WeeklyCalendar": {
+        "DateTimeCalendar.WeeklyCalendar": {
           "type": "array",
           "default": [
             {
@@ -103,7 +103,7 @@
           ],
           "description": "DateTime Format"
         },
-        "DateTime.MonthlyCalendar": {
+        "DateTimeCalendar.MonthlyCalendar": {
           "type": "array",
           "default": [
             {
@@ -149,7 +149,7 @@
   },
   "scripts": {
     "lint": "eslint --fix ./src",
-    "pack": "vsce package && code --install-extension vscode-datetime-0.4.0.vsix",
+    "pack": "vsce package && code --install-extension vscode-date-time-calendar-0.4.0.vsix",
     "": ""
   },
   "devDependencies": {

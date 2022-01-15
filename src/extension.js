@@ -278,7 +278,7 @@ const getDateFormatArray = (formatName) => {
   if (!([`DateFormat`, `DateTimeFormat`, `TimeFormat`].includes(formatName))) {
     throw new Error(`getFormatArray formatName`);
   }
-  const formatData = vscode.workspace.getConfiguration(`DateTime`).get(formatName);
+  const formatData = vscode.workspace.getConfiguration(`DateTimeCalendar`).get(formatName);
   return formatData.map(item => item.format);
 };
 
@@ -287,11 +287,11 @@ const getDefaultFormat = (formatName) => {
 };
 
 const getWeeklyCalendarSettings = () =>{
-  return vscode.workspace.getConfiguration(`DateTime`).get(`WeeklyCalendar`);
+  return vscode.workspace.getConfiguration(`DateTimeCalendar`).get(`WeeklyCalendar`);
 };
 
 const getMonthlyCalendarSettings = () =>{
-  return vscode.workspace.getConfiguration(`DateTime`).get(`MonthlyCalendar`);
+  return vscode.workspace.getConfiguration(`DateTimeCalendar`).get(`MonthlyCalendar`);
 };
 
 function activate(context) {
@@ -304,7 +304,7 @@ function activate(context) {
     );
   };
 
-  registerCommand(`DateTime.SelectFunction`, () => {
+  registerCommand(`DateTimeCalendar.SelectFunction`, () => {
 
     let select1InsertFormat;
     let select1WeeklyCalendar;
@@ -313,7 +313,7 @@ function activate(context) {
       [`Insert Format`,         ``, () => { select1InsertFormat(); }],
       [`Weekly Calendar`,       ``, () => { select1WeeklyCalendar(); }],
       [`Month Calendar`,        ``, () => { select1MonthlyCalendar(); }],
-    ], `DateTime | Select Function`);
+    ], `Date Time Calendar | Select Function`);
 
     select1InsertFormat = () => {
       let select2TodayNow;
@@ -321,10 +321,10 @@ function activate(context) {
       commandQuickPick([
         [`Today Now`,     ``, () => { select2TodayNow(); }],
         [`Select Date`,   ``, () => { select2SelectDate(); }],
-      ], `DateTime | Insert Format`);
+      ], `Date Time Calendar | Insert Format`);
 
       select2TodayNow = () => {
-        const placeHolder = `DateTime | Insert Format | Today Now`;
+        const placeHolder = `Date Time Calendar | Insert Format | Today Now`;
         const createCommand = (title, formatType, date) => [
           title,
           ``,
@@ -339,7 +339,7 @@ function activate(context) {
 
       select2SelectDate = () => {
         let select3Week;
-        const placeHolder = `DateTime | Insert Format | Select Date`;
+        const placeHolder = `Date Time Calendar | Insert Format | Select Date`;
         const createCommand = (title, formatType, date) => [
           title,
           ``,
@@ -358,10 +358,10 @@ function activate(context) {
             [`Last Week`, ``, () => { select4DayOfWeek(`Last`, -7, startDayOfWeek); }],
             [`This Week`, ``, () => { select4DayOfWeek(`This`,  0, startDayOfWeek); }],
             [`Next Week`, ``, () => { select4DayOfWeek(`Next`,  7, startDayOfWeek); }],
-          ], `DateTime | Insert Format | Select Date | Week ${weekRangeDayTitle}`);
+          ], `Date Time Calendar | Insert Format | Select Date | Week ${weekRangeDayTitle}`);
 
           select4DayOfWeek = (weekType, dateAdd, startDayOfWeek) => {
-            const placeHolder = `DateTime | Insert Format | Select Date | Week ${weekRangeDayTitle} | ${weekType} Week`;
+            const placeHolder = `Date Time Calendar | Insert Format | Select Date | Week ${weekRangeDayTitle} | ${weekType} Week`;
             const createCommand = (title, formatType, date) => [
               title,
               ``,
@@ -385,7 +385,7 @@ function activate(context) {
 
     select1WeeklyCalendar = () => {
       let select2WeekType;
-      const placeHolder = `DateTime | Weekly Calendar`;
+      const placeHolder = `Date Time Calendar | Weekly Calendar`;
       commandQuickPick([
         [`Week Sun..Sat`,  ``, () => { select2WeekType(`Sun..Sat`, `Sun`); }],
         [`Week Mon..Sun`,  ``, () => { select2WeekType(`Mon..Sun`, `Mon`); }],
@@ -393,7 +393,7 @@ function activate(context) {
 
       select2WeekType = (weekRangeDayTitle, startDayOfWeek) => {
         let select3WeekPeriod;
-        const placeHolder = `DateTime | Weekly Calendar | Week ${weekRangeDayTitle}`;
+        const placeHolder = `Date Time Calendar | Weekly Calendar | Week ${weekRangeDayTitle}`;
         commandQuickPick([
           [`This Week [Today]`, ``,
             () => {
@@ -410,7 +410,7 @@ function activate(context) {
         ], placeHolder);
 
         select3WeekPeriod = (weekRangeDayTitle, startDayOfWeek) => {
-          const placeHolder = `DateTime | Weekly Calendar | Week ${weekRangeDayTitle} | Select Week`;
+          const placeHolder = `Date Time Calendar | Weekly Calendar | Week ${weekRangeDayTitle} | Select Week`;
           commandQuickPick([
             [`Last Week`,           ``, () => {
               selectWeeklyCalendar(
@@ -560,7 +560,7 @@ function activate(context) {
 
     select1MonthlyCalendar = () => {
       let select2WeekType;
-      const placeHolder = `DateTime | Monthly Calendar`;
+      const placeHolder = `Date Time Calendar | Monthly Calendar`;
       commandQuickPick([
         [`Week Sun..Sat`,  ``, () => { select2WeekType(`Sun..Sat`, `Sun`); }],
         [`Week Mon..Sun`,  ``, () => { select2WeekType(`Mon..Sun`, `Mon`); }],
@@ -568,7 +568,7 @@ function activate(context) {
 
       select2WeekType = (weekRangeDayTitle, startDayOfWeek) => {
         let select3MonthPeriod;
-        const placeHolder = `DateTime | Monthly Calendar | Week ${weekRangeDayTitle}`;
+        const placeHolder = `Date Time Calendar | Monthly Calendar | Week ${weekRangeDayTitle}`;
         commandQuickPick([
           [`This Month [Today]`, ``,
             () => {
@@ -698,13 +698,13 @@ function activate(context) {
     );
   };
 
-  registerCommand(`DateTime.InsertDateTodayDefaultFormat`, () => {
+  registerCommand(`DateTimeCalendar.InsertDateTodayDefaultFormat`, () => {
     insertFormatDate(new Date(), getDefaultFormat(`DateFormat`));
   });
-  registerCommand(`DateTime.InsertDateTimeNowDefaultFormat`, () => {
+  registerCommand(`DateTimeCalendar.InsertDateTimeNowDefaultFormat`, () => {
     insertFormatDate(new Date(), getDefaultFormat(`DateTimeFormat`));
   });
-  registerCommand(`DateTime.InsertTimeNowDefaultFormat`, () => {
+  registerCommand(`DateTimeCalendar.InsertTimeNowDefaultFormat`, () => {
     insertFormatDate(new Date(), getDefaultFormat(`TimeFormat`));
   });
 
