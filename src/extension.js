@@ -739,7 +739,7 @@ function activate(context) {
     commandQuickPick(
       getWeeklyCalendarSettings().map(
         setting => [
-          setting.title,
+          dateToStringJpFixWidth(_Month(`this`, targetDates[0]), setting.title),
           ``,
           () => {
             const editor = vscode.window.activeTextEditor;
@@ -774,7 +774,7 @@ function activate(context) {
     commandQuickPick(
       getMonthlyCalendarSettings().map(
         setting => [
-          setting.title,
+          dateToStringJpFixWidth(_Month(`this`, targetDates[0]), setting.title),
           ``,
           () => {
             const editor = vscode.window.activeTextEditor;

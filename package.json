@@ -89,15 +89,15 @@
           "type": "array",
           "default": [
             {
-              "title": "DD(ddd)", "header": "YYYY/MM",
+              "title": "YYYY/MM|  DD(ddd)", "header": "YYYY/MM",
               "line": "  DD(ddd)", "today": " [DD(ddd)]"
             },
             {
-              "title": "DD  ddd", "header": "YYYY/MM",
+              "title": "YYYY/MM|  DD  ddd", "header": "YYYY/MM",
               "line": "  DD  ddd", "today": " [DD] ddd"
             },
             {
-              "title": "DD(DDD)", "header": "YYYY/MM",
+              "title": "YYYY/MM|  DD(DDD)", "header": "YYYY/MM",
               "line": "  DD(DDD)", "today": " [DD(DDD)]"
             }
           ],
@@ -107,36 +107,36 @@
           "type": "array",
           "default": [
             {
-              "title": "YYYY/MM ddd D", "header": "YYYY/MM",
-              "dayOfWeek": "ddd", "date": "D",
+              "title": "YYYY/MM ddd D \"Space2\"",
+              "header": "YYYY/MM", "dayOfWeek": "ddd", "date": "D",
               "indent": "  ", "space": "  ",
               "todayLeft": "[", "todayRight": "]",
               "otherMonthDate": false
             },
             {
-              "title": "YYYY/MM ddd DD otherMonthDate", "header": "YYYY/MM",
-              "dayOfWeek": "ddd", "date": "DD",
+              "title": "YYYY/MM ddd DD \"Space2 OtherMonth\"",
+              "header": "YYYY/MM", "dayOfWeek": "ddd", "date": "DD",
               "indent": "  ", "space": "  ",
               "todayLeft": "[", "todayRight": "]",
               "otherMonthDate": true
             },
             {
-              "title": "YYYY/MM dd DD", "header": "YYYY/MM",
-              "dayOfWeek": "dd", "date": "DD",
+              "title": "YYYY/MM dd D \"Space1\"",
+              "header": "YYYY/MM", "dayOfWeek": "dd", "date": "D",
               "indent": "  ", "space": " ",
               "todayLeft": "[", "todayRight": "]",
               "otherMonthDate": false
             },
             {
-              "title": "YYYY/MM dd DD otherMonthDate", "header": "YYYY/MM",
-              "dayOfWeek": "ddd", "date": "DD",
+              "title": "YYYY/MM ddd DD \"Space1 OtherMonth\"",
+              "header": "YYYY/MM", "dayOfWeek": "ddd", "date": "DD",
               "indent": "  ", "space": " ",
               "todayLeft": "[", "todayRight": "]",
               "otherMonthDate": true
             },
             {
-              "title": "YYYY年MM月 火 01 otherMonthDate", "header": "YYYY年MM月",
-              "dayOfWeek": "DDD", "date": "DD",
+              "title": "YYYY年MM月 DDD DD \"Space2 OtherMonth\"",
+              "header": "YYYY年MM月", "dayOfWeek": "DDD", "date": "DD",
               "indent": "", "space": "  ",
               "todayLeft": "", "todayRight": "<-",
               "otherMonthDate": true

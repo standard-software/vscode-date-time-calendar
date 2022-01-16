@@ -4,7 +4,7 @@ This extension outputs the date and time as formatted text
 ## Version
 
 ### 0.4.0
-2022/01/15(Sat)
+2022/01/16(Sun)
 - Add Monthly Calendar
   - Select Month Period
 - Rename ProjectName vscode-datetime >> vscode-date-time-calendar
