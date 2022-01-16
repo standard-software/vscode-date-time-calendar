@@ -25,6 +25,7 @@ const { _includeCount } = require(`./string/_includeCount.js`);
 const { _subFirstDelimFirst } = require(`./string/_subFirstDelimFirst.js`);
 const { _subLastDelimFirst } = require(`./string/_subLastDelimFirst.js`);
 const { _paddingFirst } = require(`./string/_paddingFirst.js`);
+const { _paddingLast } = require(`./string/_paddingLast.js`);
 
 const { __max } = require(`./array/__max.js`);
 const { _findFirstIndex } = require(`./array/_findFirstIndex.js`);
@@ -32,6 +33,7 @@ const { _findFirst } = require(`./array/_findFirst.js`);
 const { _unique } = require(`./array/_unique.js`);
 
 const { _dateToString } = require(`./date/_dateToString.js`);
+const { _nameOfMonth } = require(`./date/_nameOfMonth.js`);
 const { _dayOfWeek } = require(`./date/_dayOfWeek.js`);
 const { _Year } = require(`./date/_Year.js`);
 const { _Month } = require(`./date/_Month.js`);
@@ -53,13 +55,13 @@ module.exports = {
   _includeCount,
   _stringToIntegerDefault,
   _subFirstDelimFirst, _subLastDelimFirst,
-  _paddingFirst,
+  _paddingFirst, _paddingLast,
 
   __max,
   _findFirstIndex, _findFirst,
   _unique,
 
-  _dateToString,
+  _nameOfMonth, _dateToString,
   _dayOfWeek,
   _getDatetime,
   _Year,

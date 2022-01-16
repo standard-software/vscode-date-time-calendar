@@ -1,14 +1,14 @@
 const vscode = require(`vscode`);
 const {
   _dateToString,
-  _dayOfWeek,
+  _dayOfWeek, _nameOfMonth,
   _Year,
   _Month,
   _Day,
   _getDatetime,
   _unique,
   _subFirst, _subLast,
-  _paddingFirst,
+  _paddingFirst, _paddingLast,
 } = require(`./parts/parts.js`);
 
 const dayOfWeekEn2 = (date, timezoneOffset) => {
@@ -37,21 +37,24 @@ const date2Space = (date, timezoneOffset) => {
   return _paddingFirst(_dateToString.rule.date1(date, timezoneOffset), 2, ` `);
 };
 
+const monthEnLongLeft = (date, timezoneOffset) => {
+  return _paddingLast(_nameOfMonth.names.EnglishLong()[
+    _dateToString.rule.month(date, timezoneOffset)
+  ], 9, ` `);
+};
+
+const monthEnLongRight = (date, timezoneOffset) => {
+  return _paddingFirst(_nameOfMonth.names.EnglishLong()[
+    _dateToString.rule.month(date, timezoneOffset)
+  ], 9, ` `);
+};
+
 const dateToStringJp = (date, format) => {
   const rule = _dateToString.rule.Default();
   rule[`dd`] = { func: dayOfWeekEn2 };
-  rule[`DDD`] = { func: dayOfWeekJpShort };
-  rule[`DDDD`] = { func: dayOfWeekJpLong };
-  rule[`AAA`] = { func: am_pmJp };
-  return _dateToString(
-    date, format, undefined, rule,
-  );
-};
-
-const dateToStringJpFixWidth = (date, format) => {
-  const rule = _dateToString.rule.Default();
-  rule[`dd`] = { func: dayOfWeekEn2 };
-  rule[`D`] = { func: date2Space };
+  rule[`SD`] = { func: date2Space };
+  rule[`LMMMMM`] = { func: monthEnLongLeft };
+  rule[`RMMMMM`] = { func: monthEnLongRight };
   rule[`DDD`] = { func: dayOfWeekJpShort };
   rule[`DDDD`] = { func: dayOfWeekJpLong };
   rule[`AAA`] = { func: am_pmJp };
@@ -222,13 +225,13 @@ const textCalendarMonthly = (targetDate,{
         result +=
           _subFirst(indent, indent.length - todayLeft.length) +
           todayLeft +
-          dateToStringJpFixWidth(date, dateFormat) +
+          dateToStringJp(date, dateFormat) +
           todayRight;
       } else {
         result +=
           _subFirst(space, space.length - todayLeft.length) +
           todayLeft +
-          dateToStringJpFixWidth(date, dateFormat) +
+          dateToStringJp(date, dateFormat) +
           todayRight;
       }
       todayFlag = true;
@@ -249,7 +252,7 @@ const textCalendarMonthly = (targetDate,{
         result +=
           (!todayFlag ? space
             : _subLast(space, space.length - todayRight.length)) +
-            dateToStringJpFixWidth(date, dateFormat);
+            dateToStringJp(date, dateFormat);
       }
       todayFlag = false;
     }
@@ -739,7 +742,7 @@ function activate(context) {
     commandQuickPick(
       getWeeklyCalendarSettings().map(
         setting => [
-          dateToStringJpFixWidth(_Month(`this`, targetDates[0]), setting.title),
+          dateToStringJp(_Month(`this`, targetDates[0]), setting.title),
           ``,
           () => {
             const editor = vscode.window.activeTextEditor;
@@ -774,7 +777,7 @@ function activate(context) {
     commandQuickPick(
       getMonthlyCalendarSettings().map(
         setting => [
-          dateToStringJpFixWidth(_Month(`this`, targetDates[0]), setting.title),
+          dateToStringJp(_Month(`this`, targetDates[0]), setting.title),
           ``,
           () => {
             const editor = vscode.window.activeTextEditor;

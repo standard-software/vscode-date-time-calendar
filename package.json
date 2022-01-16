@@ -107,22 +107,22 @@
           "type": "array",
           "default": [
             {
-              "title": "YYYY/MM ddd D \"Space2\"",
-              "header": "YYYY/MM", "dayOfWeek": "ddd", "date": "D",
+              "title": "MMMMM YYYY ddd D \"Space2\"",
+              "header": "LMMMMM                YYYY", "dayOfWeek": "ddd", "date": "SD",
               "indent": "  ", "space": "  ",
               "todayLeft": "[", "todayRight": "]",
               "otherMonthDate": false
             },
             {
               "title": "YYYY/MM ddd DD \"Space2 OtherMonth\"",
-              "header": "YYYY/MM", "dayOfWeek": "ddd", "date": "DD",
+              "header": "MM YYYY", "dayOfWeek": "ddd", "date": "DD",
               "indent": "  ", "space": "  ",
               "todayLeft": "[", "todayRight": "]",
               "otherMonthDate": true
             },
             {
-              "title": "YYYY/MM dd D \"Space1\"",
-              "header": "YYYY/MM", "dayOfWeek": "dd", "date": "D",
+              "title": "YYYY MMMMM dd D \"Space1\"",
+              "header": "YYYY         RMMMMM", "dayOfWeek": "dd", "date": "SD",
               "indent": "  ", "space": " ",
               "todayLeft": "[", "todayRight": "]",
               "otherMonthDate": false
@@ -131,7 +131,7 @@
               "title": "YYYY/MM ddd DD \"Space1 OtherMonth\"",
               "header": "YYYY/MM", "dayOfWeek": "ddd", "date": "DD",
               "indent": "  ", "space": " ",
-              "todayLeft": "[", "todayRight": "]",
+              "todayLeft": "", "todayRight": "<",
               "otherMonthDate": true
             },
             {
