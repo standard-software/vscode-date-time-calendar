@@ -313,7 +313,7 @@ function activate(context) {
     let select1WeeklyCalendar;
     let select1MonthlyCalendar;
     commandQuickPick([
-      [`Insert Format`,         ``, () => { select1InsertFormat(); }],
+      [`Date Format`,         ``, () => { select1InsertFormat(); }],
       [`Weekly Calendar`,       ``, () => { select1WeeklyCalendar(); }],
       [`Month Calendar`,        ``, () => { select1MonthlyCalendar(); }],
     ], `Date Time Calendar | Select Function`);
@@ -324,10 +324,10 @@ function activate(context) {
       commandQuickPick([
         [`Today Now`,     ``, () => { select2TodayNow(); }],
         [`Select Date`,   ``, () => { select2SelectDate(); }],
-      ], `Date Time Calendar | Insert Format`);
+      ], `Date Time Calendar | Date Format`);
 
       select2TodayNow = () => {
-        const placeHolder = `Date Time Calendar | Insert Format | Today Now`;
+        const placeHolder = `Date Time Calendar | Date Format | Today Now`;
         const createCommand = (title, formatType, date) => [
           title,
           ``,
@@ -342,7 +342,7 @@ function activate(context) {
 
       select2SelectDate = () => {
         let select3Week;
-        const placeHolder = `Date Time Calendar | Insert Format | Select Date`;
+        const placeHolder = `Date Time Calendar | Date Format | Select Date`;
         const createCommand = (title, formatType, date) => [
           title,
           ``,
@@ -361,10 +361,10 @@ function activate(context) {
             [`Last Week`, ``, () => { select4DayOfWeek(`Last`, -7, startDayOfWeek); }],
             [`This Week`, ``, () => { select4DayOfWeek(`This`,  0, startDayOfWeek); }],
             [`Next Week`, ``, () => { select4DayOfWeek(`Next`,  7, startDayOfWeek); }],
-          ], `Date Time Calendar | Insert Format | Select Date | Week ${weekRangeDayTitle}`);
+          ], `Date Time Calendar | Date Format | Select Date | Week ${weekRangeDayTitle}`);
 
           select4DayOfWeek = (weekType, dateAdd, startDayOfWeek) => {
-            const placeHolder = `Date Time Calendar | Insert Format | Select Date | Week ${weekRangeDayTitle} | ${weekType} Week`;
+            const placeHolder = `Date Time Calendar | Date Format | Select Date | Week ${weekRangeDayTitle} | ${weekType} Week`;
             const createCommand = (title, formatType, date) => [
               title,
               ``,
@@ -433,24 +433,6 @@ function activate(context) {
                 false, `${placeHolder} | Next Week`
               );
             }],
-            [`Last To This Weeks`,  ``, () => {
-              selectWeeklyCalendar(
-                [
-                  ...getDateArrayInWeek(_Day(-7), startDayOfWeek),
-                  ...getDateArrayInWeek(_Day( 0), startDayOfWeek),
-                ],
-                false, `${placeHolder} | Last To This Weeks`
-              );
-            }],
-            [`This To Next Weeks`,  ``, () => {
-              selectWeeklyCalendar(
-                [
-                  ...getDateArrayInWeek(_Day( 0), startDayOfWeek),
-                  ...getDateArrayInWeek(_Day( 7), startDayOfWeek),
-                ],
-                false, `${placeHolder} | This To Next Weeks`
-              );
-            }],
             [`Last To Next 3Weeks`, ``, () => {
               selectWeeklyCalendar(
                 [
@@ -459,21 +441,6 @@ function activate(context) {
                   ...getDateArrayInWeek(_Day( 7), startDayOfWeek),
                 ],
                 false, `${placeHolder} | Last To Next 3Weeks`
-              );
-            }],
-            [`Last Month`,          ``, () => {
-              const dateMonthStart = _Month(`last`, _Day(`today`));
-              const dateMonthEnd = _Day(-1, _Month(`next`, dateMonthStart));
-              selectWeeklyCalendar(
-                _unique(
-                  [
-                    ...getDateArrayInWeek(dateMonthStart, startDayOfWeek),
-                    ...getDateArrayInMonth(dateMonthStart),
-                    ...getDateArrayInWeek(dateMonthEnd, startDayOfWeek),
-                  ],
-                  v => v.getTime()
-                ),
-                false, `${placeHolder} | Last Month`
               );
             }],
             [`This Month`,          ``, () => {
@@ -489,21 +456,6 @@ function activate(context) {
                   v => v.getTime()
                 ),
                 false, `${placeHolder} | This Month`
-              );
-            }],
-            [`Next Month`,          ``, () => {
-              const dateMonthStart = _Month(`next`, _Day(`today`));
-              const dateMonthEnd = _Day(-1, _Month(`next`, dateMonthStart));
-              selectWeeklyCalendar(
-                _unique(
-                  [
-                    ...getDateArrayInWeek(dateMonthStart, startDayOfWeek),
-                    ...getDateArrayInMonth(dateMonthStart),
-                    ...getDateArrayInWeek(dateMonthEnd, startDayOfWeek),
-                  ],
-                  v => v.getTime()
-                ),
-                false, `${placeHolder} | Next Month`
               );
             }],
             [`Last To Next 3Months`, ``, () => {
@@ -817,14 +769,27 @@ function activate(context) {
     );
   };
 
-  registerCommand(`DateTimeCalendar.InsertDateTodayDefaultFormat`, () => {
+  registerCommand(`DateTimeCalendar.DateFormatDateTodayDefault`, () => {
     insertFormatDate(new Date(), getDefaultFormat(`DateFormat`));
   });
-  registerCommand(`DateTimeCalendar.InsertDateTimeNowDefaultFormat`, () => {
+  registerCommand(`DateTimeCalendar.DateFormatDateTimeNowDefault`, () => {
     insertFormatDate(new Date(), getDefaultFormat(`DateTimeFormat`));
   });
-  registerCommand(`DateTimeCalendar.InsertTimeNowDefaultFormat`, () => {
+  registerCommand(`DateTimeCalendar.DateFormatTimeNowDefault`, () => {
     insertFormatDate(new Date(), getDefaultFormat(`TimeFormat`));
+  });
+
+  registerCommand(`DateTimeCalendar.DateFormatDateTodaySelect`, () => {
+    const placeHolder = `Date Time Calendar | Date Format | Date Today | Select`;
+    selectFormatDate(`DateFormat`, new Date(), placeHolder);
+  });
+  registerCommand(`DateTimeCalendar.DateFormatDateTimeNowSelect`, () => {
+    const placeHolder = `Date Time Calendar | Date Format | DateTime Today Now | Select`;
+    selectFormatDate(`DateTimeFormat`, new Date(), placeHolder);
+  });
+  registerCommand(`DateTimeCalendar.DateFormatTimeNowSelect`, () => {
+    const placeHolder = `Date Time Calendar | Date Format | Time Now | Select`;
+    selectFormatDate(`TimeFormat`, new Date(), placeHolder);
   });
 
 }

@@ -26,24 +26,39 @@
   },
   "main": "./src/extension.js",
   "activationEvents": [
-    "onCommand:DateTimeCalendar.InsertDateTodayDefaultFormat",
-    "onCommand:DateTimeCalendar.InsertDateTimeNowDefaultFormat",
-    "onCommand:DateTimeCalendar.InsertTimeNowDefaultFormat",
+    "onCommand:DateTimeCalendar.DateFormatDateTodayDefault",
+    "onCommand:DateTimeCalendar.DateFormatDateTimeNowDefault",
+    "onCommand:DateTimeCalendar.DateFormatTimeNowDefault",
+    "onCommand:DateTimeCalendar.DateFormatDateTodaySelect",
+    "onCommand:DateTimeCalendar.DateFormatDateTimeNowSelect",
+    "onCommand:DateTimeCalendar.DateFormatTimeNowSelect",
     "onCommand:DateTimeCalendar.SelectFunction"
   ],
   "contributes": {
     "commands": [
       {
-        "command": "DateTimeCalendar.InsertDateTodayDefaultFormat",
-        "title": "Date Time Calendar | Insert | Date Today | Default Format"
+        "command": "DateTimeCalendar.DateFormatDateTodayDefault",
+        "title": "Date Time Calendar | Date Format | Date Today | Default"
       },
       {
-        "command": "DateTimeCalendar.InsertDateTimeNowDefaultFormat",
-        "title": "Date Time Calendar | Insert | DateTime Today Now | Default Format"
+        "command": "DateTimeCalendar.DateFormatDateTimeNowDefault",
+        "title": "Date Time Calendar | Date Format | DateTime Today Now | Default"
       },
       {
-        "command": "DateTimeCalendar.InsertTimeNowDefaultFormat",
-        "title": "Date Time Calendar | Insert | Time Now | Default Format"
+        "command": "DateTimeCalendar.DateFormatTimeNowDefault",
+        "title": "Date Time Calendar | Date Format | Time Now | Default"
+      },
+      {
+        "command": "DateTimeCalendar.DateFormatDateTodaySelect",
+        "title": "Date Time Calendar | Date Format | Date Today | Select"
+      },
+      {
+        "command": "DateTimeCalendar.DateFormatDateTimeNowSelect",
+        "title": "Date Time Calendar | Date Format | DateTime Today Now | Select"
+      },
+      {
+        "command": "DateTimeCalendar.DateFormatTimeNowSelect",
+        "title": "Date Time Calendar | Date Format | Time Now | Select"
       },
       {
         "command": "DateTimeCalendar.SelectFunction",
