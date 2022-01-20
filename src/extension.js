@@ -451,8 +451,7 @@ function activate(context) {
           () => {
             selectWeeklyCalendar(
               getDateArrayInWeek(_Day(`today`), startDayOfWeek),
-              true, startDayOfWeek,
-              `${placeHolder} | This Week [Today]`
+              true, `${placeHolder} | This Week [Today]`
             );
           }
         ],
@@ -566,7 +565,7 @@ function activate(context) {
     commandQuickPick(
       getWeeklyCalendarSettings().map(
         setting => [
-          dateToStringJp(_Month(`this`, targetDates[0]), setting.title),
+          dateToStringJp(targetDates[0], setting.title),
           ``,
           () => {
             const editor = vscode.window.activeTextEditor;
@@ -822,15 +821,30 @@ function activate(context) {
     const placeHolder = `Date Time Calendar | Date Format | Date Tomorrow | Select`;
     selectFormatDate(`DateFormat`, _Day(`tomorrow`), placeHolder);
   });
-
   registerCommand(`DateTimeCalendar.DateFormatSunSatWeekDaySelect`, () => {
     const placeHolder = `Date Time Calendar | Date Format | Sun..Sat Last To Next Week | Select`;
     select3Week(`Sun`, placeHolder);
   });
-
   registerCommand(`DateTimeCalendar.DateFormatMonSunWeekDaySelect`, () => {
     const placeHolder = `Date Time Calendar | Date Format | Mon..Sun Last To Next Week | Select`;
     select3Week(`Mon`, placeHolder);
+  });
+
+  registerCommand(`DateTimeCalendar.WeeklyCalenderSunSatThisWeekTodaySelect`, () => {
+    const placeHolder = `Date Time Calendar | Weekly Calender | Sun..Sat | This Week [Today] | Select`;
+    selectWeeklyCalendar(getDateArrayInWeek(_Day(`today`), `Sun`), true, placeHolder);
+  });
+  registerCommand(`DateTimeCalendar.WeeklyCalenderSunSatLastWeekSelect`, () => {
+    const placeHolder = `Date Time Calendar | Weekly Calender | Sun..Sat | Last Week | Select`;
+    selectWeeklyCalendar(getDateArrayInWeek(_Day(-7), `Sun`), false, placeHolder);
+  });
+  registerCommand(`DateTimeCalendar.WeeklyCalenderSunSatThisWeekSelect`, () => {
+    const placeHolder = `Date Time Calendar | Weekly Calender | Sun..Sat | This Week | Select`;
+    selectWeeklyCalendar(getDateArrayInWeek(_Day(`today`), `Sun`), false, placeHolder);
+  });
+  registerCommand(`DateTimeCalendar.WeeklyCalenderSunSatNextWeekSelect`, () => {
+    const placeHolder = `Date Time Calendar | Weekly Calender | Sun..Sat | Next Week | Select`;
+    selectWeeklyCalendar(getDateArrayInWeek(_Day( 7), `Sun`), false, placeHolder);
   });
 
 }

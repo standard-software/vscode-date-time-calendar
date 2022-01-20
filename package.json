@@ -42,6 +42,16 @@
     "onCommand:DateTimeCalendar.DateFormatSunSatWeekDaySelect",
     "onCommand:DateTimeCalendar.DateFormatMonSunWeekDaySelect",
 
+    "onCommand:DateTimeCalendar.WeeklyCalenderSunSatThisWeekTodaySelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderSunSatLastWeekSelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderSunSatThisWeekSelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderSunSatNextWeekSelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderSunSatLastToNextWeekSelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderSunSatThisMonthSelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderSunSatLastToNextMonthSelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderSunSatThisYearSelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderSunSatLastToNextYearSelect",
+
     "onCommand:DateTimeCalendar.SelectFunction"
   ],
   "contributes": {
@@ -93,6 +103,22 @@
       {
         "command": "DateTimeCalendar.DateFormatMonSunWeekDaySelect",
         "title": "Date Time Calendar | Date Format | Mon..Sun Last To Next Week | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderSunSatThisWeekTodaySelect",
+        "title": "Date Time Calendar | Weekly Calender | Sun..Sat | This Week [Today] | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderSunSatLastWeekSelect",
+        "title": "Date Time Calendar | Weekly Calender | Sun..Sat | Last Week | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderSunSatThisWeekSelect",
+        "title": "Date Time Calendar | Weekly Calender | Sun..Sat | This Week | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderSunSatNextWeekSelect",
+        "title": "Date Time Calendar | Weekly Calender | Sun..Sat | Next Week | Select"
       },
       {
         "command": "DateTimeCalendar.SelectFunction",
