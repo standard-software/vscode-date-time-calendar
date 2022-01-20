@@ -29,9 +29,19 @@
     "onCommand:DateTimeCalendar.DateFormatDateTodayDefault",
     "onCommand:DateTimeCalendar.DateFormatDateTimeNowDefault",
     "onCommand:DateTimeCalendar.DateFormatTimeNowDefault",
+
     "onCommand:DateTimeCalendar.DateFormatDateTodaySelect",
     "onCommand:DateTimeCalendar.DateFormatDateTimeNowSelect",
     "onCommand:DateTimeCalendar.DateFormatTimeNowSelect",
+
+    "onCommand:DateTimeCalendar.DateFormatDateYesterdayDefault",
+    "onCommand:DateTimeCalendar.DateFormatDateTomorrowDefault",
+    "onCommand:DateTimeCalendar.DateFormatDateYesterdaySelect",
+    "onCommand:DateTimeCalendar.DateFormatDateTomorrowSelect",
+
+    "onCommand:DateTimeCalendar.DateFormatSunSatWeekDaySelect",
+    "onCommand:DateTimeCalendar.DateFormatMonSunWeekDaySelect",
+
     "onCommand:DateTimeCalendar.SelectFunction"
   ],
   "contributes": {
@@ -59,6 +69,30 @@
       {
         "command": "DateTimeCalendar.DateFormatTimeNowSelect",
         "title": "Date Time Calendar | Date Format | Time Now | Select"
+      },
+      {
+        "command": "DateTimeCalendar.DateFormatDateYesterdayDefault",
+        "title": "Date Time Calendar | Date Format | Date Yesterday | Default"
+      },
+      {
+        "command": "DateTimeCalendar.DateFormatDateTomorrowDefault",
+        "title": "Date Time Calendar | Date Format | Date Tomorrow | Default"
+      },
+      {
+        "command": "DateTimeCalendar.DateFormatDateYesterdaySelect",
+        "title": "Date Time Calendar | Date Format | Date Yesterday | Select"
+      },
+      {
+        "command": "DateTimeCalendar.DateFormatDateTomorrowSelect",
+        "title": "Date Time Calendar | Date Format | Date Tomorrow | Select"
+      },
+      {
+        "command": "DateTimeCalendar.DateFormatSunSatWeekDaySelect",
+        "title": "Date Time Calendar | Date Format | Sun..Sat Last To Next Week | Select"
+      },
+      {
+        "command": "DateTimeCalendar.DateFormatMonSunWeekDaySelect",
+        "title": "Date Time Calendar | Date Format | Mon..Sun Last To Next Week | Select"
       },
       {
         "command": "DateTimeCalendar.SelectFunction",
