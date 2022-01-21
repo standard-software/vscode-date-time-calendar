@@ -376,30 +376,35 @@ function activate(context) {
     );
   };
 
-  let select1InsertFormat;
-  let select2TodayNow;
-  let select2SelectDate;
-  let select3Week;
+  let select1DateFormat;
+  let select2DateFormatTodayNow;
+  let select2DateFormatSelectDate;
+  let select3DateFormatSelectDateInWeek;
 
   let select1WeeklyCalendar;
+  let select2WeeklyCalendarWeekType;
+  let select3WeeklyCalendarPeriod;
+
   let select1MonthlyCalendar;
+  let select2MonthlyCalendarWeekType;
+  let select3MonthlyCalendarPeriod;
 
   registerCommand(`DateTimeCalendar.SelectFunction`, () => {
     commandQuickPick([
-      [`Date Format`,         ``, () => { select1InsertFormat(); }],
+      [`Date Format`,         ``, () => { select1DateFormat(); }],
       [`Weekly Calendar`,       ``, () => { select1WeeklyCalendar(); }],
       [`Month Calendar`,        ``, () => { select1MonthlyCalendar(); }],
     ], `Date Time Calendar | Select Function`);
   });
 
-  select1InsertFormat = () => {
+  select1DateFormat = () => {
     commandQuickPick([
-      [`Today Now`,     ``, () => { select2TodayNow(); }],
-      [`Select Date`,   ``, () => { select2SelectDate(); }],
+      [`Today Now`,     ``, () => { select2DateFormatTodayNow(); }],
+      [`Select Date`,   ``, () => { select2DateFormatSelectDate(); }],
     ], `Date Time Calendar | Date Format`);
   };
 
-  select2TodayNow = () => {
+  select2DateFormatTodayNow = () => {
     const placeHolder = `Date Time Calendar | Date Format | Today Now`;
     const createCommand = (title, formatType, date) => [
       title,
@@ -413,7 +418,7 @@ function activate(context) {
     ], placeHolder);
   };
 
-  select2SelectDate = () => {
+  select2DateFormatSelectDate = () => {
     const placeHolder = `Date Time Calendar | Date Format | Select Date`;
     const createCommand1 = (title, date) => [
       title, ``,
@@ -421,7 +426,7 @@ function activate(context) {
     ];
     const createCommand2 = (title, startDayOfWeek) => [
       title, ``,
-      () => { select3Week(startDayOfWeek, `${placeHolder} | ${title}`); }
+      () => { select3DateFormatSelectDateInWeek(startDayOfWeek, `${placeHolder} | ${title}`); }
     ];
     commandQuickPick([
       createCommand1(`Date Yesterday`, _Day(`yesterday`)),
@@ -431,7 +436,7 @@ function activate(context) {
     ], placeHolder);
   };
 
-  select3Week = (startDayOfWeek, placeHolder) => {
+  select3DateFormatSelectDateInWeek = (startDayOfWeek, placeHolder) => {
     const createCommand = (title, date) => [
       `${title} ${dateToStringJp(date, `ddd MM/DD`)}`,
       ``,
@@ -503,85 +508,69 @@ function activate(context) {
   };
 
   select1WeeklyCalendar = () => {
-    let select2WeekType;
     const placeHolder = `Date Time Calendar | Weekly Calendar`;
     commandQuickPick([
-      [`Week Sun..Sat`,  ``, () => { select2WeekType(`Sun..Sat`, `Sun`); }],
-      [`Week Mon..Sun`,  ``, () => { select2WeekType(`Mon..Sun`, `Mon`); }],
+      [`Week Sun..Sat`,  ``, () => { select2WeeklyCalendarWeekType(`Sun`); }],
+      [`Week Mon..Sun`,  ``, () => { select2WeeklyCalendarWeekType(`Mon`); }],
     ], placeHolder);
+  };
 
-    select2WeekType = (weekRangeDayTitle, startDayOfWeek) => {
-      let select3WeekPeriod;
-      const placeHolder = `Date Time Calendar | Weekly Calendar | Week ${weekRangeDayTitle}`;
-      commandQuickPick([
-        [`This Week [Today]`, ``,
-          () => {
-            selectWeeklyCalendar(
-              getDateArrayInWeek(_Day(`today`), startDayOfWeek),
-              true, `${placeHolder} | This Week [Today]`
-            );
-          }
-        ],
-        [`Select Week`,   ``,
-          () => { select3WeekPeriod(weekRangeDayTitle, startDayOfWeek); }
-        ],
-      ], placeHolder);
+  select2WeeklyCalendarWeekType = (startDayOfWeek) => {
+    const weekRange = weekRangeDayTitle(startDayOfWeek);
+    const placeHolder = `Date Time Calendar | Weekly Calendar | Week ${weekRange}`;
+    commandQuickPick([
+      [`This Week [Today]`, ``,
+        () => {
+          selectWeeklyCalendar(
+            getDateArrayInWeek(_Day(`today`), startDayOfWeek),
+            true, `${placeHolder} | This Week [Today]`
+          );
+        }
+      ],
+      [`Select Week`,   ``,
+        () => { select3WeeklyCalendarPeriod(startDayOfWeek); }
+      ],
+    ], placeHolder);
+  };
 
-      select3WeekPeriod = (weekRangeDayTitle, startDayOfWeek) => {
-        const placeHolder = `Date Time Calendar | Weekly Calendar | Week ${weekRangeDayTitle} | Select Week`;
-        commandQuickPick([
-          [`Last Week`,           ``, () => {
-            selectWeeklyCalendar(
-              getDateArrayInWeek(_Day(-7), startDayOfWeek),
-              false, `${placeHolder} | Last Week`
-            );
-          }],
-          [`This Week`,           ``, () => {
-            selectWeeklyCalendar(
-              getDateArrayInWeek(_Day(`today`), startDayOfWeek),
-              false, `${placeHolder} | This Week`
-            );
-          }],
-          [`Next Week`,           ``, () => {
-            selectWeeklyCalendar(
-              getDateArrayInWeek(_Day(7), startDayOfWeek),
-              false, `${placeHolder} | Next Week`
-            );
-          }],
-          [`Last To Next 3Weeks [Today]`, ``, () => {
-            selectWeeklyCalendar(
-              getDateArrayWeekly3Week(_Day(`today`), startDayOfWeek),
-              true, `${placeHolder} | Last To Next 3Weeks [Today]`
-            );
-          }],
-          [`This Month [Today]`,          ``, () => {
-            selectWeeklyCalendar(
-              getDateArrayWeeklyMonth(_Day(`today`), startDayOfWeek),
-              true, `${placeHolder} | This Month [Today]`
-            );
-          }],
-          [`Last To Next 3Months [Today]`, ``, () => {
-            selectWeeklyCalendar(
-              getDateArrayWeekly3Months(_Day(`today`), startDayOfWeek),
-              true, `${placeHolder} | Last To Next 3Months [Today]`
-            );
-          }],
-          [`This Year [Today]`, ``, () => {
-            selectWeeklyCalendar(
-              getDateArrayWeeklyYear(_Day(`today`), startDayOfWeek),
-              true, `${placeHolder} | This Year [Today]`
-            );
-          }],
-          [`Last To Next 3Years [Today]`, ``, () => {
-            selectWeeklyCalendar(
-              getDateArrayWeekly3Years(_Day(`today`), startDayOfWeek),
-              true, `${placeHolder} | Last To Next 3Years [Today]`
-            );
-          }],
-        ], placeHolder);
-      };
-    };
-
+  select3WeeklyCalendarPeriod = (startDayOfWeek) => {
+    const weekRange = weekRangeDayTitle(startDayOfWeek);
+    const placeHolder = `Date Time Calendar | Weekly Calendar | Week ${weekRange} | Select Week`;
+    const createCommand = (title, dates, optionToday) => [
+      title, ``, () => {
+        selectWeeklyCalendar(
+          dates,
+          optionToday,
+          `${placeHolder} | ${title}`
+        );
+      },
+    ];
+    commandQuickPick([
+      createCommand(`Last Week`,
+        getDateArrayInWeek(_Day(-7), startDayOfWeek), false
+      ),
+      createCommand(`This Week`,
+        getDateArrayInWeek(_Day(`today`), startDayOfWeek), false
+      ),
+      createCommand(`Next Week`,
+        getDateArrayInWeek(_Day( 7), startDayOfWeek), false
+      ),
+      createCommand(`Last To Next 3Weeks [Today]`,
+        getDateArrayWeekly3Week(_Day(`today`), startDayOfWeek), true
+      ),
+      createCommand(`This Month [Today]`,
+        getDateArrayWeeklyMonth(_Day(`today`), startDayOfWeek), true
+      ),
+      createCommand(`Last To Next 3Months [Today]`,
+        getDateArrayWeekly3Months(_Day(`today`), startDayOfWeek), true
+      ),
+      createCommand(`This Year [Today]`,
+        getDateArrayWeeklyYear(_Day(`today`), startDayOfWeek), true
+      ),
+      createCommand(`Last To Next 3Years [Today]`,
+        getDateArrayWeekly3Years(_Day(`today`), startDayOfWeek), true
+      ),
+    ], placeHolder);
   };
 
   const selectWeeklyCalendar = (targetDates, optionToday, placeHolder) => {
@@ -620,146 +609,123 @@ function activate(context) {
   };
 
   select1MonthlyCalendar = () => {
-    let select2WeekType;
     const placeHolder = `Date Time Calendar | Monthly Calendar`;
     commandQuickPick([
-      [`Week Sun..Sat`,  ``, () => { select2WeekType(`Sun..Sat`, `Sun`); }],
-      [`Week Mon..Sun`,  ``, () => { select2WeekType(`Mon..Sun`, `Mon`); }],
+      [`Week Sun..Sat`,  ``, () => { select2MonthlyCalendarWeekType(`Sun..Sat`, `Sun`); }],
+      [`Week Mon..Sun`,  ``, () => { select2MonthlyCalendarWeekType(`Mon..Sun`, `Mon`); }],
     ], placeHolder);
+  };
 
-    select2WeekType = (weekRangeDayTitle, startDayOfWeek) => {
-      let select3MonthPeriod;
-      const placeHolder = `Date Time Calendar | Monthly Calendar | Week ${weekRangeDayTitle}`;
-      commandQuickPick([
-        [`This Month [Today]`, ``,
-          () => {
-            selectMonthlyCalendar(
-              [_Day(`today`)],
-              true, startDayOfWeek,
-              `${placeHolder} | This Month [Today]`
-            );
-          }
-        ],
-        [`Select Month`,   ``,
-          () => { select3MonthPeriod(weekRangeDayTitle, startDayOfWeek); }
-        ],
-      ], placeHolder);
+  select2MonthlyCalendarWeekType = (weekRangeDayTitle, startDayOfWeek) => {
+    const placeHolder = `Date Time Calendar | Monthly Calendar | Week ${weekRangeDayTitle}`;
+    commandQuickPick([
+      [`This Month [Today]`, ``,
+        () => {
+          selectMonthlyCalendar(
+            [_Day(`today`)],
+            true, startDayOfWeek,
+            `${placeHolder} | This Month [Today]`
+          );
+        }
+      ],
+      [`Select Month`,   ``,
+        () => { select3MonthlyCalendarPeriod(weekRangeDayTitle, startDayOfWeek); }
+      ],
+    ], placeHolder);
+  };
 
-      select3MonthPeriod = (weekRangeDayTitle, startDayOfWeek) => {
-        const placeHolder = `Date Time Calendar | Monthly Calendar | Week ${weekRangeDayTitle} | Select Month`;
-        commandQuickPick([
-          [`Last Month`, ``,
-            () => {
-              selectMonthlyCalendar(
-                [_Month(-1, _Day(`today`))],
-                false, startDayOfWeek,
-                `${placeHolder} | Last Month`
-              );
-            }
-          ],
-          [`This Month`, ``,
-            () => {
-              selectMonthlyCalendar(
-                [_Day(`today`)],
-                false, startDayOfWeek,
-                `${placeHolder} | This Month`
-              );
-            }
-          ],
-          [`Next Month`, ``,
-            () => {
-              selectMonthlyCalendar(
-                [_Month(1, _Day(`today`))],
-                false, startDayOfWeek,
-                `${placeHolder} | Next Month`
-              );
-            }
-          ],
-          [`Last To Next 3Month`, ``,
-            () => {
-              selectMonthlyCalendar(
-                [_Month(-1, _Day(`today`)), _Day(`today`), _Month(1, _Day(`today`))],
-                false, startDayOfWeek,
-                `${placeHolder} | Last To Next 3Month`
-              );
-            }
-          ],
-          [`This Year`, ``,
-            () => {
-              const startDate = _Year(`this`, _Day(`today`));
-              selectMonthlyCalendar(
-                [
-                  startDate,
-                  _Month( 1, startDate),
-                  _Month( 2, startDate),
-                  _Month( 3, startDate),
-                  _Month( 4, startDate),
-                  _Month( 5, startDate),
-                  _Month( 6, startDate),
-                  _Month( 7, startDate),
-                  _Month( 8, startDate),
-                  _Month( 9, startDate),
-                  _Month(10, startDate),
-                  _Month(11, startDate),
-                ],
-                false, startDayOfWeek,
-                `${placeHolder} | This Year`
-              );
-            }
-          ],
-          [`Last To Next 3Years`, ``,
-            () => {
-              const startDate = _Year(-1, _Day(`today`));
-              selectMonthlyCalendar(
-                [
-                  startDate,
-                  _Month( 1, startDate),
-                  _Month( 2, startDate),
-                  _Month( 3, startDate),
-                  _Month( 4, startDate),
-                  _Month( 5, startDate),
-                  _Month( 6, startDate),
-                  _Month( 7, startDate),
-                  _Month( 8, startDate),
-                  _Month( 9, startDate),
-                  _Month(10, startDate),
-                  _Month(11, startDate),
-                  _Month(12, startDate),
-                  _Month(13, startDate),
-                  _Month(14, startDate),
-                  _Month(15, startDate),
-                  _Month(16, startDate),
-                  _Month(17, startDate),
-                  _Month(18, startDate),
-                  _Month(19, startDate),
-                  _Month(20, startDate),
-                  _Month(21, startDate),
-                  _Month(22, startDate),
-                  _Month(23, startDate),
-                  _Month(24, startDate),
-                  _Month(25, startDate),
-                  _Month(26, startDate),
-                  _Month(27, startDate),
-                  _Month(28, startDate),
-                  _Month(29, startDate),
-                  _Month(30, startDate),
-                  _Month(31, startDate),
-                  _Month(32, startDate),
-                  _Month(33, startDate),
-                  _Month(34, startDate),
-                  _Month(35, startDate),
-                ],
-                false, startDayOfWeek,
-                `${placeHolder} | Last To Next 3Years`
-              );
-            }
-          ],
-
-        ], placeHolder);
-      };
-
+  select3MonthlyCalendarPeriod = (weekRangeDayTitle, startDayOfWeek) => {
+    const placeHolder = `Date Time Calendar | Monthly Calendar | Week ${weekRangeDayTitle} | Select Month`;
+    const createCommand = (title, dates, optionToday) => [
+      title, ``, () => {
+        selectMonthlyCalendar(
+          dates,
+          optionToday,
+          startDayOfWeek,
+          `${placeHolder} | ${title}`
+        );
+      },
+    ];
+    const monthInYear = () => {
+      const startDate = _Year(`this`, _Day(`today`));
+      return [
+        startDate,
+        _Month( 1, startDate),
+        _Month( 2, startDate),
+        _Month( 3, startDate),
+        _Month( 4, startDate),
+        _Month( 5, startDate),
+        _Month( 6, startDate),
+        _Month( 7, startDate),
+        _Month( 8, startDate),
+        _Month( 9, startDate),
+        _Month(10, startDate),
+        _Month(11, startDate),
+      ];
     };
-
+    const monthIn3Years = () => {
+      const startDate = _Year(-1, _Day(`today`));
+      return [
+        startDate,
+        _Month( 1, startDate),
+        _Month( 2, startDate),
+        _Month( 3, startDate),
+        _Month( 4, startDate),
+        _Month( 5, startDate),
+        _Month( 6, startDate),
+        _Month( 7, startDate),
+        _Month( 8, startDate),
+        _Month( 9, startDate),
+        _Month(10, startDate),
+        _Month(11, startDate),
+        _Month(12, startDate),
+        _Month(13, startDate),
+        _Month(14, startDate),
+        _Month(15, startDate),
+        _Month(16, startDate),
+        _Month(17, startDate),
+        _Month(18, startDate),
+        _Month(19, startDate),
+        _Month(20, startDate),
+        _Month(21, startDate),
+        _Month(22, startDate),
+        _Month(23, startDate),
+        _Month(24, startDate),
+        _Month(25, startDate),
+        _Month(26, startDate),
+        _Month(27, startDate),
+        _Month(28, startDate),
+        _Month(29, startDate),
+        _Month(30, startDate),
+        _Month(31, startDate),
+        _Month(32, startDate),
+        _Month(33, startDate),
+        _Month(34, startDate),
+        _Month(35, startDate),
+      ];
+    };
+    commandQuickPick([
+      createCommand(`Last Month`, [
+        _Month(-1, _Day(`today`))
+      ], false),
+      createCommand(`This Month`,[
+        _Day(`today`)
+      ], false),
+      createCommand(`Next Month`,[
+        _Month(1, _Day(`today`))
+      ], false),
+      createCommand(`Last To Next 3Month [Today]`,[
+        _Month(-1, _Day(`today`)),
+        _Day(`today`),
+        _Month(1, _Day(`today`))
+      ], true),
+      createCommand(`This Year [Today]`,
+        monthInYear(),
+        true),
+      createCommand(`Last To Next 3Years [Today]`,
+        monthIn3Years(),
+        true),
+    ], placeHolder);
   };
 
   const selectMonthlyCalendar = (targetDates, optionToday, startDayOfWeek, placeHolder) => {
@@ -846,11 +812,11 @@ function activate(context) {
   });
   registerCommand(`DateTimeCalendar.DateFormatSunSatWeekDaySelect`, () => {
     const placeHolder = `Date Time Calendar | Date Format | Sun..Sat Last To Next Week | Select`;
-    select3Week(`Sun`, placeHolder);
+    select3DateFormatSelectDateInWeek(`Sun`, placeHolder);
   });
   registerCommand(`DateTimeCalendar.DateFormatMonSunWeekDaySelect`, () => {
     const placeHolder = `Date Time Calendar | Date Format | Mon..Sun Last To Next Week | Select`;
-    select3Week(`Mon`, placeHolder);
+    select3DateFormatSelectDateInWeek(`Mon`, placeHolder);
   });
 
   registerCommand(`DateTimeCalendar.WeeklyCalenderSunSatThisWeekTodaySelect`, () => {
