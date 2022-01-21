@@ -52,6 +52,16 @@
     "onCommand:DateTimeCalendar.WeeklyCalenderSunSatThisYearSelect",
     "onCommand:DateTimeCalendar.WeeklyCalenderSunSatLastToNextYearSelect",
 
+    "onCommand:DateTimeCalendar.WeeklyCalenderMonSunThisWeekTodaySelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderMonSunLastWeekSelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderMonSunThisWeekSelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderMonSunNextWeekSelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderMonSunLastToNextWeekSelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderMonSunThisMonthSelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderMonSunLastToNextMonthSelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderMonSunThisYearSelect",
+    "onCommand:DateTimeCalendar.WeeklyCalenderMonSunLastToNextYearSelect",
+
     "onCommand:DateTimeCalendar.SelectFunction"
   ],
   "contributes": {
@@ -104,6 +114,7 @@
         "command": "DateTimeCalendar.DateFormatMonSunWeekDaySelect",
         "title": "Date Time Calendar | Date Format | Mon..Sun Last To Next Week | Select"
       },
+
       {
         "command": "DateTimeCalendar.WeeklyCalenderSunSatThisWeekTodaySelect",
         "title": "Date Time Calendar | Weekly Calender | Sun..Sat | This Week [Today] | Select"
@@ -120,6 +131,64 @@
         "command": "DateTimeCalendar.WeeklyCalenderSunSatNextWeekSelect",
         "title": "Date Time Calendar | Weekly Calender | Sun..Sat | Next Week | Select"
       },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderSunSatLastToNextWeekSelect",
+        "title": "Date Time Calendar | Weekly Calender | Sun..Sat | Last To Next 3Weeks [Today] | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderSunSatThisMonthSelect",
+        "title": "Date Time Calendar | Weekly Calender | Sun..Sat | This Month | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderSunSatLastToNextMonthSelect",
+        "title": "Date Time Calendar | Weekly Calender | Sun..Sat | Last To Next 3Month [Today] | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderSunSatThisYearSelect",
+        "title": "Date Time Calendar | Weekly Calender | Sun..Sat | This Year [Today] | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderSunSatLastToNextYearSelect",
+        "title": "Date Time Calendar | Weekly Calender | Sun..Sat | Last To Next 3Year [Today] | Select"
+      },
+
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderMonSunThisWeekTodaySelect",
+        "title": "Date Time Calendar | Weekly Calender | Mon..Sun | This Week [Today] | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderMonSunLastWeekSelect",
+        "title": "Date Time Calendar | Weekly Calender | Mon..Sun | Last Week | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderMonSunThisWeekSelect",
+        "title": "Date Time Calendar | Weekly Calender | Mon..Sun | This Week | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderMonSunNextWeekSelect",
+        "title": "Date Time Calendar | Weekly Calender | Mon..Sun | Next Week | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderMonSunLastToNextWeekSelect",
+        "title": "Date Time Calendar | Weekly Calender | Mon..Sun | Last To Next 3Weeks [Today] | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderMonSunThisMonthSelect",
+        "title": "Date Time Calendar | Weekly Calender | Mon..Sun | This Month | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderMonSunLastToNextMonthSelect",
+        "title": "Date Time Calendar | Weekly Calender | Mon..Sun | Last To Next 3Month [Today] | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderMonSunThisYearSelect",
+        "title": "Date Time Calendar | Weekly Calender | Mon..Sun | This Year [Today] | Select"
+      },
+      {
+        "command": "DateTimeCalendar.WeeklyCalenderMonSunLastToNextYearSelect",
+        "title": "Date Time Calendar | Weekly Calender | Mon..Sun | Last To Next 3Year [Today] | Select"
+      },
+
       {
         "command": "DateTimeCalendar.SelectFunction",
         "title": "Date Time Calendar | Select Function"
