@@ -2,7 +2,7 @@
   "name": "vscode-date-time-calendar",
   "displayName": "Date Time Calendar",
   "description": "This extension outputs the date and time and calendar as formatted text",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "publisher": "SatoshiYamamoto",
   "author": {
     "name": "Satoshi Yamamoto",
@@ -277,9 +277,7 @@
           "default": [
             { "format": "YYYY/MM/DD(ddd)" },
             { "format": "ddd, DD MMM YYYY" },
-            { "format": "dddd, DD MMMMM YYYY" },
-            { "format": "YYYY/MM/DD(DDD)" },
-            { "format": "YYYY年MM月DD日 DDDD" }
+            { "format": "dddd, DD MMMMM YYYY" }
           ],
           "description": "Date Format"
         },
@@ -288,9 +286,7 @@
           "default": [
             { "format": "YYYY/MM/DD(ddd) HH:mm" },
             { "format": "ddd, DD MMM YYYY HH:mm" },
-            { "format": "dddd, DD MMMMM YYYY" },
-            { "format": "YYYY/MM/DD(DDD) HH:mm" },
-            { "format": "YYYY年MM月DD日 DDDD AAAhh時mm分" }
+            { "format": "dddd, DD MMMMM YYYY hh:mm AA" }
           ],
           "description": "DateTime Format"
         },
@@ -313,10 +309,6 @@
             {
               "title": "YYYY/MM|  DD  ddd", "header": "YYYY/MM",
               "line": "  DD  ddd", "today": " [DD] ddd"
-            },
-            {
-              "title": "YYYY/MM|  DD(DDD)", "header": "YYYY/MM",
-              "line": "  DD(DDD)", "today": " [DD(DDD)]"
             }
           ],
           "description": "DateTime Format"
@@ -332,8 +324,8 @@
               "otherMonthDate": false
             },
             {
-              "title": "YYYY/MM ddd DD \"Space2 OtherMonth\"",
-              "header": "MM YYYY", "dayOfWeek": "ddd", "date": "DD",
+              "title": "MMMM YYYY ddd DD \"Space2 OtherMonth\"",
+              "header": "MMMM YYYY", "dayOfWeek": "ddd", "date": "DD",
               "indent": "  ", "space": "  ",
               "todayLeft": "[", "todayRight": "]",
               "otherMonthDate": true
@@ -351,13 +343,6 @@
               "indent": "  ", "space": " ",
               "todayLeft": "", "todayRight": "<",
               "otherMonthDate": true
-            },
-            {
-              "title": "YYYY年MM月 DDD DD \"Space2 OtherMonth\"",
-              "header": "YYYY年MM月", "dayOfWeek": "DDD", "date": "DD",
-              "indent": "", "space": "  ",
-              "todayLeft": "", "todayRight": "<-",
-              "otherMonthDate": true
             }
           ],
           "description": "DateTime Format"
@@ -367,7 +352,7 @@
   },
   "scripts": {
     "lint": "eslint --fix ./src",
-    "pack": "vsce package && code --install-extension vscode-date-time-calendar-0.4.0.vsix",
+    "pack": "vsce package && code --install-extension vscode-date-time-calendar-1.0.0.vsix",
     "": ""
   },
   "devDependencies": {

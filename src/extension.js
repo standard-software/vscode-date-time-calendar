@@ -461,7 +461,7 @@ function activate(context) {
     commandQuickPick([
       [`Date Format`,         ``, () => { select1DateFormat(); }],
       [`Weekly Calendar`,       ``, () => { select1WeeklyCalendar(); }],
-      [`Month Calendar`,        ``, () => { select1MonthlyCalendar(); }],
+      [`Monthly Calendar`,        ``, () => { select1MonthlyCalendar(); }],
     ], `Date Time Calendar | Select Function`);
   });
 
