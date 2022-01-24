@@ -223,15 +223,15 @@
       },
       {
         "command": "DateTimeCalendar.MonthlyCalendarSunSatLastToNextMonthSelect",
-        "title": "Date Time Calendar | Monthly Calendar | Sun..Sat | Last To Next 3Month | Select"
+        "title": "Date Time Calendar | Monthly Calendar | Sun..Sat | Last To Next 3Month [Today] | Select"
       },
       {
         "command": "DateTimeCalendar.MonthlyCalendarSunSatThisYearSelect",
-        "title": "Date Time Calendar | Monthly Calendar | Sun..Sat | This Year | Select"
+        "title": "Date Time Calendar | Monthly Calendar | Sun..Sat | This Year [Today] | Select"
       },
       {
         "command": "DateTimeCalendar.MonthlyCalendarSunSatLastToNextYearSelect",
-        "title": "Date Time Calendar | Monthly Calendar | Sun..Sat | Last To Next 3Year | Select"
+        "title": "Date Time Calendar | Monthly Calendar | Sun..Sat | Last To Next 3Year [Today] | Select"
       },
 
       {
@@ -252,15 +252,15 @@
       },
       {
         "command": "DateTimeCalendar.MonthlyCalendarMonSunLastToNextMonthSelect",
-        "title": "Date Time Calendar | Monthly Calendar | Mon..Sun | Last To Next 3Month | Select"
+        "title": "Date Time Calendar | Monthly Calendar | Mon..Sun | Last To Next 3Month [Today] | Select"
       },
       {
         "command": "DateTimeCalendar.MonthlyCalendarMonSunThisYearSelect",
-        "title": "Date Time Calendar | Monthly Calendar | Mon..Sun | This Year | Select"
+        "title": "Date Time Calendar | Monthly Calendar | Mon..Sun | This Year [Today] | Select"
       },
       {
         "command": "DateTimeCalendar.MonthlyCalendarMonSunLastToNextYearSelect",
-        "title": "Date Time Calendar | Monthly Calendar | Mon..Sun | Last To Next 3Year | Select"
+        "title": "Date Time Calendar | Monthly Calendar | Mon..Sun | Last To Next 3Year [Today] | Select"
       },
 
       {

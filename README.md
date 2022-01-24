@@ -278,45 +278,47 @@ settings.json
 
 > For example  
 >  2022/01/09(Sun) 18:05  
->  2022/01/09(Sun) 06:05 PM  
+>  YYYY/MM/DD(ddd) HH:mm
 
-| Format | Value | Memo |
-| ------ | ----- | ---- | 
-| `YYYY` | 2022 |
-| `YY` |   22 |
-| `MM` |   01 |
-| `M` |    1 |
-| `DD` |   09 |
-| `D` |    9 |
-| `SD` |   _9 | Day leading space-filling, use Weekly or Monthly Calendar |
-| `HH` |   18 |
-| `H` |    18 | 0-24 |
-| `hh` |   06 |
-| `h` |    6 |
-| `mm` |   05 |
-| `m` |    5 |
-| `ss` |   07 |
-| `s` |    7 |
-| `SSS` |  999 | 000-999 |
-| `SS` |   99 | 00-99 |
-| `S` |    9 | 0-9 |
-| `aa` |   pm | am,pm |
-| `AA` |   PM | AM,PM |
-| `a` |    a | a,p |
-| `A` |    A | A,P |
-| `dd` |     Su |
-| `ddd` |  Sun |
-| `dddd` | Sunday |
-| `MMM` |  Jan | Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec |
-| `MMMM` | Jan. | Jan.,Feb.,Mar.,Apr.,May,June,July,Aug.,Sep.,Oct.,Nov.,Dec. |
-| `MMMMM` |January |
-| `Z` |    09:00 | timezone |
-| `ZZ` |   0900 | timezone |
-| `LMMMMM` | January__ | Left align space-filling |
-| `RMMMMM` | __January | Right align space-filling |
-| `DDD` |    日 | Japaniese DayOfWeek text 日,月,火,水,木,金,土 |
-| `DDDD` |   日曜日 | Japaniese DayOfWeek text 日曜日,月曜日,... |
-| `AAA` |    午後 | Japaniese 午前,午後 |
+_ = Space
+
+| Format  | Value     | Memo  |
+| -       | -         | -     |
+| `YYYY`  | 2022      |
+| `YY`    | 22        |
+| `MM`    | 01        |
+| `M`     | 1         |
+| `DD`    | 09        |
+| `D`     | 9         |
+| `SD`    | _9        | Day leading space-filling, use Weekly or Monthly Calendar
+| `HH`    | 18        |
+| `H`     | 18        | 0-24
+| `hh`    | 06        |
+| `h`     | 6         |
+| `mm`    | 05        |
+| `m`     | 5         |
+| `ss`    | 07        |
+| `s`     | 7         |
+| `SSS`   | 999       | 000-999
+| `SS`    | 99        | 00-99
+| `S`     | 9         | 0-9
+| `aa`    | pm        | am,pm
+| `AA`    | PM        | AM,PM
+| `a`     | a         | a,p
+| `A`     | A         | A,P
+| `dd`    | Su        | Su,Mo,Tu,We,Th,Fr,Sa
+| `ddd`   | Sun       | Sun,Mon,Tue,Wed,Thu,Fri,Sat
+| `dddd`  | Sunday    | Sunday,Monday,Tuesday,...
+| `MMM`   | Jan       | Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
+| `MMMM`  | Jan.      | Jan.,Feb.,Mar.,Apr.,May,June,July,Aug.,Sep.,Oct.,Nov.,Dec.
+| `MMMMM` | January  
+| `Z`     | 09:00     | timezone
+| `ZZ`    | 0900      | timezone
+| `LMMMMM`| January__ | Left align space-filling
+| `RMMMMM`| __January | Right align space-filling
+| `DDD`   | 日        | Japanese DayOfWeek text 日,月,火,水,木,金,土
+| `DDDD`  | 日曜日    | Japanese DayOfWeek text 日曜日,月曜日,火曜日,...
+| `AAA`   | 午後      | Japanese 午前,午後
 
 ## License
 
@@ -325,7 +327,7 @@ Released under the [MIT License][license].
 ## Version
 
 ### 1.0.0
-2022/01/21(Fri)
+2022/01/24(Mon)
 - README
 
 ### 0.4.0
