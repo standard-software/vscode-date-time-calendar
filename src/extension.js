@@ -560,19 +560,24 @@ function activate(context) {
     );
   };
 
-  const insertFormatDate = (date, format) => {
+  const insertString = (str) => {
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
       vscode.window.showInformationMessage(`No editor is active`);
       return;
     }
 
+    const selections = editor.selections;
     editor.edit(editBuilder => {
-      for (const selection of editor.selections) {
+      for (const selection of selections) {
         editBuilder.replace(selection, ``);
-        editBuilder.insert(selection.active, dateToStringJp(date, format));
+        editBuilder.insert(selection.active, str);
       }
     });
+  };
+
+  const insertFormatDate = (date, format) => {
+    insertString(dateToStringJp(date, format));
   };
 
   select1WeeklyCalendar = () => {
@@ -664,11 +669,7 @@ function activate(context) {
               }
             );
 
-            editor.edit(editBuilder => {
-              const selection = editor.selections[0];
-              editBuilder.replace(selection, ``);
-              editBuilder.insert(selection.active, weeklyCalendarText);
-            });
+            insertString(weeklyCalendarText);
           }
         ]
       ),
@@ -768,11 +769,7 @@ function activate(context) {
               );
             }
 
-            editor.edit(editBuilder => {
-              const selection = editor.selections[0];
-              editBuilder.replace(selection, ``);
-              editBuilder.insert(selection.active, monthlyCalendarText);
-            });
+            insertString(monthlyCalendarText);
           }
         ]
       ),
