@@ -326,6 +326,10 @@ Released under the [MIT License][license].
 
 ## Version
 
+### 1.2.0
+2022/04/19(Tue)
+- VSCode Debug Env
+
 ### 1.1.0
 2022/03/15(Tue)
 - Fixed an issue with delayed insertion of the cursor position.
