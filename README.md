@@ -101,45 +101,45 @@ Following commands are available:
 Select Function
 
 - `Date Time Calendar | Select Function`
-  - `Date Format`
-    - `Today Now`
-      - `Date Today`
-      - `DateTime Today Now`
-      - `Time Now`
-    - `Select Date`
-      - `Date Yesterday`
-      - `Date Tomorrow`
-      - `Week Sun..Sat`
+  - `Date Format >>`
+    - `Today Now >>`
+      - `Date Today >>`
+      - `DateTime Today Now >>`
+      - `Time Now >>`
+    - `Select Date >>`
+      - `Date Yesterday >>`
+      - `Date Tomorrow >>`
+      - `Week Sun..Sat >>`
         - Select Day Last To Next Week
-      - `Week Mon..Sun`
+      - `Week Mon..Sun >>`
         - Select Day Last To Next Week
 
-  - `Weekly Calendar`
-    - `Week Sun..Sat`
-      - `This Week [Today]`
-      - `Select Week`
-        - `Last Week`
-        - `This Week`
-        - `Next Week`
-        - `Last To Next 3Weeks [Today]`
-        - `This Month [Today]`
-        - `Last To Next 3Months [Today]`
-        - `This Year [Today]`
-        - `Last To Next 3Years [Today]`
-    - `Week Mon..Sun`
+  - `Weekly Calendar >>`
+    - `Week Sun..Sat >>`
+      - `This Week [Today] >>`
+      - `Select Week >>`
+        - `Last Week >>`
+        - `This Week >>`
+        - `Next Week >>`
+        - `Last To Next 3Weeks [Today] >>`
+        - `This Month [Today] >>`
+        - `Last To Next 3Months [Today] >>`
+        - `This Year [Today] >>`
+        - `Last To Next 3Years [Today] >>`
+    - `Week Mon..Sun >>`
       - Same as above
 
-  - `Monthly Calendar`
-    - `Week Sun..Sat`
-      - `This Month [Today]`
-      - `Select Month`
-        - `Last Week`
-        - `This Week`
-        - `Next Week`
-        - `Last To Next 3Month [Today]`
-        - `This Year [Today]`
-        - `Last To Next 3Years [Today]`
-    - `Week Mon..Sun`
+  - `Monthly Calendar >>`
+    - `Week Sun..Sat >>`
+      - `This Month [Today] >>`
+      - `Select Month >>`
+        - `Last Week >>`
+        - `This Week >>`
+        - `Next Week >>`
+        - `Last To Next 3Month [Today] >>`
+        - `This Year [Today] >>`
+        - `Last To Next 3Years [Today] >>`
+    - `Week Mon..Sun >>`
       - Same as above
 
 ---
@@ -200,6 +200,7 @@ settings.json
 
 ```json
 {
+  "DateTimeCalendar.subMenuMark": ">>",
   "DateTimeCalendar.DateFormat": [
     { "format": "YYYY/MM/DD(ddd)" },
     { "format": "ddd, DD MMM YYYY" },
@@ -325,6 +326,11 @@ _ = Space
 Released under the [MIT License][license].
 
 ## Version
+
+### 1.3.0
+2022/04/24(Sun)
+- Sub Menu Char "▸"
+  - Changeable in the settings
 
 ### 1.2.0
 2022/04/19(Tue)

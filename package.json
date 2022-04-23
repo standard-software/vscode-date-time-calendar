@@ -2,7 +2,7 @@
   "name": "vscode-date-time-calendar",
   "displayName": "Date Time Calendar",
   "description": "This extension outputs the date and time and calendar as formatted text",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "publisher": "SatoshiYamamoto",
   "author": {
     "name": "Satoshi Yamamoto",
@@ -272,6 +272,10 @@
       "type": "object",
       "title": "DateTimeCalendar",
       "properties": {
+        "DateTimeCalendar.subMenuMark": {
+          "type": "string",
+          "default": "▸"
+        },
         "DateTimeCalendar.DateFormat": {
           "type": "array",
           "default": [
@@ -352,7 +356,7 @@
   },
   "scripts": {
     "lint": "eslint --fix ./src",
-    "pack": "vsce package && code --install-extension vscode-date-time-calendar-1.2.0.vsix",
+    "pack": "vsce package && code --install-extension vscode-date-time-calendar-1.3.0.vsix",
     "": ""
   },
   "devDependencies": {

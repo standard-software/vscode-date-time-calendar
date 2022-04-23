@@ -436,6 +436,8 @@ const getMonthlyCalendarSettings = () =>{
 
 function activate(context) {
 
+  const mark = vscode.workspace.getConfiguration(`DateTimeCalendar`).get(`subMenuMark`);
+
   const registerCommand = (commandName, func) => {
     context.subscriptions.push(
       vscode.commands.registerCommand(
@@ -454,51 +456,51 @@ function activate(context) {
 
   registerCommand(`DateTimeCalendar.SelectFunction`, () => {
     commandQuickPick([
-      [`Date Format`,         ``, () => { commandQuickPick([
-        [`Today Now`,     ``, () => {
+      [`Date Format`,                            `${mark}`, () => { commandQuickPick([
+        [`Today Now`,                            `${mark}`, () => {
           const placeHolder = `Date Time Calendar | Date Format | Today Now`;
           commandQuickPick([
-            [`Date Today`, ``, () => {
+            [`Date Today`,                       `${mark}`, () => {
               selectFormatDate(`DateFormat`, _Day(`today`), `${placeHolder} | Date Today`);
             }],
-            [`DateTime Today Now`, ``, () => {
+            [`DateTime Today Now`,               `${mark}`, () => {
               selectFormatDate(`DateTimeFormat`, new Date(), `${placeHolder} | DateTime Today Now`);
             }],
-            [`Time Now`, ``, () => {
+            [`Time Now`,                         `${mark}`, () => {
               selectFormatDate(`TimeFormat`, new Date(), `${placeHolder} | Time Now`);
             }],
           ], `Date Time Calendar | Date Format | Today Now`);
         }],
-        [`Select Date`,   ``, () => {
+        [`Select Date`,                          `${mark}`, () => {
           const placeHolder = `Date Time Calendar | Date Format | Select Date`;
           commandQuickPick([
-            [`Date Yesterday`, ``, () => {
+            [`Date Yesterday`,                   `${mark}`, () => {
               selectFormatDate(`DateFormat`, _Day(`yesterday`), `${placeHolder} | Date Yesterday`);
             }],
-            [`Date Tomorrow`, ``, () => {
+            [`Date Tomorrow`,                    `${mark}`, () => {
               selectFormatDate(`DateFormat`, _Day(`tomorrow`), `${placeHolder} | Date Tomorrow`);
             }],
-            [`Week ${weekRangeDayTitle(`Sun`)}`, ``, () => {
+            [`Week ${weekRangeDayTitle(`Sun`)}`, `${mark}`, () => {
               select3DateFormatSelectDateInWeek(`Sun`, `${placeHolder} | Week ${weekRangeDayTitle(`Sun`)}`);
             }],
-            [`Week ${weekRangeDayTitle(`Mon`)}`, ``, () => {
+            [`Week ${weekRangeDayTitle(`Mon`)}`, `${mark}`, () => {
               select3DateFormatSelectDateInWeek(`Mon`, `${placeHolder} | Week ${weekRangeDayTitle(`Mon`)}`);
             }],
           ], placeHolder);
         }],
       ], `Date Time Calendar | Date Format`); }],
-      [`Weekly Calendar`,       ``, () => {
+      [`Weekly Calendar`,                        `${mark}`, () => {
         const placeHolder = `Date Time Calendar | Weekly Calendar`;
         commandQuickPick([
-          [`Week Sun..Sat`,  ``, () => { select2WeeklyCalendarWeekType(`Sun`); }],
-          [`Week Mon..Sun`,  ``, () => { select2WeeklyCalendarWeekType(`Mon`); }],
+          [`Week Sun..Sat`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Sun`); }],
+          [`Week Mon..Sun`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Mon`); }],
         ], placeHolder);
       }],
-      [`Monthly Calendar`,        ``, () => {
+      [`Monthly Calendar`,                       `${mark}`, () => {
         const placeHolder = `Date Time Calendar | Monthly Calendar`;
         commandQuickPick([
-          [`Week Sun..Sat`,  ``, () => { select2MonthlyCalendarWeekType(`Sun..Sat`, `Sun`); }],
-          [`Week Mon..Sun`,  ``, () => { select2MonthlyCalendarWeekType(`Mon..Sun`, `Mon`); }],
+          [`Week Sun..Sat`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Sun..Sat`, `Sun`); }],
+          [`Week Mon..Sun`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Mon..Sun`, `Mon`); }],
         ], placeHolder);
       }],
     ], `Date Time Calendar | Select Function`);
@@ -508,7 +510,7 @@ function activate(context) {
   select3DateFormatSelectDateInWeek = (startDayOfWeek, placeHolder) => {
     const createCommand = (title, date) => [
       `${title} ${dateToStringJp(date, `ddd MM/DD`)}`,
-      ``,
+      `${mark}`,
       () => { selectFormatDate(`DateFormat`, date, `${placeHolder} | ${title}`); }
     ];
 
@@ -585,7 +587,7 @@ function activate(context) {
     const weekRange = weekRangeDayTitle(startDayOfWeek);
     const placeHolder = `Date Time Calendar | Weekly Calendar | Week ${weekRange}`;
     commandQuickPick([
-      [`This Week [Today]`, ``,
+      [`This Week [Today]`, `${mark}`,
         () => {
           selectWeeklyCalendar(
             getDateArrayInWeek(_Day(`today`), startDayOfWeek),
@@ -593,7 +595,7 @@ function activate(context) {
           );
         }
       ],
-      [`Select Week`,   ``,
+      [`Select Week`,   `${mark}`,
         () => { select3WeeklyCalendarPeriod(startDayOfWeek); }
       ],
     ], placeHolder);
@@ -603,7 +605,7 @@ function activate(context) {
     const weekRange = weekRangeDayTitle(startDayOfWeek);
     const placeHolder = `Date Time Calendar | Weekly Calendar | Week ${weekRange} | Select Week`;
     const createCommand = (title, dates, optionToday) => [
-      title, ``, () => {
+      title, `${mark}`, () => {
         selectWeeklyCalendar(
           dates,
           optionToday,
@@ -673,7 +675,7 @@ function activate(context) {
   select2MonthlyCalendarWeekType = (weekRangeDayTitle, startDayOfWeek) => {
     const placeHolder = `Date Time Calendar | Monthly Calendar | Week ${weekRangeDayTitle}`;
     commandQuickPick([
-      [`This Month [Today]`, ``,
+      [`This Month [Today]`, `${mark}`,
         () => {
           selectMonthlyCalendar(
             [_Day(`today`)],
@@ -682,7 +684,7 @@ function activate(context) {
           );
         }
       ],
-      [`Select Month`,   ``,
+      [`Select Month`,   `${mark}`,
         () => { select3MonthlyCalendarPeriod(weekRangeDayTitle, startDayOfWeek); }
       ],
     ], placeHolder);
@@ -691,7 +693,7 @@ function activate(context) {
   select3MonthlyCalendarPeriod = (weekRangeDayTitle, startDayOfWeek) => {
     const placeHolder = `Date Time Calendar | Monthly Calendar | Week ${weekRangeDayTitle} | Select Month`;
     const createCommand = (title, dates, optionToday) => [
-      title, ``, () => {
+      title, `${mark}`, () => {
         selectMonthlyCalendar(
           dates,
           optionToday,
