@@ -39,6 +39,7 @@ const { _Year } = require(`./date/_Year.js`);
 const { _Month } = require(`./date/_Month.js`);
 const { _Day } = require(`./date/_Day.js`);
 const { _getDatetime } = require(`./date/_getDatetime.js`);
+const { _Datetime } = require(`./date/_Datetime.js`);
 
 const { _stringToIntegerDefault } = require(`./convert/_stringToIntegerDefault.js`);
 
@@ -63,6 +64,7 @@ module.exports = {
 
   _nameOfMonth, _dateToString,
   _dayOfWeek,
+  _Datetime,
   _getDatetime,
   _Year,
   _Month,

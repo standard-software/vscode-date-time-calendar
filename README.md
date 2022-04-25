@@ -151,12 +151,15 @@ or select root menu
 - `Date Time Calendar | Date Format | Date Today | Select`
 - `Date Time Calendar | Date Format | DateTime Today Now | Select`
 - `Date Time Calendar | Date Format | Time Now | Select`
+<!-- 
 - `Date Time Calendar | Date Format | Date Yesterday | Default`
 - `Date Time Calendar | Date Format | Date Tomorrow | Default`
 - `Date Time Calendar | Date Format | Date Yesterday | Select`
 - `Date Time Calendar | Date Format | Date Tomorrow | Select`
 - `Date Time Calendar | Date Format | Sun..Sat Last To Next Week | Select`
 - `Date Time Calendar | Date Format | Mon..Sun Last To Next Week | Select`
+-->
+- `Date Time Calendar | Date Format | Select Date`
 
 - `Date Time Calendar | Weekly Calendar | Sun..Sat | This Week [Today] | Select`
 - `Date Time Calendar | Weekly Calendar | Sun..Sat | Last Week | Select`
@@ -326,6 +329,12 @@ _ = Space
 Released under the [MIT License][license].
 
 ## Version
+
+### 1.4.0
+2022/04/26(Tue)
+- Add DateFormat SelectDate
+  - before 100 year
+  - after 100 year
 
 ### 1.3.0
 2022/04/24(Sun)

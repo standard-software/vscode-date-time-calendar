@@ -5,6 +5,7 @@ const {
   _Year,
   _Month,
   _Day,
+  _Datetime,
   _getDatetime,
   _unique,
   _subFirst, _subLast,
@@ -37,6 +38,10 @@ const date2Space = (date, timezoneOffset) => {
   return _paddingFirst(_dateToString.rule.date1(date, timezoneOffset), 2, ` `);
 };
 
+const month2Space = (date, timezoneOffset) => {
+  return _paddingFirst(_dateToString.rule.month1(date, timezoneOffset), 2, ` `);
+};
+
 const monthEnLongLeft = (date, timezoneOffset) => {
   return _paddingLast(_nameOfMonth.names.EnglishLong()[
     _dateToString.rule.month(date, timezoneOffset)
@@ -53,6 +58,7 @@ const dateToStringJp = (date, format) => {
   const rule = _dateToString.rule.Default();
   rule[`dd`] = { func: dayOfWeekEn2 };
   rule[`SD`] = { func: date2Space };
+  rule[`SM`] = { func: month2Space };
   rule[`LMMMMM`] = { func: monthEnLongLeft };
   rule[`RMMMMM`] = { func: monthEnLongRight };
   rule[`DDD`] = { func: dayOfWeekJpShort };
@@ -285,6 +291,12 @@ const getEndDayOfWeek = (startDayOfWeek) => {
   }
 };
 
+const monthDayCount = (date) => {
+  const {year, month } = _getDatetime(date);
+  const target = _Datetime(year, month + 1, 1);
+  return _getDatetime(_Day(-1, target)).date;
+};
+
 const weekRangeDayTitle = (startDayOfWeek) =>
   `${startDayOfWeek}..${getEndDayOfWeek(startDayOfWeek)}`;
 
@@ -471,23 +483,7 @@ function activate(context) {
             }],
           ], `Date Time Calendar | Date Format | Today Now`);
         }],
-        [`Select Date`,                          `${mark}`, () => {
-          const placeHolder = `Date Time Calendar | Date Format | Select Date`;
-          commandQuickPick([
-            [`Date Yesterday`,                   `${mark}`, () => {
-              selectFormatDate(`DateFormat`, _Day(`yesterday`), `${placeHolder} | Date Yesterday`);
-            }],
-            [`Date Tomorrow`,                    `${mark}`, () => {
-              selectFormatDate(`DateFormat`, _Day(`tomorrow`), `${placeHolder} | Date Tomorrow`);
-            }],
-            [`Week ${weekRangeDayTitle(`Sun`)}`, `${mark}`, () => {
-              select3DateFormatSelectDateInWeek(`Sun`, `${placeHolder} | Week ${weekRangeDayTitle(`Sun`)}`);
-            }],
-            [`Week ${weekRangeDayTitle(`Mon`)}`, `${mark}`, () => {
-              select3DateFormatSelectDateInWeek(`Mon`, `${placeHolder} | Week ${weekRangeDayTitle(`Mon`)}`);
-            }],
-          ], placeHolder);
-        }],
+        [`Select Date`,                          `${mark}`, () => { selectDate(); }],
       ], `Date Time Calendar | Date Format`); }],
       [`Weekly Calendar`,                        `${mark}`, () => {
         const placeHolder = `Date Time Calendar | Weekly Calendar`;
@@ -506,6 +502,103 @@ function activate(context) {
     ], `Date Time Calendar | Select Function`);
   });
 
+  const selectDate = () => {
+
+    const dateThisYear = _Year(`this`);
+    const yearThis =  dateThisYear.getFullYear();
+    const yearBefore100 = yearThis - 100;
+    const yearBefore10 = yearThis - 10;
+    const yearBefore1 = yearThis - 1;
+    const yearAfter1 = yearThis + 1;
+    const yearAfter10 = yearThis + 10;
+    const yearAfter100 = yearThis + 100;
+
+    const placeHolder = `Date Time Calendar | Date Format | Select Date`;
+    commandQuickPick([
+      [
+        `${yearBefore100} - ${yearBefore10 - 1} : 100 year before`, `${mark}`,
+        () => { selectTenYear(_Year(-100, dateThisYear)); }
+      ],
+      [
+        `${yearBefore10} - ${yearBefore1} : 10 year before`, `${mark}`,
+        () => { selectOneYear(_Year(-10, dateThisYear)); }
+      ],
+      [
+        `${yearThis} : This year`, `${mark}`,
+        () => { selectMonth(dateThisYear); }
+      ],
+      [
+        `${yearAfter1} - ${yearAfter10} : 10 year after`, `${mark}`,
+        () => { selectOneYear(_Year(1, dateThisYear)); }
+      ],
+      [
+        `${yearAfter10 + 1} - ${yearAfter100} : 100 year after`, `${mark}`,
+        () => { selectTenYear(_Year(11, dateThisYear)); }
+      ],
+    ], placeHolder);
+
+    const selectTenYear = (dateYear) => {
+      const commands = [];
+      for (let i = 0; i <= 8; i += 1) {
+        const targetDate = _Year(i * 10, dateYear);
+        commands.push([
+          `${_dateToString(targetDate, `YYYY`)} - ${_dateToString(_Year(9, targetDate), `YYYY`)}`,
+          `${mark}`,
+          () => { selectOneYear(targetDate); },
+        ]);
+      }
+      commandQuickPick(commands, `${placeHolder} | ` +
+        `${_dateToString(dateYear, `YYYY`)} - ${_dateToString(_Year(89, dateYear), `YYYY`)}`);
+    };
+
+    const selectOneYear = (dateYear) => {
+      const commands = [];
+      for (let i = 0; i <= 9; i += 1) {
+        const targetDate = _Year(i, dateYear);
+        commands.push([
+          _dateToString(targetDate, `YYYY`),
+          `${mark}`,
+          () => { selectMonth(targetDate); },
+        ]);
+      }
+      commandQuickPick(commands, `${placeHolder} | ` +
+        `${_dateToString(dateYear, `YYYY`)} - ${_dateToString(_Year(9, dateYear), `YYYY`)}`);
+    };
+
+    const selectMonth = (dateYear) => {
+      const commands = [];
+      for (let i = 1; i <= 12; i += 1) {
+        const targetDate = _Month(i - 1, dateYear);
+        commands.push([
+          dateToStringJp(targetDate, `MM : YYYY-MM : MMM`),
+          `${mark}`,
+          () => { selectDay(targetDate); },
+        ]);
+      }
+      commandQuickPick(commands, `${placeHolder} | ${dateYear.getFullYear()}`);
+    };
+
+    const selectDay = (dateMonth) => {
+      const commands = [];
+      const monthDaysCount = monthDayCount(dateMonth);
+      for (let i = 1; i <= monthDaysCount; i += 1) {
+        const targetDate = _Day(i - 1, dateMonth);
+        commands.push([
+          _dateToString(targetDate, `DD : YYYY-MM-DD ddd`),
+          `${mark}`,
+          () => {
+            selectFormatDate(
+              `DateFormat`,
+              targetDate,
+              `${placeHolder} | ${_dateToString(targetDate, `YYYY-MM-DD ddd`)}`
+            );
+          }
+        ]);
+      }
+      commandQuickPick(commands, `${placeHolder} | ${_dateToString(dateMonth, `YYYY-MM`)}`);
+    };
+
+  };
 
   select3DateFormatSelectDateInWeek = (startDayOfWeek, placeHolder) => {
     const createCommand = (title, date) => [
