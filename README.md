@@ -173,6 +173,7 @@ or select root menu
 - `Date Time Calendar | Weekly Calendar | Mon..Sun | This Year [Today] | Select`
 - `Date Time Calendar | Weekly Calendar | Mon..Sun | Last To Next 3Year [Today] | Select`
  -->
+<!--  
 - `Date Time Calendar | Monthly Calendar | Sun..Sat | This Month [Today] | Select`
 - `Date Time Calendar | Monthly Calendar | Sun..Sat | Last Month | Select`
 - `Date Time Calendar | Monthly Calendar | Sun..Sat | This Month | Select`
@@ -188,6 +189,7 @@ or select root menu
 - `Date Time Calendar | Monthly Calendar | Mon..Sun | Last To Next 3Month | Select`
 - `Date Time Calendar | Monthly Calendar | Mon..Sun | This Year | Select`
 - `Date Time Calendar | Monthly Calendar | Mon..Sun | Last To Next 3Year | Select`
+ -->
 
 ## Setting
 
@@ -330,6 +332,7 @@ Released under the [MIT License][license].
   - Calendar : Today
   - Calendar : Select Date
 - Change Weekly Calendar >> Line Vertical Calendar
+- Change Monthly Calendar >> Monthly Square Calendar
 - Delete Select Week Type Sun..Sat / Mon..Sun
 
 ### 1.4.0

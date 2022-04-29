@@ -133,8 +133,7 @@ function activate(context) {
         }],
         [`Monthly Square Calendar`,                       `${mark}`, () => {
           selectMonthlyCalendar(
-            [_Day(`today`)],
-            true, `Sun`,
+            [_Day(`today`)], _Day(`today`), _Day(`today`), `Sun`,
             `Date Time Calendar | Calendar : This month today | Monthly Square`
           );
         }],
@@ -258,8 +257,7 @@ function activate(context) {
                 }],
                 [`Monthly Square Calendar`,                       `${mark}`, () => {
                   selectMonthlyCalendar(
-                    [targetDate],
-                    true, `Sun`,
+                    [targetDate], targetDate, targetDate, `Sun`,
                     `Date Time Calendar | Calendar : This month today | Monthly Square`
                   );
                 }],
@@ -399,63 +397,63 @@ function activate(context) {
     );
   };
 
-  select2MonthlyCalendarWeekType = (weekRangeDayTitle, startDayOfWeek) => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Week ${weekRangeDayTitle}`;
-    commandQuickPick([
-      [`This Month [Today]`, `${mark}`,
-        () => {
-          selectMonthlyCalendar(
-            [_Day(`today`)],
-            true, startDayOfWeek,
-            `${placeHolder} | This Month [Today]`
-          );
-        }
-      ],
-      [`Select Month`,   `${mark}`,
-        () => { select3MonthlyCalendarPeriod(weekRangeDayTitle, startDayOfWeek); }
-      ],
-    ], placeHolder);
-  };
+  // select2MonthlyCalendarWeekType = (weekRangeDayTitle, startDayOfWeek) => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Week ${weekRangeDayTitle}`;
+  //   commandQuickPick([
+  //     [`This Month [Today]`, `${mark}`,
+  //       () => {
+  //         selectMonthlyCalendar(
+  //           [_Day(`today`)],
+  //           true, startDayOfWeek,
+  //           `${placeHolder} | This Month [Today]`
+  //         );
+  //       }
+  //     ],
+  //     [`Select Month`,   `${mark}`,
+  //       () => { select3MonthlyCalendarPeriod(weekRangeDayTitle, startDayOfWeek); }
+  //     ],
+  //   ], placeHolder);
+  // };
 
-  select3MonthlyCalendarPeriod = (weekRangeDayTitle, startDayOfWeek) => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Week ${weekRangeDayTitle} | Select Month`;
-    const createCommand = (title, dates, optionToday) => [
-      title, `${mark}`, () => {
-        selectMonthlyCalendar(
-          dates,
-          optionToday,
-          startDayOfWeek,
-          `${placeHolder} | ${title}`
-        );
-      },
-    ];
-    commandQuickPick([
-      createCommand(`Last Month`,
-        [_Month(-1, _Day(`today`))], false
-      ),
-      createCommand(`This Month`,
-        [_Day(`today`)], false
-      ),
-      createCommand(`Next Month`,
-        [_Month(1, _Day(`today`))], false
-      ),
-      createCommand(`Last To Next 3Month [Today]`,
-        getDateArrayMonthly3Months(_Day(`today`)), true
-      ),
-      createCommand(`This Year [Today]`,
-        getDateArrayMonthlyYear(_Day(`today`)), true
-      ),
-      createCommand(`Last To Next 3Years [Today]`,
-        getDateArrayMonthly3Years(_Day(`today`)), true
-      ),
-    ], placeHolder);
-  };
+  // select3MonthlyCalendarPeriod = (weekRangeDayTitle, startDayOfWeek) => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Week ${weekRangeDayTitle} | Select Month`;
+  //   const createCommand = (title, dates, optionToday) => [
+  //     title, `${mark}`, () => {
+  //       selectMonthlyCalendar(
+  //         dates,
+  //         optionToday,
+  //         startDayOfWeek,
+  //         `${placeHolder} | ${title}`
+  //       );
+  //     },
+  //   ];
+  //   commandQuickPick([
+  //     createCommand(`Last Month`,
+  //       [_Month(-1, _Day(`today`))], false
+  //     ),
+  //     createCommand(`This Month`,
+  //       [_Day(`today`)], false
+  //     ),
+  //     createCommand(`Next Month`,
+  //       [_Month(1, _Day(`today`))], false
+  //     ),
+  //     createCommand(`Last To Next 3Month [Today]`,
+  //       getDateArrayMonthly3Months(_Day(`today`)), true
+  //     ),
+  //     createCommand(`This Year [Today]`,
+  //       getDateArrayMonthlyYear(_Day(`today`)), true
+  //     ),
+  //     createCommand(`Last To Next 3Years [Today]`,
+  //       getDateArrayMonthly3Years(_Day(`today`)), true
+  //     ),
+  //   ], placeHolder);
+  // };
 
-  const selectMonthlyCalendar = (targetDates, optionToday, startDayOfWeek, placeHolder) => {
+  const selectMonthlyCalendar = (targetDates, titleDate, pickupDate, startDayOfWeek, placeHolder) => {
     commandQuickPick(
       getMonthlyCalendarSettings().map(
         setting => [
-          dateToStringJp(_Month(`this`, targetDates[0]), setting.title),
+          dateToStringJp(_Month(`this`, titleDate), setting.title),
           ``,
           () => {
             const editor = vscode.window.activeTextEditor;
@@ -470,7 +468,7 @@ function activate(context) {
                 targetDate,
                 {
                   startDayOfWeek,
-                  todayPickup: optionToday,
+                  pickupDate,
                   headerFormat: setting.header,
                   dayOfWeekFormat: setting.dayOfWeek,
                   dateFormat: setting.date,
@@ -592,63 +590,63 @@ function activate(context) {
   //   selectWeeklyCalendar(getDateArrayWeekly3Years(_Day(`today`), `Mon`), true, placeHolder);
   // });
 
-  registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatThisMonthTodaySelect`, () => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | This Month [Today] | Select`;
-    selectMonthlyCalendar([_Day(`today`)], true, `Sun`, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatLastMonthSelect`, () => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | Last Month | Select`;
-    selectMonthlyCalendar([_Month(-1, _Day(`today`))], false, `Sun`, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatThisMonthSelect`, () => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | This Month | Select`;
-    selectMonthlyCalendar([_Day(`today`)], false, `Sun`, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatNextMonthSelect`, () => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | Next Month | Select`;
-    selectMonthlyCalendar([_Month(1, _Day(`today`))], false, `Sun`, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatLastToNextMonthSelect`, () => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | Last To Next 3Month | Select`;
-    selectMonthlyCalendar(getDateArrayMonthly3Months(_Day(`today`)), true, `Sun`, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatThisYearSelect`, () => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | This Year | Select`;
-    selectMonthlyCalendar(getDateArrayMonthlyYear(_Day(`today`)), true, `Sun`, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatLastToNextYearSelect`, () => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | Last To Next 3Year | Select`;
-    selectMonthlyCalendar(getDateArrayMonthly3Years(_Day(`today`)), true, `Sun`, placeHolder);
-  });
+  // registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatThisMonthTodaySelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | This Month [Today] | Select`;
+  //   selectMonthlyCalendar([_Day(`today`)], true, `Sun`, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatLastMonthSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | Last Month | Select`;
+  //   selectMonthlyCalendar([_Month(-1, _Day(`today`))], false, `Sun`, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatThisMonthSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | This Month | Select`;
+  //   selectMonthlyCalendar([_Day(`today`)], false, `Sun`, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatNextMonthSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | Next Month | Select`;
+  //   selectMonthlyCalendar([_Month(1, _Day(`today`))], false, `Sun`, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatLastToNextMonthSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | Last To Next 3Month | Select`;
+  //   selectMonthlyCalendar(getDateArrayMonthly3Months(_Day(`today`)), true, `Sun`, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatThisYearSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | This Year | Select`;
+  //   selectMonthlyCalendar(getDateArrayMonthlyYear(_Day(`today`)), true, `Sun`, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatLastToNextYearSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | Last To Next 3Year | Select`;
+  //   selectMonthlyCalendar(getDateArrayMonthly3Years(_Day(`today`)), true, `Sun`, placeHolder);
+  // });
 
-  registerCommand(`DateTimeCalendar.MonthlyCalendarMonSunThisMonthTodaySelect`, () => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Mon..Sun | This Month [Today] | Select`;
-    selectMonthlyCalendar([_Day(`today`)], true, `Mon`, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.MonthlyCalendarMonSunLastMonthSelect`, () => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Mon..Sun | Last Month | Select`;
-    selectMonthlyCalendar([_Month(-1, _Day(`today`))], false, `Mon`, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.MonthlyCalendarMonSunThisMonthSelect`, () => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Mon..Sun | This Month | Select`;
-    selectMonthlyCalendar([_Day(`today`)], false, `Mon`, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.MonthlyCalendarMonSunNextMonthSelect`, () => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Mon..Sun | Next Month | Select`;
-    selectMonthlyCalendar([_Month(1, _Day(`today`))], false, `Mon`, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.MonthlyCalendarMonSunLastToNextMonthSelect`, () => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Mon..Sun | Last To Next 3Month | Select`;
-    selectMonthlyCalendar(getDateArrayMonthly3Months(_Day(`today`)), true, `Mon`, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.MonthlyCalendarMonSunThisYearSelect`, () => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Mon..Sun | This Year | Select`;
-    selectMonthlyCalendar(getDateArrayMonthlyYear(_Day(`today`)), true, `Mon`, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.MonthlyCalendarMonSunLastToNextYearSelect`, () => {
-    const placeHolder = `Date Time Calendar | Monthly Calendar | Mon..Sun | Last To Next 3Year | Select`;
-    selectMonthlyCalendar(getDateArrayMonthly3Years(_Day(`today`)), true, `Mon`, placeHolder);
-  });
+  // registerCommand(`DateTimeCalendar.MonthlyCalendarMonSunThisMonthTodaySelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Mon..Sun | This Month [Today] | Select`;
+  //   selectMonthlyCalendar([_Day(`today`)], true, `Mon`, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.MonthlyCalendarMonSunLastMonthSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Mon..Sun | Last Month | Select`;
+  //   selectMonthlyCalendar([_Month(-1, _Day(`today`))], false, `Mon`, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.MonthlyCalendarMonSunThisMonthSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Mon..Sun | This Month | Select`;
+  //   selectMonthlyCalendar([_Day(`today`)], false, `Mon`, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.MonthlyCalendarMonSunNextMonthSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Mon..Sun | Next Month | Select`;
+  //   selectMonthlyCalendar([_Month(1, _Day(`today`))], false, `Mon`, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.MonthlyCalendarMonSunLastToNextMonthSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Mon..Sun | Last To Next 3Month | Select`;
+  //   selectMonthlyCalendar(getDateArrayMonthly3Months(_Day(`today`)), true, `Mon`, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.MonthlyCalendarMonSunThisYearSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Mon..Sun | This Year | Select`;
+  //   selectMonthlyCalendar(getDateArrayMonthlyYear(_Day(`today`)), true, `Mon`, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.MonthlyCalendarMonSunLastToNextYearSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Monthly Calendar | Mon..Sun | Last To Next 3Year | Select`;
+  //   selectMonthlyCalendar(getDateArrayMonthly3Years(_Day(`today`)), true, `Mon`, placeHolder);
+  // });
 
 }
 

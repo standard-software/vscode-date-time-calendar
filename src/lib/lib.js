@@ -330,7 +330,7 @@ const textCalendarWeekly = (targetDates,{
 
 const textCalendarMonthly = (targetDate,{
   startDayOfWeek,
-  todayPickup,
+  pickupDate,
   headerFormat,
   dayOfWeekFormat,
   dateFormat,
@@ -373,7 +373,7 @@ const textCalendarMonthly = (targetDate,{
 
   let todayFlag = false;
   for (const date of calendarDates) {
-    if (todayPickup && equalToday(date)) {
+    if (pickupDate && equalDate(date, pickupDate)) {
       if (dayOfWeekEnShort[date.getDay()] === startDayOfWeek) {
         result +=
           _subFirst(indent, indent.length - todayLeft.length) +
