@@ -107,21 +107,38 @@ function activate(context) {
 
     [`Date Format : Select Date`,             `${mark}`, () => { selectDateRange200Year(`SelectFormatDate`); }],
 
-    [`Calendar : Today`,                            `${mark}`, () => {
+    // [`Calendar : Today`,                            `${mark}`, () => {
+    //   commandQuickPick([
+    //     [`Weekly Calendar`,                        `${mark}`, () => {
+    //       commandQuickPick([
+    //         [`Week Sun..Sat`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Sun`); }],
+    //         [`Week Mon..Sun`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Mon`); }],
+    //       ], `Date Time Calendar | Calendar : Today | Weekly`);
+    //     }],
+    //     [`Monthly Calendar`,                       `${mark}`, () => {
+    //       commandQuickPick([
+    //         [`Week Sun..Sat`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Sun..Sat`, `Sun`); }],
+    //         [`Week Mon..Sun`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Mon..Sun`, `Mon`); }],
+    //       ], `Date Time Calendar | Calendar : Today | Monthly`);
+    //     }],
+    //   ], `Date Time Calendar | Calendar : Today`);
+    // }],
+    [`Calendar : This month today`,                       `${mark}`, () => {
       commandQuickPick([
-        [`Weekly Calendar`,                        `${mark}`, () => {
-          commandQuickPick([
-            [`Week Sun..Sat`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Sun`); }],
-            [`Week Mon..Sun`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Mon`); }],
-          ], `Date Time Calendar | Calendar : Today | Weekly`);
+        [`Line Vertical Calendar`,                        `${mark}`, () => {
+          selectWeeklyCalendar(
+            getDateArrayWeeklyMonth(_Day(`today`), `Sun`), _Day(`today`), _Day(`today`),
+            `Date Time Calendar | Calendar : This month today | Line Vertical`,
+          );
         }],
-        [`Monthly Calendar`,                       `${mark}`, () => {
-          commandQuickPick([
-            [`Week Sun..Sat`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Sun..Sat`, `Sun`); }],
-            [`Week Mon..Sun`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Mon..Sun`, `Mon`); }],
-          ], `Date Time Calendar | Calendar : Today | Monthly`);
+        [`Monthly Square Calendar`,                       `${mark}`, () => {
+          selectMonthlyCalendar(
+            [_Day(`today`)],
+            true, `Sun`,
+            `Date Time Calendar | Calendar : This month today | Monthly Square`
+          );
         }],
-      ], `Date Time Calendar | Calendar : Today`);
+      ], `Date Time Calendar | Calendar : This month today`);
     }],
 
     [`Calendar : Select Date`,             `${mark}`, () => { selectDateRange200Year(`SelectDateCalendar`); }],
@@ -233,19 +250,20 @@ function activate(context) {
               );
             } else if (mode === `SelectDateCalendar`) {
               commandQuickPick([
-                [`Weekly Calendar`,                        `${mark}`, () => {
-                  commandQuickPick([
-                    [`Week Sun..Sat`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Sun`); }],
-                    [`Week Mon..Sun`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Mon`); }],
-                  ], `Date Time Calendar | Calendar : Today | Weekly`);
+                [`Line Vertical Calendar`,                        `${mark}`, () => {
+                  selectWeeklyCalendar(
+                    getDateArrayWeeklyMonth(targetDate, `Sun`), targetDate, targetDate,
+                    `Date Time Calendar | Calendar : This month today | Line Vertical`,
+                  );
                 }],
-                [`Monthly Calendar`,                       `${mark}`, () => {
-                  commandQuickPick([
-                    [`Week Sun..Sat`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Sun..Sat`, `Sun`); }],
-                    [`Week Mon..Sun`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Mon..Sun`, `Mon`); }],
-                  ], `Date Time Calendar | Calendar : Today | Monthly`);
+                [`Monthly Square Calendar`,                       `${mark}`, () => {
+                  selectMonthlyCalendar(
+                    [targetDate],
+                    true, `Sun`,
+                    `Date Time Calendar | Calendar : This month today | Monthly Square`
+                  );
                 }],
-              ], `Date Time Calendar | Calendar : Today`);
+              ], `Date Time Calendar | Calendar : This month today`);
             }
           }
         ]);
@@ -292,69 +310,69 @@ function activate(context) {
     insertString(dateToStringJp(date, format));
   };
 
-  select2WeeklyCalendarWeekType = (startDayOfWeek) => {
-    const weekRange = weekRangeDayTitle(startDayOfWeek);
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Week ${weekRange}`;
-    commandQuickPick([
-      [`This Week [Today]`, `${mark}`,
-        () => {
-          selectWeeklyCalendar(
-            getDateArrayInWeek(_Day(`today`), startDayOfWeek),
-            true, `${placeHolder} | This Week [Today]`
-          );
-        }
-      ],
-      [`Select Week`,   `${mark}`,
-        () => { select3WeeklyCalendarPeriod(startDayOfWeek); }
-      ],
-    ], placeHolder);
-  };
+  // select2WeeklyCalendarWeekType = (startDayOfWeek) => {
+  //   const weekRange = weekRangeDayTitle(startDayOfWeek);
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Week ${weekRange}`;
+  //   commandQuickPick([
+  //     [`This Week [Today]`, `${mark}`,
+  //       () => {
+  //         selectWeeklyCalendar(
+  //           getDateArrayInWeek(_Day(`today`), startDayOfWeek),
+  //           true, `${placeHolder} | This Week [Today]`
+  //         );
+  //       }
+  //     ],
+  //     [`Select Week`,   `${mark}`,
+  //       () => { select3WeeklyCalendarPeriod(startDayOfWeek); }
+  //     ],
+  //   ], placeHolder);
+  // };
 
-  select3WeeklyCalendarPeriod = (startDayOfWeek) => {
-    const weekRange = weekRangeDayTitle(startDayOfWeek);
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Week ${weekRange} | Select Week`;
-    const createCommand = (title, dates, optionToday) => [
-      title, `${mark}`, () => {
-        selectWeeklyCalendar(
-          dates,
-          optionToday,
-          `${placeHolder} | ${title}`
-        );
-      },
-    ];
-    commandQuickPick([
-      createCommand(`Last Week`,
-        getDateArrayInWeek(_Day(-7), startDayOfWeek), false
-      ),
-      createCommand(`This Week`,
-        getDateArrayInWeek(_Day(`today`), startDayOfWeek), false
-      ),
-      createCommand(`Next Week`,
-        getDateArrayInWeek(_Day( 7), startDayOfWeek), false
-      ),
-      createCommand(`Last To Next 3Weeks [Today]`,
-        getDateArrayWeekly3Week(_Day(`today`), startDayOfWeek), true
-      ),
-      createCommand(`This Month [Today]`,
-        getDateArrayWeeklyMonth(_Day(`today`), startDayOfWeek), true
-      ),
-      createCommand(`Last To Next 3Months [Today]`,
-        getDateArrayWeekly3Months(_Day(`today`), startDayOfWeek), true
-      ),
-      createCommand(`This Year [Today]`,
-        getDateArrayWeeklyYear(_Day(`today`), startDayOfWeek), true
-      ),
-      createCommand(`Last To Next 3Years [Today]`,
-        getDateArrayWeekly3Years(_Day(`today`), startDayOfWeek), true
-      ),
-    ], placeHolder);
-  };
+  // select3WeeklyCalendarPeriod = (startDayOfWeek) => {
+  //   const weekRange = weekRangeDayTitle(startDayOfWeek);
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Week ${weekRange} | Select Week`;
+  //   const createCommand = (title, dates, optionToday) => [
+  //     title, `${mark}`, () => {
+  //       selectWeeklyCalendar(
+  //         dates,
+  //         optionToday,
+  //         `${placeHolder} | ${title}`
+  //       );
+  //     },
+  //   ];
+  //   commandQuickPick([
+  //     createCommand(`Last Week`,
+  //       getDateArrayInWeek(_Day(-7), startDayOfWeek), false
+  //     ),
+  //     createCommand(`This Week`,
+  //       getDateArrayInWeek(_Day(`today`), startDayOfWeek), false
+  //     ),
+  //     createCommand(`Next Week`,
+  //       getDateArrayInWeek(_Day( 7), startDayOfWeek), false
+  //     ),
+  //     createCommand(`Last To Next 3Weeks [Today]`,
+  //       getDateArrayWeekly3Week(_Day(`today`), startDayOfWeek), true
+  //     ),
+  //     createCommand(`This Month [Today]`,
+  //       getDateArrayWeeklyMonth(_Day(`today`), startDayOfWeek), true
+  //     ),
+  //     createCommand(`Last To Next 3Months [Today]`,
+  //       getDateArrayWeekly3Months(_Day(`today`), startDayOfWeek), true
+  //     ),
+  //     createCommand(`This Year [Today]`,
+  //       getDateArrayWeeklyYear(_Day(`today`), startDayOfWeek), true
+  //     ),
+  //     createCommand(`Last To Next 3Years [Today]`,
+  //       getDateArrayWeekly3Years(_Day(`today`), startDayOfWeek), true
+  //     ),
+  //   ], placeHolder);
+  // };
 
-  const selectWeeklyCalendar = (targetDates, optionToday, placeHolder) => {
+  const selectWeeklyCalendar = (targetDates, titleDate, pickupDate, placeHolder) => {
     commandQuickPick(
       getWeeklyCalendarSettings().map(
         setting => [
-          dateToStringJp(targetDates[0], setting.title),
+          dateToStringJp(titleDate, setting.title),
           ``,
           () => {
             const editor = vscode.window.activeTextEditor;
@@ -366,7 +384,7 @@ function activate(context) {
             const weeklyCalendarText = textCalendarWeekly(
               targetDates,
               {
-                todayPickup: optionToday,
+                pickupDate,
                 headerFormat: setting.header,
                 todayFormat: setting.today,
                 lineFormat: setting.line,
@@ -500,79 +518,79 @@ function activate(context) {
     selectDateRange200Year();
   });
 
-  registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatThisWeekTodaySelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | This Week [Today] | Select`;
-    selectWeeklyCalendar(getDateArrayInWeek(_Day(`today`), `Sun`), true, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatLastWeekSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | Last Week | Select`;
-    selectWeeklyCalendar(getDateArrayInWeek(_Day(-7), `Sun`), false, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatThisWeekSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | This Week | Select`;
-    selectWeeklyCalendar(getDateArrayInWeek(_Day(`today`), `Sun`), false, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatNextWeekSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | Next Week | Select`;
-    selectWeeklyCalendar(getDateArrayInWeek(_Day( 7), `Sun`), false, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatLastToNextWeekSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | Last To Next 3Weeks [Today] | Select`;
-    selectWeeklyCalendar(getDateArrayWeekly3Week(_Day(`today`), `Sun`), true, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatThisMonthSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | This Month [Today] | Select`;
-    selectWeeklyCalendar(getDateArrayWeeklyMonth(_Day(`today`), `Sun`), true, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatLastToNextMonthSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | Last To Next 3Month [Today] | Select`;
-    selectWeeklyCalendar(getDateArrayWeekly3Months(_Day(`today`), `Sun`), true, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatThisYearSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | This Year [Today] | Select`;
-    selectWeeklyCalendar(getDateArrayWeeklyYear(_Day(`today`), `Sun`), true, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatLastToNextYearSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | Last To Next 3Year [Today] | Select`;
-    selectWeeklyCalendar(getDateArrayWeekly3Years(_Day(`today`), `Sun`), true, placeHolder);
-  });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatThisWeekTodaySelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | This Week [Today] | Select`;
+  //   selectWeeklyCalendar(getDateArrayInWeek(_Day(`today`), `Sun`), true, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatLastWeekSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | Last Week | Select`;
+  //   selectWeeklyCalendar(getDateArrayInWeek(_Day(-7), `Sun`), false, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatThisWeekSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | This Week | Select`;
+  //   selectWeeklyCalendar(getDateArrayInWeek(_Day(`today`), `Sun`), false, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatNextWeekSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | Next Week | Select`;
+  //   selectWeeklyCalendar(getDateArrayInWeek(_Day( 7), `Sun`), false, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatLastToNextWeekSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | Last To Next 3Weeks [Today] | Select`;
+  //   selectWeeklyCalendar(getDateArrayWeekly3Week(_Day(`today`), `Sun`), true, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatThisMonthSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | This Month [Today] | Select`;
+  //   selectWeeklyCalendar(getDateArrayWeeklyMonth(_Day(`today`), `Sun`), true, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatLastToNextMonthSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | Last To Next 3Month [Today] | Select`;
+  //   selectWeeklyCalendar(getDateArrayWeekly3Months(_Day(`today`), `Sun`), true, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatThisYearSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | This Year [Today] | Select`;
+  //   selectWeeklyCalendar(getDateArrayWeeklyYear(_Day(`today`), `Sun`), true, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatLastToNextYearSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Sun..Sat | Last To Next 3Year [Today] | Select`;
+  //   selectWeeklyCalendar(getDateArrayWeekly3Years(_Day(`today`), `Sun`), true, placeHolder);
+  // });
 
-  registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunThisWeekTodaySelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | This Week [Today] | Select`;
-    selectWeeklyCalendar(getDateArrayInWeek(_Day(`today`), `Mon`), true, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunLastWeekSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | Last Week | Select`;
-    selectWeeklyCalendar(getDateArrayInWeek(_Day(-7), `Mon`), false, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunThisWeekSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | This Week | Select`;
-    selectWeeklyCalendar(getDateArrayInWeek(_Day(`today`), `Mon`), false, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunNextWeekSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | Next Week | Select`;
-    selectWeeklyCalendar(getDateArrayInWeek(_Day( 7), `Mon`), false, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunLastToNextWeekSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | Last To Next 3Weeks [Today] | Select`;
-    selectWeeklyCalendar(getDateArrayWeekly3Week(_Day(`today`), `Mon`), true, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunThisMonthSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | This Month [Today] | Select`;
-    selectWeeklyCalendar(getDateArrayWeeklyMonth(_Day(`today`), `Mon`), true, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunLastToNextMonthSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | Last To Next 3Month [Today] | Select`;
-    selectWeeklyCalendar(getDateArrayWeekly3Months(_Day(`today`), `Mon`), true, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunThisYearSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | This Year [Today] | Select`;
-    selectWeeklyCalendar(getDateArrayWeeklyYear(_Day(`today`), `Mon`), true, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunLastToNextYearSelect`, () => {
-    const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | Last To Next 3Year [Today] | Select`;
-    selectWeeklyCalendar(getDateArrayWeekly3Years(_Day(`today`), `Mon`), true, placeHolder);
-  });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunThisWeekTodaySelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | This Week [Today] | Select`;
+  //   selectWeeklyCalendar(getDateArrayInWeek(_Day(`today`), `Mon`), true, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunLastWeekSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | Last Week | Select`;
+  //   selectWeeklyCalendar(getDateArrayInWeek(_Day(-7), `Mon`), false, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunThisWeekSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | This Week | Select`;
+  //   selectWeeklyCalendar(getDateArrayInWeek(_Day(`today`), `Mon`), false, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunNextWeekSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | Next Week | Select`;
+  //   selectWeeklyCalendar(getDateArrayInWeek(_Day( 7), `Mon`), false, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunLastToNextWeekSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | Last To Next 3Weeks [Today] | Select`;
+  //   selectWeeklyCalendar(getDateArrayWeekly3Week(_Day(`today`), `Mon`), true, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunThisMonthSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | This Month [Today] | Select`;
+  //   selectWeeklyCalendar(getDateArrayWeeklyMonth(_Day(`today`), `Mon`), true, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunLastToNextMonthSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | Last To Next 3Month [Today] | Select`;
+  //   selectWeeklyCalendar(getDateArrayWeekly3Months(_Day(`today`), `Mon`), true, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunThisYearSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | This Year [Today] | Select`;
+  //   selectWeeklyCalendar(getDateArrayWeeklyYear(_Day(`today`), `Mon`), true, placeHolder);
+  // });
+  // registerCommand(`DateTimeCalendar.WeeklyCalendarMonSunLastToNextYearSelect`, () => {
+  //   const placeHolder = `Date Time Calendar | Weekly Calendar | Mon..Sun | Last To Next 3Year [Today] | Select`;
+  //   selectWeeklyCalendar(getDateArrayWeekly3Years(_Day(`today`), `Mon`), true, placeHolder);
+  // });
 
   registerCommand(`DateTimeCalendar.MonthlyCalendarSunSatThisMonthTodaySelect`, () => {
     const placeHolder = `Date Time Calendar | Monthly Calendar | Sun..Sat | This Month [Today] | Select`;

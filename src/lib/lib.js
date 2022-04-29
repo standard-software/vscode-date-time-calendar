@@ -305,7 +305,7 @@ const weekRangeDayTitle = (startDayOfWeek) =>
   `${startDayOfWeek}..${getEndDayOfWeek(startDayOfWeek)}`;
 
 const textCalendarWeekly = (targetDates,{
-  todayPickup,
+  pickupDate,
   headerFormat,
   todayFormat,
   lineFormat,
@@ -318,7 +318,7 @@ const textCalendarWeekly = (targetDates,{
       result += `${header}\n`;
     }
     headerBuffer = header;
-    if (todayPickup && equalToday(date)) {
+    if (pickupDate && equalDate(date, pickupDate)) {
       result += dateToStringJp(date, todayFormat);
     } else {
       result += dateToStringJp(date, lineFormat);
