@@ -113,28 +113,6 @@ const getDateArrayInMonth = (sourceDate) => {
   return result;
 };
 
-const getDateArrayInYear = (sourceDate) => {
-  const result = [];
-  const startDate = _Year(`this`, sourceDate);
-  const endDate = _Day(-1, _Year(`next`, sourceDate));
-  const dayCount = (endDate - startDate) / (1000 * 60 * 60 * 24);
-  if (!Number.isInteger(dayCount)) {
-    throw new Error(`getDateArrayInYear dayCount:${dayCount}`);
-  }
-  for (let i = 0; i <= dayCount; i += 1) {
-    result.push(_Day(i, startDate));
-  }
-  return result;
-};
-
-const getDateArrayWeekly3Week = (sourceDate, startDayOfWeek) => {
-  return [
-    ...getDateArrayInWeek(_Day(-7, sourceDate), startDayOfWeek),
-    ...getDateArrayInWeek(_Day( 0, sourceDate), startDayOfWeek),
-    ...getDateArrayInWeek(_Day( 7, sourceDate), startDayOfWeek),
-  ];
-};
-
 const getDateArrayWeeklyMonth = (sourceDate, startDayOfWeek) => {
   const dateStart = _Month(`this`, sourceDate);
   const dateEnd = _Day(-1, _Month(`next`, dateStart));
@@ -146,117 +124,6 @@ const getDateArrayWeeklyMonth = (sourceDate, startDayOfWeek) => {
     ],
     v => v.getTime()
   );
-};
-
-const getDateArrayWeekly3Months = (sourceDate, startDayOfWeek) => {
-  const dateStart = _Month(`last`, sourceDate);
-  const dateEnd = _Day(-1, _Month(3, dateStart));
-  return _unique(
-    [
-      ...getDateArrayInWeek(dateStart, startDayOfWeek),
-      ...getDateArrayInMonth(dateStart),
-      ...getDateArrayInMonth(sourceDate),
-      ...getDateArrayInMonth(dateEnd),
-      ...getDateArrayInWeek(dateEnd, startDayOfWeek),
-    ],
-    v => v.getTime()
-  );
-};
-
-const getDateArrayWeeklyYear = (sourceDate, startDayOfWeek) => {
-  const dateStart = _Year(`this`, sourceDate);
-  const dateEnd = _Day(-1, _Year(1, dateStart));
-  return _unique(
-    [
-      ...getDateArrayInWeek(dateStart, startDayOfWeek),
-      ...getDateArrayInYear(sourceDate),
-      ...getDateArrayInWeek(dateEnd, startDayOfWeek),
-    ],
-    v => v.getTime()
-  );
-};
-
-const getDateArrayWeekly3Years = (sourceDate, startDayOfWeek) => {
-  const dateStart = _Year(`last`, sourceDate);
-  const dateEnd = _Day(-1, _Year(3, dateStart));
-  return _unique(
-    [
-      ...getDateArrayInWeek(dateStart, startDayOfWeek),
-      ...getDateArrayInYear(dateStart),
-      ...getDateArrayInYear(sourceDate),
-      ...getDateArrayInYear(dateEnd),
-      ...getDateArrayInWeek(dateEnd, startDayOfWeek),
-    ],
-    v => v.getTime()
-  );
-};
-
-const getDateArrayMonthly3Months = (sourceDate) => {
-  return [
-    _Month(-1, sourceDate),
-    sourceDate,
-    _Month(1, sourceDate)
-  ];
-};
-
-const getDateArrayMonthlyYear = (sourceDate) => {
-  const startDate = _Year(`this`, sourceDate);
-  return [
-    startDate,
-    _Month( 1, startDate),
-    _Month( 2, startDate),
-    _Month( 3, startDate),
-    _Month( 4, startDate),
-    _Month( 5, startDate),
-    _Month( 6, startDate),
-    _Month( 7, startDate),
-    _Month( 8, startDate),
-    _Month( 9, startDate),
-    _Month(10, startDate),
-    _Month(11, startDate),
-  ];
-};
-
-const getDateArrayMonthly3Years = (sourceDate) => {
-  const startDate = _Year(-1, sourceDate);
-  return [
-    startDate,
-    _Month( 1, startDate),
-    _Month( 2, startDate),
-    _Month( 3, startDate),
-    _Month( 4, startDate),
-    _Month( 5, startDate),
-    _Month( 6, startDate),
-    _Month( 7, startDate),
-    _Month( 8, startDate),
-    _Month( 9, startDate),
-    _Month(10, startDate),
-    _Month(11, startDate),
-    _Month(12, startDate),
-    _Month(13, startDate),
-    _Month(14, startDate),
-    _Month(15, startDate),
-    _Month(16, startDate),
-    _Month(17, startDate),
-    _Month(18, startDate),
-    _Month(19, startDate),
-    _Month(20, startDate),
-    _Month(21, startDate),
-    _Month(22, startDate),
-    _Month(23, startDate),
-    _Month(24, startDate),
-    _Month(25, startDate),
-    _Month(26, startDate),
-    _Month(27, startDate),
-    _Month(28, startDate),
-    _Month(29, startDate),
-    _Month(30, startDate),
-    _Month(31, startDate),
-    _Month(32, startDate),
-    _Month(33, startDate),
-    _Month(34, startDate),
-    _Month(35, startDate),
-  ];
 };
 
 const equalDatetime = (sourceDate, targetDate, compareItems) => {
@@ -300,9 +167,6 @@ const monthDayCount = (date) => {
   const target = _Datetime(year, month + 1, 1);
   return _getDatetime(_Day(-1, target)).date;
 };
-
-const weekRangeDayTitle = (startDayOfWeek) =>
-  `${startDayOfWeek}..${getEndDayOfWeek(startDayOfWeek)}`;
 
 const textCalendarWeekly = (targetDates,{
   pickupDate,
@@ -422,16 +286,7 @@ module.exports = {
   equalToday,
   monthDayCount,
   dateToStringJp,
-  weekRangeDayTitle,
-  getDateArrayInWeek,
-  getDateArrayWeekly3Week,
   getDateArrayWeeklyMonth,
-  getDateArrayWeekly3Months,
-  getDateArrayWeeklyYear,
-  getDateArrayWeekly3Years,
   textCalendarWeekly,
-  getDateArrayMonthly3Months,
-  getDateArrayMonthlyYear,
-  getDateArrayMonthly3Years,
   textCalendarMonthly,
 };

@@ -152,44 +152,10 @@ or select root menu
 - `Date Time Calendar | Date Format | DateTime Today Now | Select`
 - `Date Time Calendar | Date Format | Time Now | Select`
 - `Date Time Calendar | Date Format | Select Date`
-<!-- 
-- `Date Time Calendar | Weekly Calendar | Sun..Sat | This Week [Today] | Select`
-- `Date Time Calendar | Weekly Calendar | Sun..Sat | Last Week | Select`
-- `Date Time Calendar | Weekly Calendar | Sun..Sat | This Week | Select`
-- `Date Time Calendar | Weekly Calendar | Sun..Sat | Next Week | Select`
-- `Date Time Calendar | Weekly Calendar | Sun..Sat | Last To Next 3Weeks [Today] | Select`
-- `Date Time Calendar | Weekly Calendar | Sun..Sat | This Month | Select`
-- `Date Time Calendar | Weekly Calendar | Sun..Sat | Last To Next 3Month [Today] | Select`
-- `Date Time Calendar | Weekly Calendar | Sun..Sat | This Year [Today] | Select`
-- `Date Time Calendar | Weekly Calendar | Sun..Sat | Last To Next 3Year [Today] | Select`
 
-- `Date Time Calendar | Weekly Calendar | Mon..Sun | This Week [Today] | Select`
-- `Date Time Calendar | Weekly Calendar | Mon..Sun | Last Week | Select`
-- `Date Time Calendar | Weekly Calendar | Mon..Sun | This Week | Select`
-- `Date Time Calendar | Weekly Calendar | Mon..Sun | Next Week | Select`
-- `Date Time Calendar | Weekly Calendar | Mon..Sun | Last To Next 3Weeks [Today] | Select`
-- `Date Time Calendar | Weekly Calendar | Mon..Sun | This Month | Select`
-- `Date Time Calendar | Weekly Calendar | Mon..Sun | Last To Next 3Month [Today] | Select`
-- `Date Time Calendar | Weekly Calendar | Mon..Sun | This Year [Today] | Select`
-- `Date Time Calendar | Weekly Calendar | Mon..Sun | Last To Next 3Year [Today] | Select`
- -->
-<!--  
-- `Date Time Calendar | Monthly Calendar | Sun..Sat | This Month [Today] | Select`
-- `Date Time Calendar | Monthly Calendar | Sun..Sat | Last Month | Select`
-- `Date Time Calendar | Monthly Calendar | Sun..Sat | This Month | Select`
-- `Date Time Calendar | Monthly Calendar | Sun..Sat | Next Month | Select`
-- `Date Time Calendar | Monthly Calendar | Sun..Sat | Last To Next 3Month | Select`
-- `Date Time Calendar | Monthly Calendar | Sun..Sat | This Year | Select`
-- `Date Time Calendar | Monthly Calendar | Sun..Sat | Last To Next 3Year | Select`
-
-- `Date Time Calendar | Monthly Calendar | Mon..Sun | This Month [Today] | Select`
-- `Date Time Calendar | Monthly Calendar | Mon..Sun | Last Month | Select`
-- `Date Time Calendar | Monthly Calendar | Mon..Sun | This Month | Select`
-- `Date Time Calendar | Monthly Calendar | Mon..Sun | Next Month | Select`
-- `Date Time Calendar | Monthly Calendar | Mon..Sun | Last To Next 3Month | Select`
-- `Date Time Calendar | Monthly Calendar | Mon..Sun | This Year | Select`
-- `Date Time Calendar | Monthly Calendar | Mon..Sun | Last To Next 3Year | Select`
- -->
+- `Date Time Calendar | Line Vertical Calendar | This month today | Select`
+- `Date Time Calendar | Monthly Square Calendar | This month today | Select`
+- `Date Time Calendar | Calendar | Select Date`
 
 ## Setting
 
