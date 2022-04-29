@@ -37,7 +37,8 @@
     "onCommand:DateTimeCalendar.DateFormatSelectDate",
 
     "onCommand:DateTimeCalendar.LineVerticalCalendarThisMonthSelect",
-    "onCommand:DateTimeCalendar.MonthlySquareCalendarThisMonthSelect",
+    "onCommand:DateTimeCalendar.MonthlySquareCalendarSunThisMonthSelect",
+    "onCommand:DateTimeCalendar.MonthlySquareCalendarMonThisMonthSelect",
     "onCommand:DateTimeCalendar.CalendarSelectMonth",
     "onCommand:DateTimeCalendar.CalendarSelectDate",
 
@@ -79,8 +80,12 @@
         "title": "Date Time Calendar | Line Vertical Calendar | This month today | Select"
       },
       {
-        "command": "DateTimeCalendar.MonthlySquareCalendarThisMonthSelect",
-        "title": "Date Time Calendar | Monthly Square Calendar | This month today | Select"
+        "command": "DateTimeCalendar.MonthlySquareCalendarSunThisMonthSelect",
+        "title": "Date Time Calendar | Monthly Square Calendar : Sun - Sat | This month today | Select"
+      },
+      {
+        "command": "DateTimeCalendar.MonthlySquareCalendarMonThisMonthSelect",
+        "title": "Date Time Calendar | Monthly Square Calendar : Mon - Sun | This month today | Select"
       },
       {
         "command": "DateTimeCalendar.CalendarSelectMonth",

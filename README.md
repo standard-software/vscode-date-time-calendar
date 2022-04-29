@@ -127,6 +127,7 @@ Select Function
     - `Date Today >>`
     - `DateTime Today Now >>`
     - `Time Now >>`
+
   - `Date Format : Select Date >>`
     - `1922 - 2011 : 100year before >>`
     - `2012 - 2021 : 10year before >>`
@@ -138,7 +139,8 @@ Select Function
 
   - `Calendar : This month today >>`
     - `Line Vertical Calendar >>`
-    - `Monthly Square Calendar >>`
+    - `Monthly Square Calendar : Sun - Sat >>`
+    - `Monthly Square Calendar : Mon - Sun >>`
 
   - `Calendar : Select Month >>`
     - Same `Date Format : Select Date`
@@ -304,7 +306,10 @@ Released under the [MIT License][license].
   - Calendar : Select Date
 - Change Weekly Calendar >> Line Vertical Calendar
 - Change Monthly Calendar >> Monthly Square Calendar
-- Delete Select Week Type Sun..Sat / Mon..Sun
+- Delete
+  - Weekly Calendar Select Week
+  - Weekly Calendar Range Week
+  - Month Calendar Range many month
 
 ### 1.4.0
 2022/04/26(Tue)
