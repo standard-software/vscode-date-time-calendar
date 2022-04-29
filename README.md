@@ -327,6 +327,8 @@ Released under the [MIT License][license].
 - Change in menu structure
   - Date Format : Today Now
   - Date Format : Select Date
+  - Calendar : Today
+  - Calendar : Select Date
 
 ### 1.4.0
 2022/04/26(Tue)

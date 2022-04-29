@@ -80,40 +80,58 @@ function activate(context) {
 
   registerCommand(`DateTimeCalendar.SelectFunction`, () => { commandQuickPick([
     [`Date Format : Today Now`,                            `${mark}`, () => {
-      const placeHolder = `Date Time Calendar | Date Format | Today Now`;
       commandQuickPick([
         [`Date Today`,                       `${mark}`, () => {
-          selectFormatDate(`DateFormat`, _Day(`today`), `${placeHolder} | Date Today`);
+          selectFormatDate(
+            `DateFormat`,
+            _Day(`today`),
+            `Date Time Calendar | Date Format | Date Today`
+          );
         }],
         [`DateTime Today Now`,               `${mark}`, () => {
-          selectFormatDate(`DateTimeFormat`, new Date(), `${placeHolder} | DateTime Today Now`);
+          selectFormatDate(
+            `DateTimeFormat`,
+            new Date(),
+            `Date Time Calendar | Date Format | DateTime Today Now`
+          );
         }],
         [`Time Now`,                         `${mark}`, () => {
-          selectFormatDate(`TimeFormat`, new Date(), `${placeHolder} | Time Now`);
+          selectFormatDate(
+            `TimeFormat`,
+            new Date(),
+            `Date Time Calendar | Date Format | Time Now`
+          );
         }],
       ], `Date Time Calendar | Date Format : Today Now`);
     }],
 
-    [`Date Format : Select Date`,             `${mark}`, () => { selectDate(); }],
+    [`Date Format : Select Date`,             `${mark}`, () => { selectDateRange200Year(`SelectFormatDate`); }],
 
-    [`Weekly Calendar`,                        `${mark}`, () => {
-      const placeHolder = `Date Time Calendar | Weekly Calendar`;
+    [`Calendar : Today`,                            `${mark}`, () => {
       commandQuickPick([
-        [`Week Sun..Sat`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Sun`); }],
-        [`Week Mon..Sun`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Mon`); }],
-      ], placeHolder);
+        [`Weekly Calendar`,                        `${mark}`, () => {
+          commandQuickPick([
+            [`Week Sun..Sat`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Sun`); }],
+            [`Week Mon..Sun`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Mon`); }],
+          ], `Date Time Calendar | Calendar : Today | Weekly`);
+        }],
+        [`Monthly Calendar`,                       `${mark}`, () => {
+          commandQuickPick([
+            [`Week Sun..Sat`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Sun..Sat`, `Sun`); }],
+            [`Week Mon..Sun`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Mon..Sun`, `Mon`); }],
+          ], `Date Time Calendar | Calendar : Today | Monthly`);
+        }],
+      ], `Date Time Calendar | Calendar : Today`);
     }],
-    [`Monthly Calendar`,                       `${mark}`, () => {
-      const placeHolder = `Date Time Calendar | Monthly Calendar`;
-      commandQuickPick([
-        [`Week Sun..Sat`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Sun..Sat`, `Sun`); }],
-        [`Week Mon..Sun`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Mon..Sun`, `Mon`); }],
-      ], placeHolder);
-    }],
+
+    [`Calendar : Select Date`,             `${mark}`, () => { selectDateRange200Year(`SelectDateCalendar`); }],
 
   ], `Date Time Calendar | Select Function`); });
 
-  const selectDate = () => {
+  const selectDateRange200Year = (mode) => {
+    if (![`SelectFormatDate`, `SelectDateCalendar`].includes(mode)) {
+      throw new Error(`selectDateRange200Year mode:${mode}`);
+    }
 
     const dateThisYear = _Year(`this`);
     const yearThis =  dateThisYear.getFullYear();
@@ -207,11 +225,28 @@ function activate(context) {
                 : ``),
           `${mark}`,
           () => {
-            selectFormatDate(
-              `DateFormat`,
-              targetDate,
-              `${placeHolder} | ${_dateToString(targetDate, `YYYY-MM-DD ddd`)}`
-            );
+            if (mode === `SelectFormatDate`) {
+              selectFormatDate(
+                `DateFormat`,
+                targetDate,
+                `${placeHolder} | ${_dateToString(targetDate, `YYYY-MM-DD ddd`)}`
+              );
+            } else if (mode === `SelectDateCalendar`) {
+              commandQuickPick([
+                [`Weekly Calendar`,                        `${mark}`, () => {
+                  commandQuickPick([
+                    [`Week Sun..Sat`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Sun`); }],
+                    [`Week Mon..Sun`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Mon`); }],
+                  ], `Date Time Calendar | Calendar : Today | Weekly`);
+                }],
+                [`Monthly Calendar`,                       `${mark}`, () => {
+                  commandQuickPick([
+                    [`Week Sun..Sat`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Sun..Sat`, `Sun`); }],
+                    [`Week Mon..Sun`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Mon..Sun`, `Mon`); }],
+                  ], `Date Time Calendar | Calendar : Today | Monthly`);
+                }],
+              ], `Date Time Calendar | Calendar : Today`);
+            }
           }
         ]);
       }
@@ -462,7 +497,7 @@ function activate(context) {
   });
 
   registerCommand(`DateTimeCalendar.DateFormatSelectDate`, () => {
-    selectDate();
+    selectDateRange200Year();
   });
 
   registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatThisWeekTodaySelect`, () => {
