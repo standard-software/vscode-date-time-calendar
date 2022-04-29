@@ -78,41 +78,40 @@ function activate(context) {
   let select2MonthlyCalendarWeekType;
   let select3MonthlyCalendarPeriod;
 
-  registerCommand(`DateTimeCalendar.SelectFunction`, () => {
-    commandQuickPick([
-      [`Date Format`,                            `${mark}`, () => { commandQuickPick([
-        [`Today Now`,                            `${mark}`, () => {
-          const placeHolder = `Date Time Calendar | Date Format | Today Now`;
-          commandQuickPick([
-            [`Date Today`,                       `${mark}`, () => {
-              selectFormatDate(`DateFormat`, _Day(`today`), `${placeHolder} | Date Today`);
-            }],
-            [`DateTime Today Now`,               `${mark}`, () => {
-              selectFormatDate(`DateTimeFormat`, new Date(), `${placeHolder} | DateTime Today Now`);
-            }],
-            [`Time Now`,                         `${mark}`, () => {
-              selectFormatDate(`TimeFormat`, new Date(), `${placeHolder} | Time Now`);
-            }],
-          ], `Date Time Calendar | Date Format | Today Now`);
+  registerCommand(`DateTimeCalendar.SelectFunction`, () => { commandQuickPick([
+    [`Date Format : Today Now`,                            `${mark}`, () => {
+      const placeHolder = `Date Time Calendar | Date Format | Today Now`;
+      commandQuickPick([
+        [`Date Today`,                       `${mark}`, () => {
+          selectFormatDate(`DateFormat`, _Day(`today`), `${placeHolder} | Date Today`);
         }],
-        [`Select Date`,                          `${mark}`, () => { selectDate(); }],
-      ], `Date Time Calendar | Date Format`); }],
-      [`Weekly Calendar`,                        `${mark}`, () => {
-        const placeHolder = `Date Time Calendar | Weekly Calendar`;
-        commandQuickPick([
-          [`Week Sun..Sat`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Sun`); }],
-          [`Week Mon..Sun`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Mon`); }],
-        ], placeHolder);
-      }],
-      [`Monthly Calendar`,                       `${mark}`, () => {
-        const placeHolder = `Date Time Calendar | Monthly Calendar`;
-        commandQuickPick([
-          [`Week Sun..Sat`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Sun..Sat`, `Sun`); }],
-          [`Week Mon..Sun`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Mon..Sun`, `Mon`); }],
-        ], placeHolder);
-      }],
-    ], `Date Time Calendar | Select Function`);
-  });
+        [`DateTime Today Now`,               `${mark}`, () => {
+          selectFormatDate(`DateTimeFormat`, new Date(), `${placeHolder} | DateTime Today Now`);
+        }],
+        [`Time Now`,                         `${mark}`, () => {
+          selectFormatDate(`TimeFormat`, new Date(), `${placeHolder} | Time Now`);
+        }],
+      ], `Date Time Calendar | Date Format : Today Now`);
+    }],
+
+    [`Date Format : Select Date`,             `${mark}`, () => { selectDate(); }],
+
+    [`Weekly Calendar`,                        `${mark}`, () => {
+      const placeHolder = `Date Time Calendar | Weekly Calendar`;
+      commandQuickPick([
+        [`Week Sun..Sat`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Sun`); }],
+        [`Week Mon..Sun`,                      `${mark}`, () => { select2WeeklyCalendarWeekType(`Mon`); }],
+      ], placeHolder);
+    }],
+    [`Monthly Calendar`,                       `${mark}`, () => {
+      const placeHolder = `Date Time Calendar | Monthly Calendar`;
+      commandQuickPick([
+        [`Week Sun..Sat`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Sun..Sat`, `Sun`); }],
+        [`Week Mon..Sun`,                      `${mark}`, () => { select2MonthlyCalendarWeekType(`Mon..Sun`, `Mon`); }],
+      ], placeHolder);
+    }],
+
+  ], `Date Time Calendar | Select Function`); });
 
   const selectDate = () => {
 

@@ -101,19 +101,18 @@ Following commands are available:
 Select Function
 
 - `Date Time Calendar | Select Function`
-  - `Date Format >>`
-    - `Today Now >>`
-      - `Date Today >>`
-      - `DateTime Today Now >>`
-      - `Time Now >>`
-    - `Select Date >>`
-      - `1922 - 2011 : 100year before >>`
-      - `2012 - 2021 : 10year before >>`
-      - `2022 : this year >>`
-        - `01 - 12 Month >>`
-          - `01 - 31 Date >>`
-      - `2023 - 2032 : 10year after >>`
-      - `2033 - 2122 : 100year after >>`
+  - `Date Format : Today Now >>`
+    - `Date Today >>`
+    - `DateTime Today Now >>`
+    - `Time Now >>`
+  - `Date Format : Select Date >>`
+    - `1922 - 2011 : 100year before >>`
+    - `2012 - 2021 : 10year before >>`
+    - `2022 : this year >>`
+      - `01 - 12 Month >>`
+        - `01 - 31 Date >>`
+    - `2023 - 2032 : 10year after >>`
+    - `2033 - 2122 : 100year after >>`
 
   - `Weekly Calendar >>`
     - `Week Sun..Sat >>`
@@ -322,6 +321,12 @@ _ = Space
 Released under the [MIT License][license].
 
 ## Version
+
+### 1.5.0
+2022/04/29(Fri)
+- Change in menu structure
+  - Date Format : Today Now
+  - Date Format : Select Date
 
 ### 1.4.0
 2022/04/26(Tue)
