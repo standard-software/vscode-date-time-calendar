@@ -95,20 +95,10 @@ function activate(context) {
     }],
 
     [`Calendar : This month today`, `${mark}`, () => {
-      commandQuickPick([
-        [`Line Vertical Calendar`,  `${mark}`, () => {
-          selectWeeklyCalendar(
-            getDateArrayWeeklyMonth(_Day(`today`), `Sun`), _Day(`today`), _Day(`today`),
-            `Date Time Calendar | Calendar : This month today | Line Vertical`,
-          );
-        }],
-        [`Monthly Square Calendar`, `${mark}`, () => {
-          selectMonthlyCalendar(
-            [_Day(`today`)], _Day(`today`), _Day(`today`), `Sun`,
-            `Date Time Calendar | Calendar : This month today | Monthly Square`
-          );
-        }],
-      ], `Date Time Calendar | Calendar : This month today`);
+      const targetDate = _Day(`today`);
+      selectCalendar(targetDate, targetDate,
+        `Date Time Calendar | Calendar : This month today`
+      );
     }],
 
     [`Calendar : Select Month`, `${mark}`, () => {
@@ -121,7 +111,15 @@ function activate(context) {
   ], `Date Time Calendar | Select Function`); });
 
   const selectDateRange200Year = (mode) => {
-    if (![`SelectFormatDate`, `SelectDateCalendar`, `SelectMonthCalendar`].includes(mode)) {
+
+    let placeHolder = ``;
+    if (mode === `SelectFormatDate`) {
+      placeHolder = `Date Time Calendar | Date Format : Select Date`;
+    } else if (mode === `SelectDateCalendar`) {
+      placeHolder = `Date Time Calendar | Calendar : Select Date`;
+    } else if (mode === `SelectMonthCalendar`) {
+      placeHolder = `Date Time Calendar | Calendar : Select Month`;
+    } else {
       throw new Error(`selectDateRange200Year mode:${mode}`);
     }
 
@@ -133,15 +131,6 @@ function activate(context) {
     const yearAfter1 = yearThis + 1;
     const yearAfter10 = yearThis + 10;
     const yearAfter100 = yearThis + 100;
-
-    let placeHolder = ``;
-    if (mode === `SelectFormatDate`) {
-      placeHolder = `Date Time Calendar | Date Format : Select Date`;
-    } else if (mode === `SelectDateCalendar`) {
-      placeHolder = `Date Time Calendar | Calendar : Select Date`;
-    } else if (mode === `SelectMonthCalendar`) {
-      placeHolder = `Date Time Calendar | Calendar : Select Month`;
-    }
 
     commandQuickPick([
       [
@@ -205,9 +194,8 @@ function activate(context) {
           `${mark}`,
           () => {
             if (mode === `SelectMonthCalendar`) {
-              selectMonthlyCalendar(
-                [targetDate], targetDate, null, `Sun`,
-                `${placeHolder} | ${_dateToString(targetDate, `YYYY-MM`)} | Monthly Square`
+              selectCalendar(targetDate, null,
+                `${placeHolder} | ${_dateToString(targetDate, `YYYY-MM`)}`
               );
             } else {
               selectDay(targetDate);
@@ -241,20 +229,9 @@ function activate(context) {
                 `${placeHolder} | ${_dateToString(targetDate, `YYYY-MM-DD ddd`)}`
               );
             } else if (mode === `SelectDateCalendar`) {
-              commandQuickPick([
-                [`Line Vertical Calendar`,  `${mark}`, () => {
-                  selectWeeklyCalendar(
-                    getDateArrayWeeklyMonth(targetDate, `Sun`), targetDate, targetDate,
-                    `${placeHolder} | ${_dateToString(targetDate, `YYYY-MM-DD ddd`)} | Line Vertical`,
-                  );
-                }],
-                [`Monthly Square Calendar`,                       `${mark}`, () => {
-                  selectMonthlyCalendar(
-                    [targetDate], targetDate, targetDate, `Sun`,
-                    `${placeHolder} | ${_dateToString(targetDate, `YYYY-MM-DD ddd`)} | Monthly Square`
-                  );
-                }],
-              ], `${placeHolder} | ${_dateToString(targetDate, `YYYY-MM-DD ddd`)}`);
+              selectCalendar(targetDate, targetDate,
+                `${placeHolder} | ${_dateToString(targetDate, `YYYY-MM-DD ddd`)}`
+              );
             }
           }
         ]);
@@ -299,6 +276,23 @@ function activate(context) {
 
   const insertFormatDate = (date, format) => {
     insertString(dateToStringJp(date, format));
+  };
+
+  const selectCalendar = (targetDate, pickupDate, placeHolder) => {
+    commandQuickPick([
+      [`Line Vertical Calendar`,  `${mark}`, () => {
+        selectWeeklyCalendar(
+          getDateArrayWeeklyMonth(targetDate, `Sun`), targetDate, pickupDate,
+          `${placeHolder} | Line Vertical`,
+        );
+      }],
+      [`Monthly Square Calendar`, `${mark}`, () => {
+        selectMonthlyCalendar(
+          [targetDate], targetDate, pickupDate, `Sun`,
+          `${placeHolder} | Monthly Square`
+        );
+      }],
+    ], `${placeHolder}`);
   };
 
   const selectWeeklyCalendar = (targetDates, titleDate, pickupDate, placeHolder) => {
