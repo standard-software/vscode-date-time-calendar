@@ -30,28 +30,50 @@ Friday, 21 January 2022
 07:55 PM
 ```
 
-- Weekly Calendar
+- Line Vertical Calendar
 ```
-2022/01  
-  17(Mon)  
-  18(Tue)  
-  19(Wed)
-  20(Thu)
- [21(Fri)]
-  22(Sat)
-  23(Sun)
+2022/03
+  27(Sun)
+  28(Mon)
+  29(Tue)
+  30(Wed)
+  31(Thu)
+2022/04
+  01(Fri)
+  02(Sat)
+  03(Sun)
+...
+  23(Sat)
+  24(Sun)
+  25(Mon)
+  26(Tue)
+  27(Wed)
+  28(Thu)
+ [29(Fri)]
+  30(Sat)
 
-2022/01
-  16  Sun
-  17  Mon
-  18  Tue
-  19  Wed
-  20  Thu
- [21] Fri
-  22  Sat
+2022/03
+  27  Sun
+  28  Mon
+  29  Tue
+  30  Wed
+  31  Thu
+2022/04
+  01  Fri
+  02  Sat
+  03  Sun
+...
+  23  Sat
+  24  Sun
+  25  Mon
+  26  Tue
+  27  Wed
+  28  Thu
+ [29] Fri
+  30  Sat
 ```
 
-- Monthly Calendar
+- Monthly Square Calendar
 ```
 January                  2022
   Sun Mon Tue Wed Thu Fri Sat
@@ -114,33 +136,14 @@ Select Function
     - `2023 - 2032 : 10year after >>`
     - `2033 - 2122 : 100year after >>`
 
-  - `Weekly Calendar >>`
-    - `Week Sun..Sat >>`
-      - `This Week [Today] >>`
-      - `Select Week >>`
-        - `Last Week >>`
-        - `This Week >>`
-        - `Next Week >>`
-        - `Last To Next 3Weeks [Today] >>`
-        - `This Month [Today] >>`
-        - `Last To Next 3Months [Today] >>`
-        - `This Year [Today] >>`
-        - `Last To Next 3Years [Today] >>`
-    - `Week Mon..Sun >>`
-      - Same as above
+  - `Calendar : This month today >>`
+    - `Line Vertical Calendar >>`
+    - `Monthly Square Calendar >>`
 
-  - `Monthly Calendar >>`
-    - `Week Sun..Sat >>`
-      - `This Month [Today] >>`
-      - `Select Month >>`
-        - `Last Week >>`
-        - `This Week >>`
-        - `Next Week >>`
-        - `Last To Next 3Month [Today] >>`
-        - `This Year [Today] >>`
-        - `Last To Next 3Years [Today] >>`
-    - `Week Mon..Sun >>`
-      - Same as above
+  - `Calendar : Select Month >>`
+    - Same `Date Format : Select Date`
+  - `Calendar : Select Date >>`
+    - Same `Date Format : Select Date`
 
 ---
 or select root menu
@@ -155,6 +158,7 @@ or select root menu
 
 - `Date Time Calendar | Line Vertical Calendar | This month today | Select`
 - `Date Time Calendar | Monthly Square Calendar | This month today | Select`
+- `Date Time Calendar | Calendar | Select Month`
 - `Date Time Calendar | Calendar | Select Date`
 
 ## Setting
@@ -296,6 +300,7 @@ Released under the [MIT License][license].
   - Date Format : Today Now
   - Date Format : Select Date
   - Calendar : Today
+  - Calendar : Select Month
   - Calendar : Select Date
 - Change Weekly Calendar >> Line Vertical Calendar
 - Change Monthly Calendar >> Monthly Square Calendar

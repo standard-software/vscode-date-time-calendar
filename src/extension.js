@@ -64,23 +64,23 @@ function activate(context) {
   };
 
   registerCommand(`DateTimeCalendar.SelectFunction`, () => { commandQuickPick([
-    [`Date Format : Today Now`,                            `${mark}`, () => {
+    [`Date Format : Today Now`, `${mark}`, () => {
       commandQuickPick([
-        [`Date Today`,                       `${mark}`, () => {
+        [`Date Today`,  `${mark}`, () => {
           selectFormatDate(
             `DateFormat`,
             _Day(`today`),
             `Date Time Calendar | Date Format | Date Today`
           );
         }],
-        [`DateTime Today Now`,               `${mark}`, () => {
+        [`DateTime Today Now`,  `${mark}`, () => {
           selectFormatDate(
             `DateTimeFormat`,
             new Date(),
             `Date Time Calendar | Date Format | DateTime Today Now`
           );
         }],
-        [`Time Now`,                         `${mark}`, () => {
+        [`Time Now`,  `${mark}`, () => {
           selectFormatDate(
             `TimeFormat`,
             new Date(),
@@ -90,19 +90,19 @@ function activate(context) {
       ], `Date Time Calendar | Date Format : Today Now`);
     }],
 
-    [`Date Format : Select Date`,             `${mark}`, () => {
+    [`Date Format : Select Date`, `${mark}`, () => {
       selectDateRange200Year(`SelectFormatDate`);
     }],
 
-    [`Calendar : This month today`,                       `${mark}`, () => {
+    [`Calendar : This month today`, `${mark}`, () => {
       commandQuickPick([
-        [`Line Vertical Calendar`,                        `${mark}`, () => {
+        [`Line Vertical Calendar`,  `${mark}`, () => {
           selectWeeklyCalendar(
             getDateArrayWeeklyMonth(_Day(`today`), `Sun`), _Day(`today`), _Day(`today`),
             `Date Time Calendar | Calendar : This month today | Line Vertical`,
           );
         }],
-        [`Monthly Square Calendar`,                       `${mark}`, () => {
+        [`Monthly Square Calendar`, `${mark}`, () => {
           selectMonthlyCalendar(
             [_Day(`today`)], _Day(`today`), _Day(`today`), `Sun`,
             `Date Time Calendar | Calendar : This month today | Monthly Square`
@@ -111,14 +111,17 @@ function activate(context) {
       ], `Date Time Calendar | Calendar : This month today`);
     }],
 
-    [`Calendar : Select Date`,             `${mark}`, () => {
+    [`Calendar : Select Month`, `${mark}`, () => {
+      selectDateRange200Year(`SelectMonthCalendar`);
+    }],
+    [`Calendar : Select Date`,  `${mark}`, () => {
       selectDateRange200Year(`SelectDateCalendar`);
     }],
 
   ], `Date Time Calendar | Select Function`); });
 
   const selectDateRange200Year = (mode) => {
-    if (![`SelectFormatDate`, `SelectDateCalendar`].includes(mode)) {
+    if (![`SelectFormatDate`, `SelectDateCalendar`, `SelectMonthCalendar`].includes(mode)) {
       throw new Error(`selectDateRange200Year mode:${mode}`);
     }
 
@@ -136,6 +139,8 @@ function activate(context) {
       placeHolder = `Date Time Calendar | Date Format : Select Date`;
     } else if (mode === `SelectDateCalendar`) {
       placeHolder = `Date Time Calendar | Calendar : Select Date`;
+    } else if (mode === `SelectMonthCalendar`) {
+      placeHolder = `Date Time Calendar | Calendar : Select Month`;
     }
 
     commandQuickPick([
@@ -198,7 +203,16 @@ function activate(context) {
           dateToStringJp(targetDate, `MM : YYYY-MM : MMM`) +
           (isThisMonth ? ` : This month` : ``),
           `${mark}`,
-          () => { selectDay(targetDate); },
+          () => {
+            if (mode === `SelectMonthCalendar`) {
+              selectMonthlyCalendar(
+                [targetDate], targetDate, null, `Sun`,
+                `${placeHolder} | ${_dateToString(targetDate, `YYYY-MM`)} | Monthly Square`
+              );
+            } else {
+              selectDay(targetDate);
+            }
+          },
         ]);
       }
       commandQuickPick(commands, `${placeHolder} | ${dateYear.getFullYear()}`);
@@ -228,7 +242,7 @@ function activate(context) {
               );
             } else if (mode === `SelectDateCalendar`) {
               commandQuickPick([
-                [`Line Vertical Calendar`,                        `${mark}`, () => {
+                [`Line Vertical Calendar`,  `${mark}`, () => {
                   selectWeeklyCalendar(
                     getDateArrayWeeklyMonth(targetDate, `Sun`), targetDate, targetDate,
                     `${placeHolder} | ${_dateToString(targetDate, `YYYY-MM-DD ddd`)} | Line Vertical`,
@@ -396,7 +410,10 @@ function activate(context) {
       [_Day(`today`)], _Day(`today`), _Day(`today`), `Sun`,
       `Date Time Calendar | Monthly Square Calendar | This month today | Select`
     );
+  });
 
+  registerCommand(`DateTimeCalendar.CalendarSelectMonth`, () => {
+    selectDateRange200Year(`SelectMonthCalendar`);
   });
   registerCommand(`DateTimeCalendar.CalendarSelectDate`, () => {
     selectDateRange200Year(`SelectDateCalendar`);
