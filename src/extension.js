@@ -273,12 +273,17 @@ const equalDatetime = (sourceDate, targetDate, compareItems) => {
   return compareItems.every(i => source[i] === target[i]);
 };
 
-const equalToday = (sourceDate) => {
-  return equalDatetime(sourceDate, new Date(), [`year`, `month`, `date`]);
-};
 
 const equalMonth = (sourceDate, baseDate) => {
   return equalDatetime(sourceDate, baseDate, [`year`, `month`]);
+};
+
+const equalDate = (sourceDate, baseDate) => {
+  return equalDatetime(sourceDate, baseDate, [`year`, `month`, `date`]);
+};
+
+const equalToday = (sourceDate) => {
+  return equalDate(sourceDate, new Date());
 };
 
 const getEndDayOfWeek = (startDayOfWeek) => {
@@ -458,8 +463,6 @@ function activate(context) {
     );
   };
 
-  let select3DateFormatSelectDateInWeek;
-
   let select2WeeklyCalendarWeekType;
   let select3WeeklyCalendarPeriod;
 
@@ -569,8 +572,10 @@ function activate(context) {
       const commands = [];
       for (let i = 1; i <= 12; i += 1) {
         const targetDate = _Month(i - 1, dateYear);
+        const isThisMonth = equalMonth(targetDate, _Month(`this`));
         commands.push([
-          dateToStringJp(targetDate, `MM : YYYY-MM : MMM`),
+          dateToStringJp(targetDate, `MM : YYYY-MM : MMM`) +
+          (isThisMonth ? ` : This month` : ``),
           `${mark}`,
           () => { selectDay(targetDate); },
         ]);
@@ -583,8 +588,15 @@ function activate(context) {
       const monthDaysCount = monthDayCount(dateMonth);
       for (let i = 1; i <= monthDaysCount; i += 1) {
         const targetDate = _Day(i - 1, dateMonth);
+        const isYesterday = equalDate(targetDate, _Day(-1));
+        const isToday = equalToday(targetDate);
+        const isTomorrow = equalDate(targetDate, _Day(1));
         commands.push([
-          _dateToString(targetDate, `DD : YYYY-MM-DD ddd`),
+          _dateToString(targetDate, `DD : YYYY-MM-DD ddd`) +
+          (isYesterday ? ` : Yesterday`
+            : isToday ? ` : Today`
+              : isTomorrow ? ` : Tomorrow`
+                : ``),
           `${mark}`,
           () => {
             selectFormatDate(
@@ -600,48 +612,9 @@ function activate(context) {
 
   };
 
-  select3DateFormatSelectDateInWeek = (startDayOfWeek, placeHolder) => {
-    const createCommand = (title, date) => [
-      `${title} ${dateToStringJp(date, `ddd MM/DD`)}`,
-      `${mark}`,
-      () => { selectFormatDate(`DateFormat`, date, `${placeHolder} | ${title}`); }
-    ];
-
-    const daysLastWeek = getDateArrayInWeek(_Day(-7), startDayOfWeek);
-    const daysThisWeek = getDateArrayInWeek(_Day( 0), startDayOfWeek);
-    const daysNextWeek = getDateArrayInWeek(_Day( 7), startDayOfWeek);
-
-    commandQuickPick([
-      createCommand(`LastWeek`, daysLastWeek[0]),
-      createCommand(`LastWeek`, daysLastWeek[1]),
-      createCommand(`LastWeek`, daysLastWeek[2]),
-      createCommand(`LastWeek`, daysLastWeek[3]),
-      createCommand(`LastWeek`, daysLastWeek[4]),
-      createCommand(`LastWeek`, daysLastWeek[5]),
-      createCommand(`LastWeek`, daysLastWeek[6]),
-
-      createCommand(`ThisWeek`, daysThisWeek[0]),
-      createCommand(`ThisWeek`, daysThisWeek[1]),
-      createCommand(`ThisWeek`, daysThisWeek[2]),
-      createCommand(`ThisWeek`, daysThisWeek[3]),
-      createCommand(`ThisWeek`, daysThisWeek[4]),
-      createCommand(`ThisWeek`, daysThisWeek[5]),
-      createCommand(`ThisWeek`, daysThisWeek[6]),
-
-      createCommand(`NextWeek`, daysNextWeek[0]),
-      createCommand(`NextWeek`, daysNextWeek[1]),
-      createCommand(`NextWeek`, daysNextWeek[2]),
-      createCommand(`NextWeek`, daysNextWeek[3]),
-      createCommand(`NextWeek`, daysNextWeek[4]),
-      createCommand(`NextWeek`, daysNextWeek[5]),
-      createCommand(`NextWeek`, daysNextWeek[6]),
-
-    ], placeHolder);
-  };
-
   const selectFormatDate = (formatName, targetDate, placeHolder) => {
     if (!([`DateFormat`, `DateTimeFormat`, `TimeFormat`].includes(formatName))) {
-      throw new Error(`selectFormat formatName`);
+      throw new Error(`selectFormatDate formatName`);
     }
 
     commandQuickPick(
@@ -880,28 +853,8 @@ function activate(context) {
     selectFormatDate(`TimeFormat`, new Date(), placeHolder);
   });
 
-  registerCommand(`DateTimeCalendar.DateFormatDateYesterdayDefault`, () => {
-    insertFormatDate(_Day(`yesterday`), getDefaultFormat(`DateFormat`));
-  });
-  registerCommand(`DateTimeCalendar.DateFormatDateTomorrowDefault`, () => {
-    insertFormatDate(_Day(`tomorrow`), getDefaultFormat(`DateFormat`));
-  });
-
-  registerCommand(`DateTimeCalendar.DateFormatDateYesterdaySelect`, () => {
-    const placeHolder = `Date Time Calendar | Date Format | Date Yesterday | Select`;
-    selectFormatDate(`DateFormat`, _Day(`yesterday`), placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.DateFormatDateTomorrowSelect`, () => {
-    const placeHolder = `Date Time Calendar | Date Format | Date Tomorrow | Select`;
-    selectFormatDate(`DateFormat`, _Day(`tomorrow`), placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.DateFormatSunSatWeekDaySelect`, () => {
-    const placeHolder = `Date Time Calendar | Date Format | Sun..Sat Last To Next Week | Select`;
-    select3DateFormatSelectDateInWeek(`Sun`, placeHolder);
-  });
-  registerCommand(`DateTimeCalendar.DateFormatMonSunWeekDaySelect`, () => {
-    const placeHolder = `Date Time Calendar | Date Format | Mon..Sun Last To Next Week | Select`;
-    select3DateFormatSelectDateInWeek(`Mon`, placeHolder);
+  registerCommand(`DateTimeCalendar.DateFormatSelectDate`, () => {
+    selectDate();
   });
 
   registerCommand(`DateTimeCalendar.WeeklyCalendarSunSatThisWeekTodaySelect`, () => {

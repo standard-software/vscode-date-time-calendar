@@ -2,7 +2,7 @@
   "name": "vscode-date-time-calendar",
   "displayName": "Date Time Calendar",
   "description": "This extension outputs the date and time and calendar as formatted text",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "publisher": "SatoshiYamamoto",
   "author": {
     "name": "Satoshi Yamamoto",
@@ -34,13 +34,7 @@
     "onCommand:DateTimeCalendar.DateFormatDateTimeNowSelect",
     "onCommand:DateTimeCalendar.DateFormatTimeNowSelect",
 
-    "onCommand:DateTimeCalendar.DateFormatDateYesterdayDefault",
-    "onCommand:DateTimeCalendar.DateFormatDateTomorrowDefault",
-    "onCommand:DateTimeCalendar.DateFormatDateYesterdaySelect",
-    "onCommand:DateTimeCalendar.DateFormatDateTomorrowSelect",
-
-    "onCommand:DateTimeCalendar.DateFormatSunSatWeekDaySelect",
-    "onCommand:DateTimeCalendar.DateFormatMonSunWeekDaySelect",
+    "onCommand:DateTimeCalendar.DateFormatSelectDate",
 
     "onCommand:DateTimeCalendar.WeeklyCalendarSunSatThisWeekTodaySelect",
     "onCommand:DateTimeCalendar.WeeklyCalendarSunSatLastWeekSelect",
@@ -107,30 +101,9 @@
         "title": "Date Time Calendar | Date Format | Time Now | Select"
       },
       {
-        "command": "DateTimeCalendar.DateFormatDateYesterdayDefault",
-        "title": "Date Time Calendar | Date Format | Date Yesterday | Default"
+        "command": "DateTimeCalendar.DateFormatSelectDate",
+        "title": "Date Time Calendar | Date Format | Select Date"
       },
-      {
-        "command": "DateTimeCalendar.DateFormatDateTomorrowDefault",
-        "title": "Date Time Calendar | Date Format | Date Tomorrow | Default"
-      },
-      {
-        "command": "DateTimeCalendar.DateFormatDateYesterdaySelect",
-        "title": "Date Time Calendar | Date Format | Date Yesterday | Select"
-      },
-      {
-        "command": "DateTimeCalendar.DateFormatDateTomorrowSelect",
-        "title": "Date Time Calendar | Date Format | Date Tomorrow | Select"
-      },
-      {
-        "command": "DateTimeCalendar.DateFormatSunSatWeekDaySelect",
-        "title": "Date Time Calendar | Date Format | Sun..Sat Last To Next Week | Select"
-      },
-      {
-        "command": "DateTimeCalendar.DateFormatMonSunWeekDaySelect",
-        "title": "Date Time Calendar | Date Format | Mon..Sun Last To Next Week | Select"
-      },
-
       {
         "command": "DateTimeCalendar.WeeklyCalendarSunSatThisWeekTodaySelect",
         "title": "Date Time Calendar | Weekly Calendar | Sun..Sat | This Week [Today] | Select"
@@ -356,7 +329,7 @@
   },
   "scripts": {
     "lint": "eslint --fix ./src",
-    "pack": "vsce package && code --install-extension vscode-date-time-calendar-1.3.0.vsix",
+    "pack": "vsce package && code --install-extension vscode-date-time-calendar-1.4.0.vsix",
     "": ""
   },
   "devDependencies": {

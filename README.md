@@ -107,12 +107,13 @@ Select Function
       - `DateTime Today Now >>`
       - `Time Now >>`
     - `Select Date >>`
-      - `Date Yesterday >>`
-      - `Date Tomorrow >>`
-      - `Week Sun..Sat >>`
-        - Select Day Last To Next Week
-      - `Week Mon..Sun >>`
-        - Select Day Last To Next Week
+      - `1922 - 2011 : 100year before >>`
+      - `2012 - 2021 : 10year before >>`
+      - `2022 : this year >>`
+        - `01 - 12 Month >>`
+          - `01 - 31 Date >>`
+      - `2023 - 2032 : 10year after >>`
+      - `2033 - 2122 : 100year after >>`
 
   - `Weekly Calendar >>`
     - `Week Sun..Sat >>`
@@ -151,14 +152,6 @@ or select root menu
 - `Date Time Calendar | Date Format | Date Today | Select`
 - `Date Time Calendar | Date Format | DateTime Today Now | Select`
 - `Date Time Calendar | Date Format | Time Now | Select`
-<!-- 
-- `Date Time Calendar | Date Format | Date Yesterday | Default`
-- `Date Time Calendar | Date Format | Date Tomorrow | Default`
-- `Date Time Calendar | Date Format | Date Yesterday | Select`
-- `Date Time Calendar | Date Format | Date Tomorrow | Select`
-- `Date Time Calendar | Date Format | Sun..Sat Last To Next Week | Select`
-- `Date Time Calendar | Date Format | Mon..Sun Last To Next Week | Select`
--->
 - `Date Time Calendar | Date Format | Select Date`
 
 - `Date Time Calendar | Weekly Calendar | Sun..Sat | This Week [Today] | Select`
