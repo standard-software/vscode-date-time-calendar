@@ -168,7 +168,7 @@ const monthDayCount = (date) => {
   return _getDatetime(_Day(-1, target)).date;
 };
 
-const textCalendarWeekly = (targetDates,{
+const textCalendarLineVertical = (targetDates,{
   pickupDate,
   headerFormat,
   todayFormat,
@@ -287,6 +287,6 @@ module.exports = {
   monthDayCount,
   dateToStringJp,
   getDateArrayWeeklyMonth,
-  textCalendarWeekly,
+  textCalendarLineVertical,
   textCalendarMonthly,
 };

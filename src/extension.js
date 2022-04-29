@@ -13,7 +13,7 @@ const {
   monthDayCount,
   dateToStringJp,
   getDateArrayWeeklyMonth,
-  textCalendarWeekly,
+  textCalendarLineVertical,
   textCalendarMonthly,
 } = require(`./lib/lib.js`);
 
@@ -281,7 +281,7 @@ function activate(context) {
   const selectCalendar = (targetDate, pickupDate, placeHolder) => {
     commandQuickPick([
       [`Line Vertical Calendar`,  `${mark}`, () => {
-        selectWeeklyCalendar(
+        selectLineVerticalCalendar(
           getDateArrayWeeklyMonth(targetDate, `Sun`), targetDate, pickupDate,
           `${placeHolder} | Line Vertical Calendar`,
         );
@@ -301,7 +301,7 @@ function activate(context) {
     ], `${placeHolder}`);
   };
 
-  const selectWeeklyCalendar = (targetDates, titleDate, pickupDate, placeHolder) => {
+  const selectLineVerticalCalendar = (targetDates, titleDate, pickupDate, placeHolder) => {
     commandQuickPick(
       getWeeklyCalendarSettings().map(
         setting => [
@@ -314,7 +314,7 @@ function activate(context) {
               return;
             }
 
-            const weeklyCalendarText = textCalendarWeekly(
+            const calendarText = textCalendarLineVertical(
               targetDates,
               {
                 pickupDate,
@@ -324,7 +324,7 @@ function activate(context) {
               }
             );
 
-            insertString(weeklyCalendarText);
+            insertString(calendarText);
           }
         ]
       ),
@@ -345,9 +345,9 @@ function activate(context) {
               return;
             }
 
-            let monthlyCalendarText = ``;
+            let calendarText = ``;
             for (const targetDate of targetDates) {
-              monthlyCalendarText += textCalendarMonthly(
+              calendarText += textCalendarMonthly(
                 targetDate,
                 {
                   startDayOfWeek,
@@ -364,7 +364,7 @@ function activate(context) {
               );
             }
 
-            insertString(monthlyCalendarText);
+            insertString(calendarText);
           }
         ]
       ),
@@ -400,7 +400,7 @@ function activate(context) {
   });
 
   registerCommand(`DateTimeCalendar.LineVerticalCalendarThisMonthSelect`, () => {
-    selectWeeklyCalendar(
+    selectLineVerticalCalendar(
       getDateArrayWeeklyMonth(_Day(`today`), `Sun`), _Day(`today`), _Day(`today`),
       `Date Time Calendar | Line Vertical Calendar | This month today | Select`,
     );
