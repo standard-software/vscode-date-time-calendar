@@ -302,7 +302,7 @@ Released under the [MIT License][license].
 
 ## Version
 
-### 1.6.0
+### 1.5.1
 2022/04/30(Sat)
 - Change Json key
   - "DateTimeCalendar.WeeklyCalendar"

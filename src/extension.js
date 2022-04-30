@@ -45,17 +45,25 @@ const getDefaultFormat = (formatName) => {
 };
 
 const getWeeklyCalendarSettings = () =>{
-  let result = vscode.workspace.getConfiguration(`DateTimeCalendar`).get(`WeeklyCalendar`);
-  if (isUndefined(result)) {
-    result = vscode.workspace.getConfiguration(`DateTimeCalendar`).get(`LineVerticalCalendar`);
+  const config = vscode.workspace.getConfiguration(`DateTimeCalendar`);
+  let result = config.get(`WeeklyCalendar`);
+  if (!isUndefined(result)) {
+    config.update(`LineVerticalCalendar`, result, true);
+    config.update(`WeeklyCalendar`, undefined, true);
+  } else {
+    result = config.get(`LineVerticalCalendar`);
   }
   return result;
 };
 
 const getMonthlyCalendarSettings = () =>{
-  let result = vscode.workspace.getConfiguration(`DateTimeCalendar`).get(`MonthlyCalendar`);
-  if (isUndefined(result)) {
-    result = vscode.workspace.getConfiguration(`DateTimeCalendar`).get(`MonthlySquareCalendar`);
+  const config = vscode.workspace.getConfiguration(`DateTimeCalendar`);
+  let result = config.get(`MonthlyCalendar`);
+  if (!isUndefined(result)) {
+    config.update(`MonthlySquareCalendar`, result, true);
+    config.update(`MonthlyCalendar`, undefined, true);
+  } else {
+    result = config.get(`MonthlySquareCalendar`);
   }
   return result;
 };
