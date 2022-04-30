@@ -171,14 +171,20 @@ settings.json
 {
   "DateTimeCalendar.subMenuMark": ">>",
   "DateTimeCalendar.DateFormat": [
+    { "format": "YYYY-MM-DD ddd" },
     { "format": "YYYY/MM/DD(ddd)" },
+    { "format": "YYYY.MM.DD" },
+    { "format": "YYYYMMDD" },
     { "format": "ddd, DD MMM YYYY" },
     { "format": "dddd, DD MMMMM YYYY" }
     { "format": "YYYY/MM/DD(DDD)" },
     { "format": "YYYY年MM月DD日 DDDD" },
   ],
   "DateTimeCalendar.DateTimeFormat": [
+    { "format": "YYYY-MM-DD ddd HH:mm" },
     { "format": "YYYY/MM/DD(ddd) HH:mm" },
+    { "format": "YYYY.MM.DD HH:mm" },
+    { "format": "YYYYMMDD HH:mm" },
     { "format": "ddd, DD MMM YYYY HH:mm" },
     { "format": "dddd, DD MMMMM YYYY hh:mm AA" },
     { "format": "YYYY/MM/DD(DDD) HH:mm" },
@@ -189,7 +195,7 @@ settings.json
     { "format": "hh:mm AA" },
     { "format": "AAAhh時mm分" }
   ],
-  "DateTimeCalendar.WeeklyCalendar": [
+  "DateTimeCalendar.LineVerticalCalendar": [
     {
       "title": "YYYY/MM|  DD(ddd)", "header": "YYYY/MM",
       "line": "  DD(ddd)", "today": " [DD(ddd)]"
@@ -203,7 +209,7 @@ settings.json
       "line": "  DD(DDD)", "today": " [DD(DDD)]"
     }
   ],
-  "DateTimeCalendar.MonthlyCalendar": [
+  "DateTimeCalendar.MonthlySquareCalendar": [
     {
       "title": "MMMMM YYYY ddd D \"Space2\"",
       "header": "LMMMMM                YYYY", "dayOfWeek": "ddd", "date": "SD",
@@ -295,6 +301,16 @@ _ = Space
 Released under the [MIT License][license].
 
 ## Version
+
+### 1.6.0
+2022/04/30(Sat)
+- Change Json key
+  - "DateTimeCalendar.WeeklyCalendar"
+    -> "DateTimeCalendar.LineVerticalCalendar"
+  - "DateTimeCalendar.MonthlyCalendar"
+    -> "DateTimeCalendar.MonthlySquareCalendar"
+  - Settings work fine with the old version key.
+- add default date format
 
 ### 1.5.0
 2022/04/29(Fri)

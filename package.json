@@ -2,7 +2,7 @@
   "name": "vscode-date-time-calendar",
   "displayName": "Date Time Calendar",
   "description": "This extension outputs the date and time and calendar as formatted text",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "publisher": "SatoshiYamamoto",
   "author": {
     "name": "Satoshi Yamamoto",
@@ -112,20 +112,26 @@
         "DateTimeCalendar.DateFormat": {
           "type": "array",
           "default": [
+            { "format": "YYYY-MM-DD ddd" },
             { "format": "YYYY/MM/DD(ddd)" },
+            { "format": "YYYY.MM.DD" },
+            { "format": "YYYYMMDD" },
             { "format": "ddd, DD MMM YYYY" },
             { "format": "dddd, DD MMMMM YYYY" }
           ],
-          "description": "Date Format"
+          "description": "Date Time Calendar | Date Format"
         },
         "DateTimeCalendar.DateTimeFormat": {
           "type": "array",
           "default": [
+            { "format": "YYYY-MM-DD ddd HH:mm" },
             { "format": "YYYY/MM/DD(ddd) HH:mm" },
+            { "format": "YYYY.MM.DD HH:mm" },
+            { "format": "YYYYMMDD HH:mm" },
             { "format": "ddd, DD MMM YYYY HH:mm" },
             { "format": "dddd, DD MMMMM YYYY hh:mm AA" }
           ],
-          "description": "DateTime Format"
+          "description": "Date Time Calendar | DateTime Format"
         },
         "DateTimeCalendar.TimeFormat": {
           "type": "array",
@@ -134,9 +140,9 @@
             { "format": "hh:mm AA" },
             { "format": "AAAhh時mm分" }
           ],
-          "description": "DateTime Format"
+          "description": "Date Time Calendar | Time Format"
         },
-        "DateTimeCalendar.WeeklyCalendar": {
+        "DateTimeCalendar.LineVerticalCalendar": {
           "type": "array",
           "default": [
             {
@@ -148,9 +154,9 @@
               "line": "  DD  ddd", "today": " [DD] ddd"
             }
           ],
-          "description": "DateTime Format"
+          "description": "Date Time Calendar | Line Vertical Calendar"
         },
-        "DateTimeCalendar.MonthlyCalendar": {
+        "DateTimeCalendar.MonthlySquareCalendar": {
           "type": "array",
           "default": [
             {
@@ -182,7 +188,7 @@
               "otherMonthDate": true
             }
           ],
-          "description": "DateTime Format"
+          "description": "Date Time Calendar | Monthly Square Calendar"
         }
       }
     }

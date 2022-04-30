@@ -1,5 +1,6 @@
 const vscode = require(`vscode`);
 const {
+  isUndefined,
   _dateToString,
   _Year,
   _Month,
@@ -44,11 +45,19 @@ const getDefaultFormat = (formatName) => {
 };
 
 const getWeeklyCalendarSettings = () =>{
-  return vscode.workspace.getConfiguration(`DateTimeCalendar`).get(`WeeklyCalendar`);
+  let result = vscode.workspace.getConfiguration(`DateTimeCalendar`).get(`WeeklyCalendar`);
+  if (isUndefined(result)) {
+    result = vscode.workspace.getConfiguration(`DateTimeCalendar`).get(`LineVerticalCalendar`);
+  }
+  return result;
 };
 
 const getMonthlyCalendarSettings = () =>{
-  return vscode.workspace.getConfiguration(`DateTimeCalendar`).get(`MonthlyCalendar`);
+  let result = vscode.workspace.getConfiguration(`DateTimeCalendar`).get(`MonthlyCalendar`);
+  if (isUndefined(result)) {
+    result = vscode.workspace.getConfiguration(`DateTimeCalendar`).get(`MonthlySquareCalendar`);
+  }
+  return result;
 };
 
 function activate(context) {
