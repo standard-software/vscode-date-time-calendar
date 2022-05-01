@@ -320,6 +320,10 @@ Released under the [MIT License][license].
 
 ## Version
 
+### 1.7.0
+2022/05/02(Mon)
+- icon
+
 ### 1.6.1
 2022/05/01(Sun)
 - update README
