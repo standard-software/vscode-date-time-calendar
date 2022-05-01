@@ -17,9 +17,13 @@
 This extension outputs the date and time and calendar as formatted text
 
 ## Insert Output String For example:
+
 - Date
 ```
+2022-01-28 Fri
 2022/01/21(Fri)
+2022.01.28
+20220128
 Fri, 21 Jan 2022
 Friday, 21 January 2022
 ```
