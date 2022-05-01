@@ -37,8 +37,7 @@
     "onCommand:DateTimeCalendar.DateFormatSelectDate",
 
     "onCommand:DateTimeCalendar.LineVerticalCalendarThisMonthSelect",
-    "onCommand:DateTimeCalendar.MonthlySquareCalendarSunThisMonthSelect",
-    "onCommand:DateTimeCalendar.MonthlySquareCalendarMonThisMonthSelect",
+    "onCommand:DateTimeCalendar.MonthlySquareCalendarThisMonthSelect",
     "onCommand:DateTimeCalendar.CalendarSelectMonth",
     "onCommand:DateTimeCalendar.CalendarSelectDate",
 
@@ -80,12 +79,8 @@
         "title": "Date Time Calendar | Line Vertical Calendar | This month today | Select"
       },
       {
-        "command": "DateTimeCalendar.MonthlySquareCalendarSunThisMonthSelect",
-        "title": "Date Time Calendar | Monthly Square Calendar : Sun - Sat | This month today | Select"
-      },
-      {
-        "command": "DateTimeCalendar.MonthlySquareCalendarMonThisMonthSelect",
-        "title": "Date Time Calendar | Monthly Square Calendar : Mon - Sun | This month today | Select"
+        "command": "DateTimeCalendar.MonthlySquareCalendarThisMonthSelect",
+        "title": "Date Time Calendar | Monthly Square Calendar | This month today | Select"
       },
       {
         "command": "DateTimeCalendar.CalendarSelectMonth",
@@ -164,28 +159,64 @@
               "header": "LMMMMM                YYYY", "dayOfWeek": "ddd", "date": "SD",
               "indent": "  ", "space": "  ",
               "todayLeft": "[", "todayRight": "]",
-              "otherMonthDate": false
+              "otherMonthDate": false,
+              "startDayOfWeek": "Sun"
             },
             {
               "title": "MMMM YYYY ddd DD \"Space2 OtherMonth\"",
               "header": "MMMM YYYY", "dayOfWeek": "ddd", "date": "DD",
               "indent": "  ", "space": "  ",
               "todayLeft": "[", "todayRight": "]",
-              "otherMonthDate": true
+              "otherMonthDate": true,
+              "startDayOfWeek": "Sun"
             },
             {
               "title": "YYYY MMMMM dd D \"Space1\"",
               "header": "YYYY         RMMMMM", "dayOfWeek": "dd", "date": "SD",
               "indent": "  ", "space": " ",
               "todayLeft": "[", "todayRight": "]",
-              "otherMonthDate": false
+              "otherMonthDate": false,
+              "startDayOfWeek": "Sun"
             },
             {
               "title": "YYYY/MM ddd DD \"Space1 OtherMonth\"",
               "header": "YYYY/MM", "dayOfWeek": "ddd", "date": "DD",
               "indent": "  ", "space": " ",
               "todayLeft": "", "todayRight": "<",
-              "otherMonthDate": true
+              "otherMonthDate": true,
+              "startDayOfWeek": "Sun"
+            },
+            {
+              "title": "\"Start monday : \"MMMMM YYYY ddd D \"Space2\"",
+              "header": "LMMMMM                YYYY", "dayOfWeek": "ddd", "date": "SD",
+              "indent": "  ", "space": "  ",
+              "todayLeft": "[", "todayRight": "]",
+              "otherMonthDate": false,
+              "startDayOfWeek": "Mon"
+            },
+            {
+              "title": "\"Start monday : \"MMMM YYYY ddd DD \"Space2 OtherMonth\"",
+              "header": "MMMM YYYY", "dayOfWeek": "ddd", "date": "DD",
+              "indent": "  ", "space": "  ",
+              "todayLeft": "[", "todayRight": "]",
+              "otherMonthDate": true,
+              "startDayOfWeek": "Mon"
+            },
+            {
+              "title": "\"Start monday : \"YYYY MMMMM dd D \"Space1\"",
+              "header": "YYYY         RMMMMM", "dayOfWeek": "dd", "date": "SD",
+              "indent": "  ", "space": " ",
+              "todayLeft": "[", "todayRight": "]",
+              "otherMonthDate": false,
+              "startDayOfWeek": "Mon"
+            },
+            {
+              "title": "\"Start monday : \"YYYY/MM ddd DD \"Space1 OtherMonth\"",
+              "header": "YYYY/MM", "dayOfWeek": "ddd", "date": "DD",
+              "indent": "  ", "space": " ",
+              "todayLeft": "", "todayRight": "<",
+              "otherMonthDate": true,
+              "startDayOfWeek": "Mon"
             }
           ],
           "description": "Date Time Calendar | Monthly Square Calendar"

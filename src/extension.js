@@ -303,16 +303,10 @@ function activate(context) {
           `${placeHolder} | Line Vertical Calendar`,
         );
       }],
-      [`Monthly Square Calendar : Sun - Sat`, `${mark}`, () => {
+      [`Monthly Square Calendar`, `${mark}`, () => {
         selectMonthlyCalendar(
-          [targetDate], targetDate, pickupDate, `Sun`,
-          `${placeHolder} | Monthly Square Calendar : Sun - Sat`
-        );
-      }],
-      [`Monthly Square Calendar : Mon - Sun`, `${mark}`, () => {
-        selectMonthlyCalendar(
-          [targetDate], targetDate, pickupDate, `Mon`,
-          `${placeHolder} | Monthly Square Calendar : Mon - Sun`
+          [targetDate], targetDate, pickupDate,
+          `${placeHolder} | Monthly Square Calendar`
         );
       }],
     ], `${placeHolder}`);
@@ -349,7 +343,7 @@ function activate(context) {
     );
   };
 
-  const selectMonthlyCalendar = (targetDates, titleDate, pickupDate, startDayOfWeek, placeHolder) => {
+  const selectMonthlyCalendar = (targetDates, titleDate, pickupDate, placeHolder) => {
     commandQuickPick(
       getMonthlySquareCalendarSettings().map(
         setting => [
@@ -362,6 +356,7 @@ function activate(context) {
               return;
             }
 
+            const { startDayOfWeek = `Sun` } = setting;
             let calendarText = ``;
             for (const targetDate of targetDates) {
               calendarText += textCalendarMonthly(
@@ -422,16 +417,10 @@ function activate(context) {
       `Date Time Calendar | Line Vertical Calendar | This month today | Select`,
     );
   });
-  registerCommand(`DateTimeCalendar.MonthlySquareCalendarSunThisMonthSelect`, () => {
+  registerCommand(`DateTimeCalendar.MonthlySquareCalendarThisMonthSelect`, () => {
     selectMonthlyCalendar(
-      [_Day(`today`)], _Day(`today`), _Day(`today`), `Sun`,
-      `Date Time Calendar | Monthly Square Calendar : Sun - Sat | This month today | Select`
-    );
-  });
-  registerCommand(`DateTimeCalendar.MonthlySquareCalendarMonThisMonthSelect`, () => {
-    selectMonthlyCalendar(
-      [_Day(`today`)], _Day(`today`), _Day(`today`), `Mon`,
-      `Date Time Calendar | Monthly Square Calendar : Mon - Sun | This month today | Select`
+      [_Day(`today`)], _Day(`today`), _Day(`today`),
+      `Date Time Calendar | Monthly Square Calendar | This month today | Select`
     );
   });
 

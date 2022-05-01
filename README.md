@@ -139,8 +139,7 @@ Select Function
 
   - `Calendar : This month today >>`
     - `Line Vertical Calendar >>`
-    - `Monthly Square Calendar : Sun - Sat >>`
-    - `Monthly Square Calendar : Mon - Sun >>`
+    - `Monthly Square Calendar >>`
 
   - `Calendar : Select Month >>`
     - Same `Date Format : Select Date`
@@ -215,35 +214,48 @@ settings.json
       "header": "LMMMMM                YYYY", "dayOfWeek": "ddd", "date": "SD",
       "indent": "  ", "space": "  ",
       "todayLeft": "[", "todayRight": "]",
-      "otherMonthDate": false
+      "otherMonthDate": false,
+      "startDayOfWeek": "Sun"
     },
     {
       "title": "MMMM YYYY ddd DD \"Space2 OtherMonth\"",
       "header": "MMMM YYYY", "dayOfWeek": "ddd", "date": "DD",
       "indent": "  ", "space": "  ",
       "todayLeft": "[", "todayRight": "]",
-      "otherMonthDate": true
+      "otherMonthDate": true,
+      "startDayOfWeek": "Sun"
     },
     {
       "title": "YYYY MMMMM dd D \"Space1\"",
       "header": "YYYY         RMMMMM", "dayOfWeek": "dd", "date": "SD",
       "indent": "  ", "space": " ",
       "todayLeft": "[", "todayRight": "]",
-      "otherMonthDate": false
+      "otherMonthDate": false,
+      "startDayOfWeek": "Sun"
     },
     {
       "title": "YYYY/MM ddd DD \"Space1 OtherMonth\"",
       "header": "YYYY/MM", "dayOfWeek": "ddd", "date": "DD",
       "indent": "  ", "space": " ",
       "todayLeft": "", "todayRight": "<",
-      "otherMonthDate": true
+      "otherMonthDate": true,
+      "startDayOfWeek": "Sun"
+    },
+    {
+      "title": "\"Start monday : \"MMMMM YYYY ddd D \"Space2\"",
+      "header": "LMMMMM                YYYY", "dayOfWeek": "ddd", "date": "SD",
+      "indent": "  ", "space": "  ",
+      "todayLeft": "[", "todayRight": "]",
+      "otherMonthDate": false,
+      "startDayOfWeek": "Mon"
     },
     {
       "title": "YYYY年MM月 DDD DD \"Space2 OtherMonth\"",
       "header": "YYYY年MM月", "dayOfWeek": "DDD", "date": "DD",
       "indent": "", "space": "  ",
       "todayLeft": "", "todayRight": "<-",
-      "otherMonthDate": true
+      "otherMonthDate": true,
+      "startDayOfWeek": "Sun"
     }
   ],
   :
@@ -301,6 +313,11 @@ _ = Space
 Released under the [MIT License][license].
 
 ## Version
+
+### 1.6.0
+2022/05/01(Sun)
+- Delete Monthly Square Calendar Mon-Sun
+  - Mon-Sun calendar can be output by setting
 
 ### 1.5.1
 2022/04/30(Sat)
