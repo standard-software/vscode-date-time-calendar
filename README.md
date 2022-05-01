@@ -31,6 +31,7 @@ Friday, 21 January 2022
 ```
 
 - Line Vertical Calendar
+
 ```
 2022/03
   27(Sun)
@@ -74,6 +75,7 @@ Friday, 21 January 2022
 ```
 
 - Monthly Square Calendar
+
 ```
 January                  2022
   Sun Mon Tue Wed Thu Fri Sat
@@ -122,45 +124,49 @@ Following commands are available:
 
 Select Function
 
-- `Date Time Calendar | Select Function`
-  - `Date Format : Today Now >>`
-    - `Date Today >>`
-    - `DateTime Today Now >>`
-    - `Time Now >>`
+```
+- Date Time Calendar | Select Function
+  - Date Format : Today Now >>
+    - Date Today >>
+    - DateTime Today Now >>
+    - Time Now >>
 
-  - `Date Format : Select Date >>`
-    - `1922 - 2011 : 100year before >>`
-    - `2012 - 2021 : 10year before >>`
-    - `2022 : this year >>`
-      - `01 - 12 Month >>`
-        - `01 - 31 Date >>`
-    - `2023 - 2032 : 10year after >>`
-    - `2033 - 2122 : 100year after >>`
+  - Date Format : Select Date >>
+    - 1922 - 2011 : 100year before >>
+    - 2012 - 2021 : 10year before >>
+    - 2022 : this year >>
+      - 01 - 12 Month >>
+        - 01 - 31 Date >>
+    - 2023 - 2032 : 10year after >>
+    - 2033 - 2122 : 100year after >>
 
-  - `Calendar : This month today >>`
-    - `Line Vertical Calendar >>`
-    - `Monthly Square Calendar >>`
+  - Calendar : This month today >>
+    - Line Vertical Calendar >>
+    - Monthly Square Calendar >>
 
-  - `Calendar : Select Month >>`
-    - Same `Date Format : Select Date`
-  - `Calendar : Select Date >>`
-    - Same `Date Format : Select Date`
+  - Calendar : Select Month >>
+    - Same Date Format : Select Date
+  - Calendar : Select Date >>
+    - Same Date Format : Select Date
+```
 
 ---
 or select root menu
 
-- `Date Time Calendar | Date Format | Date Today | Default`
-- `Date Time Calendar | Date Format | DateTime Today Now | Default`
-- `Date Time Calendar | Date Format | Time Now | Default`
-- `Date Time Calendar | Date Format | Date Today | Select`
-- `Date Time Calendar | Date Format | DateTime Today Now | Select`
-- `Date Time Calendar | Date Format | Time Now | Select`
-- `Date Time Calendar | Date Format | Select Date`
+```
+- Date Time Calendar | Date Format | Date Today | Default
+- Date Time Calendar | Date Format | DateTime Today Now | Default
+- Date Time Calendar | Date Format | Time Now | Default
+- Date Time Calendar | Date Format | Date Today | Select
+- Date Time Calendar | Date Format | DateTime Today Now | Select
+- Date Time Calendar | Date Format | Time Now | Select
+- Date Time Calendar | Date Format | Select Date
 
-- `Date Time Calendar | Line Vertical Calendar | This month today | Select`
-- `Date Time Calendar | Monthly Square Calendar | This month today | Select`
-- `Date Time Calendar | Calendar | Select Month`
-- `Date Time Calendar | Calendar | Select Date`
+- Date Time Calendar | Line Vertical Calendar | This month today | Select
+- Date Time Calendar | Monthly Square Calendar | This month today | Select
+- Date Time Calendar | Calendar | Select Month
+- Date Time Calendar | Calendar | Select Date
+```
 
 ## Setting
 
@@ -313,6 +319,10 @@ _ = Space
 Released under the [MIT License][license].
 
 ## Version
+
+### 1.6.1
+2022/05/01(Sun)
+- update README
 
 ### 1.6.0
 2022/05/01(Sun)
