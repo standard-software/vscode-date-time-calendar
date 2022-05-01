@@ -44,7 +44,7 @@ const getDefaultFormat = (formatName) => {
   return getDateFormatArray(formatName)[0];
 };
 
-const getWeeklyCalendarSettings = () =>{
+const getLineVerticalCalendarSettings = () =>{
   const config = vscode.workspace.getConfiguration(`DateTimeCalendar`);
   let result = config.get(`WeeklyCalendar`);
   if (!isUndefined(result)) {
@@ -56,7 +56,7 @@ const getWeeklyCalendarSettings = () =>{
   return result;
 };
 
-const getMonthlyCalendarSettings = () =>{
+const getMonthlySquareCalendarSettings = () =>{
   const config = vscode.workspace.getConfiguration(`DateTimeCalendar`);
   let result = config.get(`MonthlyCalendar`);
   if (!isUndefined(result)) {
@@ -320,7 +320,7 @@ function activate(context) {
 
   const selectLineVerticalCalendar = (targetDates, titleDate, pickupDate, placeHolder) => {
     commandQuickPick(
-      getWeeklyCalendarSettings().map(
+      getLineVerticalCalendarSettings().map(
         setting => [
           dateToStringJp(titleDate, setting.title),
           ``,
@@ -351,7 +351,7 @@ function activate(context) {
 
   const selectMonthlyCalendar = (targetDates, titleDate, pickupDate, startDayOfWeek, placeHolder) => {
     commandQuickPick(
-      getMonthlyCalendarSettings().map(
+      getMonthlySquareCalendarSettings().map(
         setting => [
           dateToStringJp(_Month(`this`, titleDate), setting.title),
           ``,
