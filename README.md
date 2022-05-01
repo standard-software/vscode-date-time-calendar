@@ -323,6 +323,8 @@ Released under the [MIT License][license].
 ### 1.7.0
 2022/05/02(Mon)
 - icon
+- fix bug
+  - root command : Date Time Calendar | Date Format | Select Date
 
 ### 1.6.1
 2022/05/01(Sun)

@@ -408,7 +408,7 @@ function activate(context) {
   });
 
   registerCommand(`DateTimeCalendar.DateFormatSelectDate`, () => {
-    selectDateRange200Year();
+    selectDateRange200Year(`SelectFormatDate`);
   });
 
   registerCommand(`DateTimeCalendar.LineVerticalCalendarThisMonthSelect`, () => {
