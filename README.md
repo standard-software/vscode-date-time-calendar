@@ -1,18 +1,8 @@
-# vscode-datetime
 
-[![Version][version-badge]][marketplace]
-[![Ratings][ratings-badge]][marketplace-ratings]
-[![Installs][installs-badge]][marketplace]
-[![License][license-badge]][license]
-
-[version-badge]: https://vsmarketplacebadge.apphb.com/version/SatoshiYamamoto.vscode-date-time-calendar.svg
-[ratings-badge]: https://vsmarketplacebadge.apphb.com/rating/SatoshiYamamoto.vscode-date-time-calendar.svg
-[installs-badge]: https://vsmarketplacebadge.apphb.com/installs/SatoshiYamamoto.vscode-date-time-calendar.svg
-[license-badge]: https://img.shields.io/github/license/standard-software/vscode-date-time-calendar.svg
-
-[marketplace]: https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-date-time-calendar
-[marketplace-ratings]: https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-date-time-calendar#review-details
-[license]: https://github.com/standard-software/vscode-date-time-calendar/blob/master/LICENSE
+[![](https://vsmarketplacebadges.dev/version-short/SatoshiYamamoto.vscode-date-time-calendar.svg)](https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-date-time-calendar)
+[![](https://vsmarketplacebadges.dev/installs-short/SatoshiYamamoto.vscode-date-time-calendar.svg)](https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-date-time-calendar)
+[![](https://vsmarketplacebadges.dev/rating-short/SatoshiYamamoto.vscode-date-time-calendar.svg)](https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-date-time-calendar#review-details)
+[![](https://img.shields.io/github/license/standard-software/vscode-date-time-calendar.svg)](https://github.com/standard-software/vscode-date-time-calendar/blob/main/LICENSE)
 
 This extension outputs the date and time and calendar as formatted text
 
