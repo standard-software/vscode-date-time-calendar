@@ -9,7 +9,7 @@ const { _dayOfWeek } = require(`../date/_dayOfWeek.js`);
 const { _nameOfMonth } = require(`../date/_nameOfMonth.js`);
 const { _minutesToTexts } = require(`../date/_minutesToTexts.js`);
 
-const year4 = (date, timezoneOffset) => {
+const year = (date, timezoneOffset) => {
   let result;
   if (isUndefined(timezoneOffset)) {
     result = date.getFullYear();
@@ -23,7 +23,10 @@ const year4 = (date, timezoneOffset) => {
 
     result = d.getUTCFullYear();
   }
-  return result.toString();
+  return result;
+};
+const year4 = (date, timezoneOffset) => {
+  return year(date, timezoneOffset).toString();
 };
 
 const year2 = (date, timezoneOffset) => {
@@ -93,8 +96,12 @@ const hours = (date, timezoneOffset) => {
   return result;
 };
 const hour12_1 = (date, timezoneOffset) => {
-  // 0-11
-  return (hours(date, timezoneOffset) % 12).toString();
+  let result = hours(date, timezoneOffset);
+  if (13 <= result) {
+    result -= 12;
+    // 13-23 -> 1-11
+  }
+  return (result).toString();
 };
 
 const hour12_2 = (date, timezoneOffset) => {
@@ -275,6 +282,7 @@ const timezoneHH_MM = (date, timezoneOffset) => {
 };
 
 const __dateToStringRule = {
+  year,
   month,
   dayOfWeek,
   hours,

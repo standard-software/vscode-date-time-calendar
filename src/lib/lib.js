@@ -1,7 +1,6 @@
 const {
   _dateToString,
   _dayOfWeek, _nameOfMonth,
-  _Year,
   _Month,
   _Day,
   _Datetime,

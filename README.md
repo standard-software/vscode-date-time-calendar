@@ -324,6 +324,10 @@ Released under the [MIT License][license].
 
 ## Version
 
+### 1.7.1
+2024/01/31 Wed
+- fix hour 0-11,0-11 -> 0-12,1-11
+
 ### 1.7.0
 2022/05/02(Mon)
 - icon
