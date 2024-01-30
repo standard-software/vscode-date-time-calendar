@@ -1,3 +1,4 @@
+# Date Time Calendar (deprecated)
 
 [![](https://vsmarketplacebadges.dev/version-short/SatoshiYamamoto.vscode-date-time-calendar.svg)](https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-date-time-calendar)
 [![](https://vsmarketplacebadges.dev/installs-short/SatoshiYamamoto.vscode-date-time-calendar.svg)](https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-date-time-calendar)
@@ -5,6 +6,21 @@
 [![](https://img.shields.io/github/license/standard-software/vscode-date-time-calendar.svg)](https://github.com/standard-software/vscode-date-time-calendar/blob/main/LICENSE)
 
 This extension outputs the date and time and calendar as formatted text
+
+## Attention Information
+
+This extension is deprecated.
+
+This extension was too multifunctional and complicated to use, so we split it into two extensions.
+
+Please install each of the following extensions. We have made them simpler to use and more feature-rich.
+
+- Smart Insert Date
+https://marketplace.visualstudio.com/items
+
+- Insert Calendar
+https://marketplace.visualstudio.com/items
+
 
 ## Insert Output String For example:
 
@@ -316,6 +332,7 @@ Released under the [MIT License][license].
 
 ### 1.7.1
 2024/01/31 Wed
+- deprecated
 - fix hour 0-11,0-11 -> 0-12,1-11
 
 ### 1.7.0

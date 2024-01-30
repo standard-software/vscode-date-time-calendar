@@ -1,6 +1,6 @@
 {
   "name": "vscode-date-time-calendar",
-  "displayName": "Date Time Calendar",
+  "displayName": "Date Time Calendar (deprecated)",
   "description": "This extension outputs the date and time and calendar as formatted text",
   "version": "1.7.0",
 	"icon": "vscode-date-time-calendar_icon.png",
@@ -27,22 +27,6 @@
   },
   "main": "./src/extension.js",
   "activationEvents": [
-    "onCommand:DateTimeCalendar.DateFormatDateTodayDefault",
-    "onCommand:DateTimeCalendar.DateFormatDateTimeNowDefault",
-    "onCommand:DateTimeCalendar.DateFormatTimeNowDefault",
-
-    "onCommand:DateTimeCalendar.DateFormatDateTodaySelect",
-    "onCommand:DateTimeCalendar.DateFormatDateTimeNowSelect",
-    "onCommand:DateTimeCalendar.DateFormatTimeNowSelect",
-
-    "onCommand:DateTimeCalendar.DateFormatSelectDate",
-
-    "onCommand:DateTimeCalendar.LineVerticalCalendarThisMonthSelect",
-    "onCommand:DateTimeCalendar.MonthlySquareCalendarThisMonthSelect",
-    "onCommand:DateTimeCalendar.CalendarSelectMonth",
-    "onCommand:DateTimeCalendar.CalendarSelectDate",
-
-    "onCommand:DateTimeCalendar.SelectFunction"
   ],
   "contributes": {
     "commands": [
