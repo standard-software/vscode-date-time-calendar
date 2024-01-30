@@ -2,7 +2,7 @@
   "name": "vscode-date-time-calendar",
   "displayName": "Date Time Calendar (deprecated)",
   "description": "This extension outputs the date and time and calendar as formatted text",
-  "version": "1.7.0",
+  "version": "1.7.1",
 	"icon": "vscode-date-time-calendar_icon.png",
   "publisher": "SatoshiYamamoto",
   "author": {
@@ -211,7 +211,7 @@
   },
   "scripts": {
     "lint": "eslint --fix ./src",
-    "pack": "vsce package && code --install-extension vscode-date-time-calendar-1.7.0.vsix",
+    "pack": "vsce package && code --install-extension vscode-date-time-calendar-1.7.1.vsix",
     "": ""
   },
   "devDependencies": {

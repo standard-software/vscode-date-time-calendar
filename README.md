@@ -1,9 +1,9 @@
 # Date Time Calendar (deprecated)
 
-[![](https://vsmarketplacebadges.dev/version-short/SatoshiYamamoto.vscode-date-time-calendar.svg)](https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-date-time-calendar)
-[![](https://vsmarketplacebadges.dev/installs-short/SatoshiYamamoto.vscode-date-time-calendar.svg)](https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-date-time-calendar)
-[![](https://vsmarketplacebadges.dev/rating-short/SatoshiYamamoto.vscode-date-time-calendar.svg)](https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-date-time-calendar#review-details)
-[![](https://img.shields.io/github/license/standard-software/vscode-date-time-calendar.svg)](https://github.com/standard-software/vscode-date-time-calendar/blob/main/LICENSE)
+[![](https://vsmarketplacebadges.dev/version-short/SatoshiYamamoto.vscode-date-time-calendar.png)](https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-date-time-calendar)
+[![](https://vsmarketplacebadges.dev/installs-short/SatoshiYamamoto.vscode-date-time-calendar.png)](https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-date-time-calendar)
+[![](https://vsmarketplacebadges.dev/rating-short/SatoshiYamamoto.vscode-date-time-calendar.png)](https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-date-time-calendar#review-details)
+[![](https://img.shields.io/github/license/standard-software/vscode-date-time-calendar.png)](https://github.com/standard-software/vscode-date-time-calendar/blob/main/LICENSE)
 
 This extension outputs the date and time and calendar as formatted text
 
