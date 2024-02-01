@@ -15,11 +15,11 @@ This extension was too multifunctional and complicated to use, so we split it in
 
 Please install each of the following extensions. We have made them simpler to use and more feature-rich.
 
-- Smart Insert Date
-https://marketplace.visualstudio.com/items
+- Smart Insert Date - Visual Studio Marketplace  
+https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-smart-insert-date
 
-- Insert Calendar
-https://marketplace.visualstudio.com/items
+- Insert Calendar - Visual Studio Marketplace  
+https://marketplace.visualstudio.com/items?itemName=SatoshiYamamoto.vscode-insert-calendar
 
 
 ## Insert Output String For example:
@@ -329,6 +329,11 @@ _ = Space
 Released under the [MIT License][license].
 
 ## Version
+
+### 1.7.2
+2024/02/01 Thu
+- deprecated
+- update README
 
 ### 1.7.1
 2024/01/31 Wed
